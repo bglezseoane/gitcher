@@ -32,6 +32,19 @@ __status__ = "Development"
 HOME = expanduser("~")
 CHERFILE = HOME + "/.cherfile"
 
+# Prompt styles
+COLOR_BLUE = "\033[94m"
+COLOR_BRI_BLUE = "\033[94;1m"
+COLOR_CYAN = "\033[96;1m"
+COLOR_GREEN = "\033[92m"
+COLOR_RED = "\033[91m"
+COLOR_BOLD = "\033[1m"
+COLOR_RST = "\033[0m" # Restore default prompt style
+
+# Predefined messages
+MSG_OK = "[" + COLOR_GREEN + "OK" + COLOR_RST + "]"
+MSG_ERROR = "[" + COLOR_RED + "ERROR" + COLOR_RST + "]"
+
 
 
 # ===========================================
@@ -40,14 +53,14 @@ CHERFILE = HOME + "/.cherfile"
 
 def printProfError(profName):
 	"""function that prints a nonexistent gitcher profile error."""
-	print("[ERROR] Profile {0} not exists. Try again...".format(profName))
+	print(MSG_ERROR + " Profile {0} not exists. Try again...".format(profName))
 
 
 def printProfList():
 	"""function that recuperates and prints the gitcher profile list."""
 	f = open(CHERFILE, "r")
 	for line in f:
-		print(line.split(",")[0])
+		print("-    " + COLOR_CYAN + line.split(",")[0] + COLOR_RST)
 
 
 def checkProfile(profName):
@@ -95,7 +108,7 @@ def yesOrNo(question):
 	if reply[0] == "n":
 		return False
 	else:
-		print("[ERROR] Enter (y|n) answer...")
+		print(MSG_ERROR + " Enter (y|n) answer...")
 		yesOrNo(question)
 
 
@@ -142,15 +155,15 @@ def setProf(profName):
 	"""function that sets the selected profile locally."""
 	if checkGitContext():
 		switchProfile(profName, "l")
-		print("[OK] Switched to {0} profile.".format(profName))
+		print(MSG_OK + " Switched to {0} profile.".format(profName))
 	else:
-		print("[ERROR] Current working directory have not a git repository.")
+		print(MSG_ERROR + " Current directory not contains a git repository.")
 
 
 def gSetProf(profName):
 	"""function that sets the selected profile globally."""
 	switchProfile(profName, "g")
-	print("[OK] Set {0} as git default profile.".format(profName))
+	print(MSG_OK + " Set {0} as git default profile.".format(profName))
 
 
 def addProf():
@@ -159,14 +172,14 @@ def addProf():
 
 	profName = input("Enter the profile name: ")
 	while checkProfile(profName):
-		print("[ERROR] {0} yet exists. Use another name...".format(profName))
+		print(MSG_ERROR + " {0} yet exists. Change name...".format(profName))
 		profName = input("Enter profile name: ")
 
 	name = input("Enter the git user name: ")
 
 	email = input("Enter the git user email: ")
 	while not validate_email(email):
-		print("[ERROR] Invalid email format. Try again...".format(email))
+		print(MSG_ERROR + " Invalid email format. Try again...".format(email))
 		email = input("Enter the git user email: ")
 
 	if yesOrNo("Do you want to use a GPG sign key?"):
@@ -202,24 +215,27 @@ def delProf(profName):
 # =           MAIN           =
 # ============================
 
-print("gitcher: a git profile switcher")
+print(COLOR_BRI_BLUE + "**** gitcher: a git profile switcher ****" + COLOR_RST)
 
 # First, check if CHERFILE exists and if not, propose to create it.
 if not os.path.exists(CHERFILE):
-	print("[ERROR] {0} not exists and it is necessary.".format(CHERFILE))
+	print(MSG_ERROR + " {0} not exists and it is necessary.".format(CHERFILE))
 	if yesOrNo("Do you want to create {0}?".format(CHERFILE)):
 		open(CHERFILE, "w")
-		print("[OK] Gitcher config dotfile created. Go on...")
+		print(MSG_OK + " Gitcher config dotfile created. Go on...")
 	else:
-		print("[ERROR] Impossible to go on without gitcher config dotfile.")
+		print(MSG_ERROR + " Impossible to go on without gitcher dotfile.")
 		sys.exit(1)
 
+print("gitcher profiles list:")
 printProfList()
 print("\nOptions:")
-print("s    set a profile to current directory repository.")
-print("g    set a profile as global git profile.")
-print("a    add a new profile.")
-print("d    delete a profile.")
+print(COLOR_CYAN + "s" + COLOR_RST + "    set a profile to current "\
+	"directory repository.")
+print(COLOR_CYAN + "g" + COLOR_RST + "    set a profile as global "\
+	"git configuration.")
+print(COLOR_CYAN + "a" + COLOR_RST + "    add a new profile.")
+print(COLOR_CYAN + "d" + COLOR_RST + "    delete a profile.")
 print("\nQuit with Ctrl.+C.")
 
 opt = input("Option: ")
@@ -241,4 +257,4 @@ if not opt=="a":
 		delProf(profName)
 else:
 	addProf()
-	
+
