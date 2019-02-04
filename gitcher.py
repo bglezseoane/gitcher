@@ -51,6 +51,17 @@ MSG_ERROR = "[" + COLOR_RED + "ERROR" + COLOR_RST + "]"
 # =           Auxiliary functions           =
 # ===========================================
 
+def listen(text):
+	"""function that listen a user input, checks if it not a
+		'q' (i.e.: quit escape command) and then canalize
+		message to caller function."""
+	reply = input(text)
+	if reply=='q':
+		raise SystemExit
+	else:
+		return reply
+
+
 def printProfError(profName):
 	"""function that prints a nonexistent gitcher profile error."""
 	print(MSG_ERROR + " Profile {0} not exists. Try again...".format(profName))
@@ -96,13 +107,13 @@ def recoverProf(profName):
 
 
 def checkOption(opt):
-	"""function that checks the integrity of the input option."""
-	return opt=="s" or opt=="g" or opt=="a" or opt=="d"
+	"""function that checks the integrity of the listen option."""
+	return opt=="s" or opt=="g" or opt=="a" or opt=="d" or opt=="q"
 
 
 def yesOrNo(question):
 	"""function that requires a yes or no answer"""
-	reply = str(input(question + " (y|n): ")).lower().strip()
+	reply = str(listen(question + " (y|n): ")).lower().strip()
 	if reply[0] == "y":
 		return True
 	if reply[0] == "n":
@@ -170,20 +181,20 @@ def addProf():
 	"""function that adds a new profile."""
 	print("\nLets go to add a new gitcher profile...")
 
-	profName = input("Enter the profile name: ")
+	profName = listen("Enter the profile name: ")
 	while checkProfile(profName):
 		print(MSG_ERROR + " {0} yet exists. Change name...".format(profName))
-		profName = input("Enter profile name: ")
+		profName = listen("Enter profile name: ")
 
-	name = input("Enter the git user name: ")
+	name = listen("Enter the git user name: ")
 
-	email = input("Enter the git user email: ")
+	email = listen("Enter the git user email: ")
 	while not validate_email(email):
 		print(MSG_ERROR + " Invalid email format. Try again...".format(email))
-		email = input("Enter the git user email: ")
+		email = listen("Enter the git user email: ")
 
 	if yesOrNo("Do you want to use a GPG sign key?"):
-		signKey = input("Enter the git user signkey: ")
+		signKey = listen("Enter the git user signkey: ")
 		signPref = str(yesOrNo("Do you want to autocheck every commit?"))
 	else:
 		signKey = None
@@ -236,18 +247,18 @@ print(COLOR_CYAN + "g" + COLOR_RST + "    set a profile as global "\
 	"git configuration.")
 print(COLOR_CYAN + "a" + COLOR_RST + "    add a new profile.")
 print(COLOR_CYAN + "d" + COLOR_RST + "    delete a profile.")
-print("\nQuit with Ctrl.+C.")
+print(COLOR_CYAN + "q" + COLOR_RST + "    quit (escape available all time).")
 
-opt = input("Option: ")
+opt = listen("Option: ")
 while not checkOption(opt):
-	print("Invalid option! Use s|g|a|d. Quit with Ctrl.+C.")
-	opt = input("Enter option: ")
+	print("Invalid option! Use s|g|a|d. Type q to quit.")
+	opt = listen("Enter option: ")
 
 if not opt=="a":
-	profName = input("Select the desired profile entering its name: ")
+	profName = listen("Select the desired profile entering its name: ")
 	while not checkProfile(profName):
 		printProfError(profName)
-		profName = input("Enter profile name: ")
+		profName = listen("Enter profile name: ")
 
 	if opt=="s":
 		setProf(profName)
