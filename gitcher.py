@@ -247,11 +247,11 @@ print(COLOR_CYAN + 'g' + COLOR_RST + "    set a profile as global "\
 	"git configuration.")
 print(COLOR_CYAN + 'a' + COLOR_RST + "    add a new profile.")
 print(COLOR_CYAN + 'd' + COLOR_RST + "    delete a profile.")
-print(COLOR_CYAN + 'q' + COLOR_RST + "    quit (escape available all time).")
+print(COLOR_CYAN + 'q' + COLOR_RST + "    quit (escape available all time).\n")
 
 opt = listen("Option: ")
 while not checkOption(opt):
-	print("Invalid option! Use s|g|a|d. Type q to quit.")
+	print(MSG_ERROR + " Invalid option! Use s|g|a|d. Type q to quit.")
 	opt = listen("Enter option: ")
 
 if not opt=='a':
