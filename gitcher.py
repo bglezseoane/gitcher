@@ -108,19 +108,24 @@ def checkGitContext():
 def switchProfile(profName, flag):
 	"""function that plays the git profile switching."""
 	if flag=="l":
-		globSwitch=""
+		switchGlob="repository"
 	elif flag=="g":
-		globSwitch="--global"
+		switchGlob="global"
 
 	cwd = os.getcwd() # Current working directory path
 	repo = Repo(cwd) # Repository per se instance
 	prof = recoverProf(profName)
 
-	repo.config_writer().set_value("user", "name", prof["name"]).release()
-	repo.config_writer().set_value("user", "email", prof["email"]).release()
+	repo.config_writer(config_level = switchGlob).set_value("user", "name", \
+		prof["name"]).release()
+
+	repo.config_writer(config_level = switchGlob).set_value("user", "email", \
+		prof["email"]).release()
+
 	if prof["signKey"] is not None:
-		repo.config_writer().set_value("user", "signingKey", \
-			prof["signKey"]).release()		
+		repo.config_writer(config_level = switchGlob).set_value("user", \
+			"signingkey", prof["signKey"]).release()		
+
 		cmd = "cd {0} && git config commit.gpgsign {1}".format(cwd, \
 			prof["signPref"].lower())
 			# It is neccesary to run even preference is false because
