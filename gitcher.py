@@ -51,17 +51,6 @@ MSG_ERROR = "[" + COLOR_RED + "ERROR" + COLOR_RST + "]"
 # =           Auxiliary functions           =
 # ===========================================
 
-def listen(text):
-	"""function that listen a user input, checks if it not a
-		'q' (i.e.: quit escape command) and then canalize
-		message to caller function."""
-	reply = input(text)
-	if reply=='q':
-		raise SystemExit
-	else:
-		return reply
-
-
 def printProfError(profName):
 	"""function that prints a nonexistent gitcher profile error."""
 	print(MSG_ERROR + " Profile {0} not exists. Try again...".format(profName))
@@ -74,6 +63,34 @@ def printProfList():
 		print("-    " + COLOR_CYAN + line.split(",")[0] + COLOR_RST)
 
 
+def listen(text):
+	"""function that listen a user input, checks if it not a
+		'q' (i.e.: quit escape command) and then canalize
+		message to caller function."""
+	reply = input(text)
+	if reply=='q':
+		raise SystemExit
+	else:
+		return reply
+
+
+def yesOrNo(question):
+	"""function that requires a yes or no answer"""
+	reply = str(listen(question + " (y|n): ")).lower().strip()
+	if reply[0] == 'y':
+		return True
+	if reply[0] == 'n':
+		return False
+	else:
+		print(MSG_ERROR + " Enter (y|n) answer...")
+		yesOrNo(question)
+
+
+def checkOption(opt):
+	"""function that checks the integrity of the listen option."""
+	return opt=='s' or opt=='g' or opt=='a' or opt=='d' or opt=='q'
+
+
 def checkProfile(profName):
 	"""function that checks if a gitcher profile exists."""
 	f = open(CHERFILE, 'r')
@@ -81,6 +98,12 @@ def checkProfile(profName):
 		if line.split(',')[0]==profName:
 			return True
 	return False # if not finds prof
+
+
+def checkGitContext():
+	"""function that checks if the current directory have a git repository."""
+	cwd = os.getcwd()
+	return os.path.exists(cwd + "/.git")
 
 
 def recoverProf(profName):
@@ -104,29 +127,6 @@ def recoverProf(profName):
 				"signPref": words[4]
 			}
 			return prof
-
-
-def checkOption(opt):
-	"""function that checks the integrity of the listen option."""
-	return opt=='s' or opt=='g' or opt=='a' or opt=='d' or opt=='q'
-
-
-def yesOrNo(question):
-	"""function that requires a yes or no answer"""
-	reply = str(listen(question + " (y|n): ")).lower().strip()
-	if reply[0] == 'y':
-		return True
-	if reply[0] == 'n':
-		return False
-	else:
-		print(MSG_ERROR + " Enter (y|n) answer...")
-		yesOrNo(question)
-
-
-def checkGitContext():
-	"""function that checks if the current directory have a git repository."""
-	cwd = os.getcwd()
-	return os.path.exists(cwd + "/.git")
 
 
 def switchProfile(profName, flag):
