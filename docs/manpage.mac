@@ -1,0 +1,22 @@
+.\" Manpage for gitcher.
+.\" Contact dev@glezseoane.com to any requirement.
+.TH man 1 "4 Feb 2018" "0.1" "gitcher man page"
+.SH NAME
+gitcher \- git switcher, manage git profiles
+.SH SYNOPSIS
+\fBgitcher\fR [\fB\-i\fR|\fB\-s\fR|\fB\-a\fR|\fB\-u\fR|\fB\-rm\fR|\fB\-l\fR|\fB\-L\fR|\fB\-g\fR] [\fIparams\fR]
+.SH DESCRIPTION
+\fBgitcher\fR is a git switcher. It facilitates the switching between git profiles,importing configuration settings such as name, email and user signatures.
+.SH OPTIONS
+.IP "\fINONE\fR"
+Opens the interactive mode. It is possible to access to all the operations with this mode, that offers you inline help.
+.SH SAVED DATA
+\fBgitcher\fR works with a dotfile saved on user $HOME directory. It is \fI~/.cherfile\fR. It is not recommended to edit it manually.
+.SH EXIT STATUS
+Exits 0 on success and 1 on error.
+.SH SEE ALSO
+\fBgit\fR(1).
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+Borja Gonzalez Seoane <dev@glezseoane.com> is the author of \fBgitcher\fR.
