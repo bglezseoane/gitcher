@@ -33,13 +33,13 @@ HOME = expanduser("~")
 CHERFILE = HOME + "/.cherfile"
 
 # Prompt styles
-COLOR_BLUE = "\033[94m"
-COLOR_BRI_BLUE = "\033[94;1m"
-COLOR_CYAN = "\033[96;1m"
-COLOR_GREEN = "\033[92m"
-COLOR_RED = "\033[91m"
-COLOR_BOLD = "\033[1m"
-COLOR_RST = "\033[0m" # Restore default prompt style
+COLOR_BLUE = '\033[94m'
+COLOR_BRI_BLUE = '\033[94;1m'
+COLOR_CYAN = '\033[96;1m'
+COLOR_GREEN = '\033[92m'
+COLOR_RED = '\033[91m'
+COLOR_BOLD = '\033[1m'
+COLOR_RST = '\033[0m' # Restore default prompt style
 
 # Predefined messages
 MSG_OK = "[" + COLOR_GREEN + "OK" + COLOR_RST + "]"
@@ -69,16 +69,16 @@ def printProfError(profName):
 
 def printProfList():
 	"""function that recuperates and prints the gitcher profile list."""
-	f = open(CHERFILE, "r")
+	f = open(CHERFILE, 'r')
 	for line in f:
 		print("-    " + COLOR_CYAN + line.split(",")[0] + COLOR_RST)
 
 
 def checkProfile(profName):
 	"""function that checks if a gitcher profile exists."""
-	f = open(CHERFILE, "r")
+	f = open(CHERFILE, 'r')
 	for line in f:
-		if line.split(",")[0]==profName:
+		if line.split(',')[0]==profName:
 			return True
 	return False # if not finds prof
 
@@ -91,9 +91,9 @@ def recoverProf(profName):
 		- CHERFILE can not content two profiles with the same name. The add
 			function takes care of it.
 	"""
-	f = open(CHERFILE, "r")
+	f = open(CHERFILE, 'r')
 	for line in f:
-		words = line.split(",")
+		words = line.split(',')
 		if words[0]==profName:
 			# Return as dictionary
 			prof = {
@@ -108,15 +108,15 @@ def recoverProf(profName):
 
 def checkOption(opt):
 	"""function that checks the integrity of the listen option."""
-	return opt=="s" or opt=="g" or opt=="a" or opt=="d" or opt=="q"
+	return opt=='s' or opt=='g' or opt=='a' or opt=='d' or opt=='q'
 
 
 def yesOrNo(question):
 	"""function that requires a yes or no answer"""
 	reply = str(listen(question + " (y|n): ")).lower().strip()
-	if reply[0] == "y":
+	if reply[0] == 'y':
 		return True
-	if reply[0] == "n":
+	if reply[0] == 'n':
 		return False
 	else:
 		print(MSG_ERROR + " Enter (y|n) answer...")
@@ -131,9 +131,9 @@ def checkGitContext():
 
 def switchProfile(profName, flag):
 	"""function that plays the git profile switching."""
-	if flag=="l":
+	if flag=='l':
 		switchGlob="repository"
-	elif flag=="g":
+	elif flag=='g':
 		switchGlob="global"
 
 	cwd = os.getcwd() # Current working directory path
@@ -165,7 +165,7 @@ def switchProfile(profName, flag):
 def setProf(profName):
 	"""function that sets the selected profile locally."""
 	if checkGitContext():
-		switchProfile(profName, "l")
+		switchProfile(profName, 'l')
 		print(MSG_OK + " Switched to {0} profile.".format(profName))
 	else:
 		print(MSG_ERROR + " Current directory not contains a git repository.")
@@ -173,7 +173,7 @@ def setProf(profName):
 
 def gSetProf(profName):
 	"""function that sets the selected profile globally."""
-	switchProfile(profName, "g")
+	switchProfile(profName, 'g')
 	print(MSG_OK + " Set {0} as git default profile.".format(profName))
 
 
@@ -201,21 +201,21 @@ def addProf():
 		signPref = False
 
 	prof = [profName, name, email, str(signKey), str(signPref)]
-	profStr = ",".join(prof)
+	profStr ='",'.join(prof)
 	# Save it...
-	with open(CHERFILE,"a") as f:    
+	with open(CHERFILE,'a') as f:    
 		print(profStr, file = f)
 
 
 def delProf(profName):
 	"""function that deletes the selected profile."""
 	if yesOrNo("Are you sure to delete {0}?".format(profName)):
-		f = open(CHERFILE, "r+") # Read and write mode
+		f = open(CHERFILE, '+') # Read and write mode
 		lines = f.readlines()
-		lines = [line.strip("\n") for line in lines]
+		lines = [line.strip('n') for line in lines]
 		f.seek(0) # Return to the start of the file
 		for line in lines:
-			if line.split(",")[0]!=profName:
+			if line.split(',')[0]!=profName:
 				print(line, file = f)
 		f.truncate() # Delete possible dirty lines below
 		f.close()
@@ -232,7 +232,7 @@ print(COLOR_BRI_BLUE + "**** gitcher: a git profile switcher ****" + COLOR_RST)
 if not os.path.exists(CHERFILE):
 	print(MSG_ERROR + " {0} not exists and it is necessary.".format(CHERFILE))
 	if yesOrNo("Do you want to create {0}?".format(CHERFILE)):
-		open(CHERFILE, "w")
+		open(CHERFILE, 'w')
 		print(MSG_OK + " Gitcher config dotfile created. Go on...")
 	else:
 		print(MSG_ERROR + " Impossible to go on without gitcher dotfile.")
@@ -241,28 +241,28 @@ if not os.path.exists(CHERFILE):
 print("gitcher profiles list:")
 printProfList()
 print("\nOptions:")
-print(COLOR_CYAN + "s" + COLOR_RST + "    set a profile to current "\
+print(COLOR_CYAN + 's' + COLOR_RST + "    set a profile to current "\
 	"directory repository.")
-print(COLOR_CYAN + "g" + COLOR_RST + "    set a profile as global "\
+print(COLOR_CYAN + 'g' + COLOR_RST + "    set a profile as global "\
 	"git configuration.")
-print(COLOR_CYAN + "a" + COLOR_RST + "    add a new profile.")
-print(COLOR_CYAN + "d" + COLOR_RST + "    delete a profile.")
-print(COLOR_CYAN + "q" + COLOR_RST + "    quit (escape available all time).")
+print(COLOR_CYAN + 'a' + COLOR_RST + "    add a new profile.")
+print(COLOR_CYAN + 'd' + COLOR_RST + "    delete a profile.")
+print(COLOR_CYAN + 'q' + COLOR_RST + "    quit (escape available all time).")
 
 opt = listen("Option: ")
 while not checkOption(opt):
 	print("Invalid option! Use s|g|a|d. Type q to quit.")
 	opt = listen("Enter option: ")
 
-if not opt=="a":
+if not opt=='a':
 	profName = listen("Select the desired profile entering its name: ")
 	while not checkProfile(profName):
 		printProfError(profName)
 		profName = listen("Enter profile name: ")
 
-	if opt=="s":
+	if opt=='s':
 		setProf(profName)
-	elif opt=="g":
+	elif opt=='g':
 		gSetProf(profName)
 	else:
 		delProf(profName)
