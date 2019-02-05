@@ -19,7 +19,7 @@ from git import Repo
 __author__ = "Borja González Seoane"
 __copyright__ = "Copyright 2019, Borja González Seoane"
 __credits__ = "Borja González Seoane"
-__license__ = "GPL-3.0"
+__license__ = "LICENSE"
 __version__ = "0.1"
 __maintainer__ = "Borja González Seoane"
 __email__ = "dev@glezseoane.com"
