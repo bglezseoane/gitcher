@@ -44,3 +44,18 @@ It is identified by a subject tittle like "work" or "university" that have to be
 
 The `~/.cherfile` file contains the saved profiles data.
 
+
+## To set up
+
+Go to this repository home directory and run:
+
+```
+$ python setup.py install
+```
+
+This install gitcher on your machine. Now you can run it on your shell using:
+
+```
+$ gitcher.py
+```
+
