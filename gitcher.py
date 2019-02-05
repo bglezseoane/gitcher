@@ -47,6 +47,7 @@ MSG_ERROR = "[" + COLOR_RED + "ERROR" + COLOR_RST + "]"
 # =           Auxiliary functions           =
 # ===========================================
 
+# noinspection PyShadowingNames
 def print_prof_error(profname):
     """function that prints a nonexistent gitcher profile error."""
     print(MSG_ERROR + " Profile {0} not exists. Try again...".format(profname))
@@ -61,7 +62,7 @@ def print_prof_list():
 
 def listen(text):
     """function that listen a user input, checks if it not a 'q' (i.e.: quit
-	escape command) and then canalize message to caller function."""
+        escape command) and then canalize message to caller function. """
     reply = input(text)
 
     if reply == 'q':
@@ -82,11 +83,13 @@ def yes_or_no(question):
         yes_or_no(question)
 
 
+# noinspection PyShadowingNames
 def check_opt(opt):
     """function that checks the integrity of the listen option."""
     return opt == 's' or opt == 'g' or opt == 'a' or opt == 'd' or opt == 'q'
 
 
+# noinspection PyShadowingNames
 def check_profile(profname):
     """function that checks if a gitcher profile exists."""
     f = open(CHERFILE, 'r')
@@ -102,14 +105,15 @@ def check_git_context():
     return os.path.exists(cwd + "/.git")
 
 
+# noinspection PyShadowingNames
 def recover_prof(profname):
     """function that recovers a gitcher profile.
-	
-	Warnings:
-		- check_profile must be asserted before.
-		- CHERFILE can not content two profiles with the same name. The add
-			function takes care of it.
-	"""
+
+    Warnings:
+        - check_profile must be asserted before.
+        - CHERFILE can not content two profiles with the same name. The add
+            function takes care of it.
+    """
     f = open(CHERFILE, 'r')
     for line in f:
         words = line.split(',')
@@ -125,6 +129,7 @@ def recover_prof(profname):
             return prof
 
 
+# noinspection PyShadowingNames
 def switch_prof(profname, flag):
     """function that plays the git profile switching."""
     switch_global = "repository"
@@ -156,6 +161,7 @@ def switch_prof(profname, flag):
 # =           Main launchers           =
 # ======================================
 
+# noinspection PyShadowingNames
 def set_prof(profname):
     """function that sets the selected profile locally."""
     if check_git_context():
@@ -165,12 +171,14 @@ def set_prof(profname):
         print(MSG_ERROR + " Current directory not contains a git repository.")
 
 
+# noinspection PyShadowingNames
 def set_prof_global(profname):
     """function that sets the selected profile globally."""
     switch_prof(profname, 'g')
     print(MSG_OK + " Set {0} as git default profile.".format(profname))
 
 
+# noinspection PyShadowingNames
 def add_prof():
     """function that adds a new profile."""
     print("\nLets go to add a new gitcher profile...")
@@ -195,12 +203,13 @@ def add_prof():
         signpref = False
 
     prof = [profname, name, email, str(signkey), str(signpref)]
-    profStr = '",'.join(prof)
+    prof_string = '",'.join(prof)
     # Save it...
     with open(CHERFILE, 'a') as f:
-        print(profStr, file=f)
+        print(prof_string, file=f)
 
 
+# noinspection PyShadowingNames
 def delete_prof(profname):
     """function that deletes the selected profile."""
     if yes_or_no("Are you sure to delete {0}?".format(profname)):
@@ -234,9 +243,9 @@ if not os.path.exists(CHERFILE):
 print("gitcher profiles list:")
 print_prof_list()
 print("\nopts:")
-print(COLOR_CYAN + 's' + COLOR_RST + "    set a profile to current " \
+print(COLOR_CYAN + 's' + COLOR_RST + "    set a profile to current "
                                      "directory repository.")
-print(COLOR_CYAN + 'g' + COLOR_RST + "    set a profile as global " \
+print(COLOR_CYAN + 'g' + COLOR_RST + "    set a profile as global "
                                      "git configuration.")
 print(COLOR_CYAN + 'a' + COLOR_RST + "    add a new profile.")
 print(COLOR_CYAN + 'd' + COLOR_RST + "    delete a profile.")
