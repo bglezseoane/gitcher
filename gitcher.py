@@ -242,7 +242,7 @@ if not os.path.exists(CHERFILE):
 
 print("gitcher profiles list:")
 print_prof_list()
-print("\nopts:")
+print("\nOptions:")
 print(COLOR_CYAN + 's' + COLOR_RST + "    set a profile to current "
                                      "directory repository.")
 print(COLOR_CYAN + 'g' + COLOR_RST + "    set a profile as global "
@@ -251,10 +251,10 @@ print(COLOR_CYAN + 'a' + COLOR_RST + "    add a new profile.")
 print(COLOR_CYAN + 'd' + COLOR_RST + "    delete a profile.")
 print(COLOR_CYAN + 'q' + COLOR_RST + "    quit (escape available all time).\n")
 
-opt = listen("opt: ")
+opt = listen("Option: ")
 while not check_opt(opt):
     print(MSG_ERROR + " Invalid opt! Use s|g|a|d. Type q to quit.")
-    opt = listen("Enter opt: ")
+    opt = listen("Enter option: ")
 
 if not opt == 'a':
     profname = listen("Select the desired profile entering its name: ")
