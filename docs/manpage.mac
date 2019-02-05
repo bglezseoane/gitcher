@@ -1,6 +1,6 @@
 .\" Manpage for gitcher.
 .\" Contact dev@glezseoane.com to any requirement.
-.TH man 1 "4 Feb 2018" "0.1" "gitcher man page"
+.TH man 1 "4 Feb 2018" "0.1a0" "gitcher man page"
 .SH NAME
 gitcher \- git switcher, manage git profiles
 .SH SYNOPSIS
