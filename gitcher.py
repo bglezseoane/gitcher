@@ -64,7 +64,6 @@ def listen(text):
     """function that listen a user input, checks if it not a 'q' (i.e.: quit
         escape command) and then canalize message to caller function. """
     reply = input(text)
-
     if reply == 'q':
         raise SystemExit
     else:
@@ -203,7 +202,7 @@ def add_prof():
         signpref = False
 
     prof = [profname, name, email, str(signkey), str(signpref)]
-    prof_string = '",'.join(prof)
+    prof_string = ','.join(prof)
     # Save it...
     with open(CHERFILE, 'a') as f:
         print(prof_string, file=f)
@@ -213,9 +212,9 @@ def add_prof():
 def delete_prof(profname):
     """function that deletes the selected profile."""
     if yes_or_no("Are you sure to delete {0}?".format(profname)):
-        f = open(CHERFILE, '+')  # Read and write mode
+        f = open(CHERFILE, 'r+')  # Read and write mode
         lines = f.readlines()
-        lines = [line.strip('n') for line in lines]
+        lines = [line.strip('\n') for line in lines]
         f.seek(0)  # Return to the start of the file
         for line in lines:
             if line.split(',')[0] != profname:
