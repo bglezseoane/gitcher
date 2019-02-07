@@ -12,6 +12,8 @@ import sys
 import os
 from os.path import expanduser
 from validate_email import validate_email
+from shutil import which
+
 
 # Authorship
 __author__ = 'Borja González Seoane'
@@ -94,6 +96,11 @@ def check_profile(profname):
         if line.split(',')[0] == profname:
             return True
     return False  # if not finds prof
+
+
+def check_git_installed():
+    """function that checks if git command is installed and reachable."""
+    return which("git") is not None
 
 
 def check_git_context():
@@ -245,6 +252,12 @@ if not os.path.exists(CHERFILE):
     else:
         print(MSG_ERROR + " Impossible to go on without gitcher dotfile.")
         sys.exit(1)
+
+# Next, check if git is installed
+if not check_git_installed():
+    print(MSG_ERROR + " git is not installed in this machine. Impossible to "
+                      "continue.")
+    sys.exit(1)
 
 print("gitcher profiles list:")
 print_prof_list()
