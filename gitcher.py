@@ -13,7 +13,6 @@ import sys
 import os
 from os.path import expanduser
 from validate_email import validate_email
-from git import Repo
 
 # Authorship
 __author__ = "Borja González Seoane"
@@ -129,31 +128,35 @@ def recover_prof(profname):
 
 
 # noinspection PyShadowingNames
-def switch_prof(profname, flag):
-    """function that plays the git profile switching."""
-    switch_global = "repository"
-    if flag == 'g':
-        switch_global = "global"
+def switch_prof(profname, flag=''):
+    """function that plays the git profile switching.
 
+    This function can receive a '--global' flag to switch profile globally."""
     cwd = os.getcwd()  #  Current working directory path
-    repo = Repo(cwd)  # Repository per se instance
     prof = recover_prof(profname)
 
-    repo.config_writer(config_level=switch_global). \
-        set_value("user", "name", prof["name"]).release()
+    go_to_cwd = "cd {0} && ".format(cwd)
+    if flag == '--global':
+        go_to_cwd = ""
 
-    repo.config_writer(config_level=switch_global). \
-        set_value("user", "email", prof["email"]).release()
+    cmd = "{0}git config {1} user.name '{2}'".format(go_to_cwd, flag,
+                                                     prof['name'])
+    os.system(cmd)
+
+    cmd = "{0}git config {1} user.email {2}".format(go_to_cwd, flag,
+                                                    prof['email'])
+    os.system(cmd)
 
     if prof["signkey"] is not None:
-        repo.config_writer(config_level=switch_global). \
-            set_value("user", "signingkey", prof["signkey"]).release()
-
-        # Is neccesary to run next command even preference is false because
-        # 	it would be neccesary overwrite git global criteria.
-        cmd = "cd {0} && git config commit.gpgsign {1}".\
-            format(cwd, prof['signpref'].lower())
+        cmd = "{0}git config {1} user.signingkey {2}". \
+            format(go_to_cwd, flag, prof['signkey'])
         os.system(cmd)
+
+    # Is neccesary to run next command even preference is false because
+    # 	it would be neccesary overwrite git global criteria.
+    cmd = "{0}git config {1} commit.gpgsign {2}". \
+        format(go_to_cwd, flag, prof['signpref'])
+    os.system(cmd)
 
 
 # ======================================
@@ -162,9 +165,12 @@ def switch_prof(profname, flag):
 
 # noinspection PyShadowingNames
 def set_prof(profname):
-    """function that sets the selected profile locally."""
+    """function that sets the selected profile locally.
+
+    It is imperative that it be called from a directory with a git
+    repository."""
     if check_git_context():
-        switch_prof(profname, 'l')
+        switch_prof(profname)
         print(MSG_OK + " Switched to {0} profile.".format(profname))
     else:
         print(MSG_ERROR + " Current directory not contains a git repository.")
@@ -172,8 +178,10 @@ def set_prof(profname):
 
 # noinspection PyShadowingNames
 def set_prof_global(profname):
-    """function that sets the selected profile globally."""
-    switch_prof(profname, 'g')
+    """function that sets the selected profile globally.
+
+    It is not necessary to be called from a directory with a git repository."""
+    switch_prof(profname, '--global')
     print(MSG_OK + " Set {0} as git default profile.".format(profname))
 
 
