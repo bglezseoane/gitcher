@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 
@@ -15,18 +14,18 @@ from os.path import expanduser
 from validate_email import validate_email
 
 # Authorship
-__author__ = "Borja González Seoane"
-__copyright__ = "Copyright 2019, Borja González Seoane"
-__credits__ = "Borja González Seoane"
-__license__ = "GPL-3.0"
-__version__ = "0.1a1"
-__maintainer__ = "Borja González Seoane"
-__email__ = "dev@glezseoane.com"
-__status__ = "Development"
+__author__ = 'Borja González Seoane'
+__copyright__ = 'Copyright 2019, Borja González Seoane'
+__credits__ = 'Borja González Seoane'
+__license__ = 'LICENSE'
+__version__ = '0.1a1'
+__maintainer__ = 'Borja González Seoane'
+__email__ = 'dev@glezseoane.com'
+__status__ = 'Development'
 
 # Paths
-HOME = expanduser("~")
-CHERFILE = HOME + "/.cherfile"
+HOME = expanduser('~')
+CHERFILE = HOME + '/.cherfile'
 
 # Prompt styles
 COLOR_BLUE = '\033[94m'
@@ -118,11 +117,11 @@ def recover_prof(profname):
         if words[0] == profname:
             # Return as dictionary
             prof = {
-                "profname": profname,
-                "name": words[1],
-                "email": words[2],
-                "signkey": words[3],
-                "signpref": words[4]
+                'profname': profname,
+                'name': words[1],
+                'email': words[2],
+                'signkey': words[3],
+                'signpref': words[4]
             }
             return prof
 
