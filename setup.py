@@ -29,5 +29,5 @@ setup(
                       'git profiles,importing configuration settings such as'
                       'name, email and user signatures.'],
     scripts=['gitcher.py'],
-    install_requires=['validate_email', 'gitpython']
+    install_requires=['validate_email']
 )
