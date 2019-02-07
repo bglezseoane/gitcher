@@ -49,19 +49,19 @@ MSG_ERROR = "[" + COLOR_RED + "ERROR" + COLOR_RST + "]"
 
 # noinspection PyShadowingNames
 def print_prof_error(profname):
-    """function that prints a nonexistent gitcher profile error."""
+    """Function that prints a nonexistent gitcher profile error."""
     print(MSG_ERROR + " Profile {0} not exists. Try again...".format(profname))
 
 
 def print_prof_list():
-    """function that recuperates and prints the gitcher profile list."""
+    """Function that recuperates and prints the gitcher profile list."""
     f = open(CHERFILE, 'r')
     for line in f:
         print("-    " + COLOR_CYAN + line.split(",")[0] + COLOR_RST)
 
 
 def listen(text):
-    """function that listen a user input, checks if it not a 'q' (i.e.: quit
+    """Function that listen a user input, checks if it not a 'q' (i.e.: quit
         escape command) and then canalize message to caller function. """
     reply = input(text)
     if reply == 'q':
@@ -71,7 +71,7 @@ def listen(text):
 
 
 def yes_or_no(question):
-    """function that requires a yes or no answer"""
+    """Function that requires a yes or no answer"""
     reply = str(listen(question + " (y|n): ")).lower().strip()
     if reply[0] == 'y':
         return True
@@ -84,13 +84,13 @@ def yes_or_no(question):
 
 # noinspection PyShadowingNames
 def check_opt(opt):
-    """function that checks the integrity of the listen option."""
+    """Function that checks the integrity of the listen option."""
     return opt == 's' or opt == 'g' or opt == 'a' or opt == 'd' or opt == 'q'
 
 
 # noinspection PyShadowingNames
 def check_profile(profname):
-    """function that checks if a gitcher profile exists."""
+    """Function that checks if a gitcher profile exists."""
     f = open(CHERFILE, 'r')
     for line in f:
         if line.split(',')[0] == profname:
@@ -99,19 +99,19 @@ def check_profile(profname):
 
 
 def check_git_installed():
-    """function that checks if git command is installed and reachable."""
+    """Function that checks if git command is installed and reachable."""
     return which("git") is not None
 
 
 def check_git_context():
-    """function that checks if the current directory have a git repository."""
+    """Function that checks if the current directory have a git repository."""
     cwd = os.getcwd()
     return os.path.exists(cwd + "/.git")
 
 
 # noinspection PyShadowingNames
 def recover_prof(profname):
-    """function that recovers a gitcher profile.
+    """Function that recovers a gitcher profile.
 
     Warnings:
         - check_profile must be asserted before.
@@ -135,7 +135,7 @@ def recover_prof(profname):
 
 # noinspection PyShadowingNames
 def switch_prof(profname, flag=''):
-    """function that plays the git profile switching.
+    """Function that plays the git profile switching.
 
     This function can receive a '--global' flag to switch profile globally."""
     cwd = os.getcwd()  #  Current working directory path
@@ -171,7 +171,7 @@ def switch_prof(profname, flag=''):
 
 # noinspection PyShadowingNames
 def set_prof(profname):
-    """function that sets the selected profile locally.
+    """Function that sets the selected profile locally.
 
     It is imperative that it be called from a directory with a git
     repository."""
@@ -184,7 +184,7 @@ def set_prof(profname):
 
 # noinspection PyShadowingNames
 def set_prof_global(profname):
-    """function that sets the selected profile globally.
+    """Function that sets the selected profile globally.
 
     It is not necessary to be called from a directory with a git repository."""
     switch_prof(profname, '--global')
@@ -193,7 +193,7 @@ def set_prof_global(profname):
 
 # noinspection PyShadowingNames
 def add_prof():
-    """function that adds a new profile."""
+    """Function that adds a new profile."""
     print("\nLets go to add a new gitcher profile...")
 
     profname = listen("Enter the profile name: ")
@@ -224,7 +224,7 @@ def add_prof():
 
 # noinspection PyShadowingNames
 def delete_prof(profname):
-    """function that deletes the selected profile."""
+    """Function that deletes the selected profile."""
     if yes_or_no("Are you sure to delete {0}?".format(profname)):
         f = open(CHERFILE, 'r+')  # Read and write mode
         lines = f.readlines()
