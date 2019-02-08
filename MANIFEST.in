@@ -1,0 +1,4 @@
+recursive-include gitcher *
+include README.md
+include LICENSE
+recursive-include manpages *
