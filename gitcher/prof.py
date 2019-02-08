@@ -29,7 +29,7 @@ class Prof(object):
         self.signpref = signpref
 
     def __str__(self):
-        if self.signpref is not None:
+        if self.signkey is not None:
             signkey_str = self.signkey
             if self.signpref:
                 signpref_str = "Autosign enabled"
