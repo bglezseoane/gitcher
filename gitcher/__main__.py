@@ -12,6 +12,7 @@ import os
 
 from validate_email import validate_email
 from shutil import which
+from prettytable import PrettyTable
 
 from gitcher import model_layer
 from gitcher.prof import Prof
@@ -63,9 +64,12 @@ def print_prof_list() -> None:
     """
     profs = model_layer.model_recuperate_profs()
     if profs:  # If profs is not empty
+        profs_table = PrettyTable(['Prof', 'Name', 'Email',
+                                 'GPG key', 'Autosign'])
         for prof in profs:
-            print("-    " + COLOR_CYAN + prof.profname + COLOR_RST +
-                  prof.__str__())
+            profs_table.add_row(prof.__str__())
+
+        print(profs_table)
     else:
         print("No gitcher profiles saved yet. Use 'a' option to add one.")
 

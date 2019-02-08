@@ -39,5 +39,4 @@ class Prof(object):
             signkey_str = "Disabled"
             signpref_str = ""
 
-        return "{0} {1} {2} {3}".format(self.name, self.email, signkey_str,
-                                        signpref_str)
+        return self.profname, self.name, self.email, signkey_str, signpref_str
