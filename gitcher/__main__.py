@@ -179,8 +179,7 @@ def switch_prof(profname: str, flag: str = '') -> None:
 
     :param profname: Name of the gitcher profile to operate with
     :type profname: str
-    :param flag: with '--global' flag do 'git config --global' (switch
-        profile globally)
+    :param flag: With '--global' flag switch profile globally
     :type flag: str
     :return: None
     """
