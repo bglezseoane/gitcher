@@ -42,7 +42,12 @@ def model_recuperate_profs() -> [Prof]:
         signkey = line.split(",")[3]
         signpref = line.split(",")[4]
 
-        prof = Prof(profname, name, email, signkey, bool(signpref))
+        # Type conversions
+        if signkey == "None":
+            signkey = None
+        signpref = bool(signpref)
+
+        prof = Prof(profname, name, email, signkey, signpref)
         profs.append(prof)
 
     return profs
