@@ -65,7 +65,7 @@ def print_prof_list() -> None:
     profs = model_layer.model_recuperate_profs()
     if profs:  # If profs is not empty
         profs_table = PrettyTable(['Prof', 'Name', 'Email',
-                                 'GPG key', 'Autosign'])
+                                   'GPG key', 'Autosign'])
         for prof in profs:
             profs_table.add_row(prof.__str__())
 
