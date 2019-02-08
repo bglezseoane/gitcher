@@ -62,7 +62,7 @@ def print_prof_list() -> None:
     :return: None, print function
     """
     profs = model_layer.model_recuperate_profs()
-    if profs: # If profs is not empty
+    if profs:  # If profs is not empty
         for prof in profs:
             print("-    " + COLOR_CYAN + prof.profname + COLOR_RST +
                   prof.__str__())
