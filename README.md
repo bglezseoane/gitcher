@@ -56,6 +56,6 @@ $ python setup.py install
 This install gitcher on your machine. Now you can run it on your shell using:
 
 ```
-$ python gitcher
+$ python -m gitcher
 ```
 
