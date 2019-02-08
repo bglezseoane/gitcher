@@ -6,7 +6,6 @@ dependencies:
   - ca-certificates=2018.11.29=ha4d7672_0
   - certifi=2018.11.29=py36_1000
   - gitdb2=2.0.5=py_0
-  - gitpython=2.1.11=py_0
   - libcxx=7.0.0=h2d50403_2
   - libffi=3.2.1=h0a44026_1005
   - llvm-meta=7.0.0=0
