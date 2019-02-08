@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 
-"""gitcher prof class
+"""gitcher prof class module
 
-This class represent a gitcher profile instance.
+This module constains the class that represents a gitcher profile instance.
 """
 
 # Authorship
@@ -32,11 +32,11 @@ class Prof(object):
         if self.signkey is not None:
             signkey_str = self.signkey
             if self.signpref:
-                signpref_str = "Autosign enabled"
+                signpref_str = "Enabled"
             else:
-                signpref_str = "Autosign disabled"
+                signpref_str = "Disabled"
         else:
-            signkey_str = "GPG Key disabled"
+            signkey_str = "Disabled"
             signpref_str = ""
 
         return "{0} {1} {2} {3}".format(self.name, self.email, signkey_str,
