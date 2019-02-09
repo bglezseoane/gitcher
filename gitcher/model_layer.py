@@ -7,6 +7,7 @@ This module access and manipulate the CHERFILE, isolating this operations to
 the rest of the program. """
 
 import os
+import subprocess
 from os.path import expanduser
 
 from gitcher.prof import Prof
@@ -153,3 +154,36 @@ def model_switch_prof(profname: str, flag: str = '') -> None:
     cmd = "{0}git config {1} commit.gpgsign {2}". \
         format(go_to_cwd, flag, prof.signpref)
     os.system(cmd)
+
+
+def model_recuperate_git_current_prof(path: str) -> Prof:
+    """Function that recuperates the applicable git configuration of the param
+    passed path and builds with this data a gitcher Prof.
+
+    Warnings:
+        - The path must be assert before or function raises error.
+
+    :param path: Path to recuperates git user configuration.
+    :type path: str
+    :return: Rebuilt git profile as gitcher Prof object
+    :rtype: Prof
+    """
+    name = subprocess.check_output(
+        "cd {} && git config user.name".format(path), shell=True)
+    email = subprocess.check_output(
+        "cd {} && git config user.email".format(path), shell=True)
+    signkey = subprocess.check_output(
+        "cd {} && git config user.signingKey".format(path), shell=True)
+    signpref = subprocess.check_output(
+        "cd {} && config commit.gpgsign".format(path), shell=True)
+
+    # Validations
+    if signkey == "":
+        signkey = None
+
+    if signpref == "True":
+        signpref = True
+    elif signpref == "False":
+        signpref = False
+
+    return Prof('tmp', name, email, signkey, signpref)
