@@ -9,6 +9,7 @@ the rest of the program. """
 import os
 import subprocess
 from os.path import expanduser
+from shutil import which
 
 from gitcher.prof import Prof
 from gitcher.not_found_prof_error import NotFoundProfError
@@ -112,6 +113,25 @@ def model_delete_profile(profname: str) -> None:
 # ===============================================
 # =               Git model layer               =
 # ===============================================
+
+def check_git_installed() -> bool:
+    """Function that checks if git command is installed and reachable.
+
+    :return: Confirmation about the reachability of git command installation
+    :rtype: bool
+    """
+    return which("git") is not None
+
+
+def check_git_context() -> bool:
+    """Function that checks if the current directory have a git repository.
+
+    :return: Confirmation about the presence of a git repository in the
+        current directory
+    :rtype: bool    """
+    cwd = os.getcwd()
+    return os.path.exists(cwd + "/.git")
+
 
 # noinspection PyShadowingNames
 def model_switch_prof(profname: str, flag: str = '') -> None:

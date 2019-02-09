@@ -11,7 +11,6 @@ as name, email and user signatures.
 import os
 
 from validate_email import validate_email
-from shutil import which
 from prettytable import PrettyTable
 
 from gitcher import model_layer
@@ -124,25 +123,6 @@ def check_opt(opt: str) -> bool:
     return opt == 's' or opt == 'g' or opt == 'a' or opt == 'd' or opt == 'q'
 
 
-def check_git_installed() -> bool:
-    """Function that checks if git command is installed and reachable.
-
-    :return: Confirmation about the reachability of git command installation
-    :rtype: bool
-    """
-    return which("git") is not None
-
-
-def check_git_context() -> bool:
-    """Function that checks if the current directory have a git repository.
-
-    :return: Confirmation about the presence of a git repository in the
-        current directory
-    :rtype: bool    """
-    cwd = os.getcwd()
-    return os.path.exists(cwd + "/.git")
-
-
 # noinspection PyShadowingNames
 def check_profile(profname: str) -> bool:
     """Function that checks if a gitcher profile exists.
@@ -194,7 +174,7 @@ def set_prof(profname: str) -> None:
     :type profname: str
     :return: None
     """
-    if check_git_context():
+    if model_layer.check_git_context():
         model_layer.model_switch_prof(profname)
         print(MSG_OK + " Switched to {0} profile.".format(profname))
     else:
@@ -284,7 +264,7 @@ def main() -> None:
             exit(1)
 
     # Next, check if git is installed
-    if not check_git_installed():
+    if not model_layer.check_git_installed():
         print(
             MSG_ERROR + " git is not installed in this machine. Impossible to "
                         "continue.")
