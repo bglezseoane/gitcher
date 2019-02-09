@@ -4,7 +4,7 @@
 """gitcher main
 
 gitcher is a git switcher. It facilitates the switching
-between git profiles,importing configuration settings such
+between git profiles, importing configuration settings such
 as name, email and user signatures.
 """
 

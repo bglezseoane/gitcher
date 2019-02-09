@@ -56,6 +56,7 @@ def model_recuperate_profs() -> [Prof]:
 def model_recuperate_prof(profname: str) -> Prof:
     """ Function that return the required gitcher profile. If it does not
     exist, raise a not found exception.
+
     :param profname: Name of the gitcher profile to operate with
     :type profname: str
     :return: The required profile
@@ -72,6 +73,7 @@ def model_recuperate_prof(profname: str) -> Prof:
 
 def model_save_profile(prof: Prof) -> None:
     """ Function that saves a new gitcher profile to the CHERFILE.
+
     :param prof: Gitcher profile to save
     :type prof: str
     :return: None
@@ -84,6 +86,7 @@ def model_save_profile(prof: Prof) -> None:
 
 def model_delete_profile(profname: str) -> None:
     """ Function that deletes a gitcher profile from the CHERFILE.
+
     :param profname: Name of the gitcher profile to operate with
     :type profname: str
     :return: None
