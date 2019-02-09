@@ -42,9 +42,9 @@ MSG_OK = "[" + COLOR_GREEN + "OK" + COLOR_RST + "]"
 MSG_ERROR = "[" + COLOR_RED + "ERROR" + COLOR_RST + "]"
 
 
-# ===========================================
-# =           Auxiliary functions           =
-# ===========================================
+# ===============================================
+# =             Auxiliary functions             =
+# ===============================================
 
 # noinspection PyShadowingNames
 def print_prof_error(profname: str) -> None:
@@ -179,48 +179,9 @@ def recover_prof(profname: str) -> Prof:
         raise NotFoundProfError
 
 
-# noinspection PyShadowingNames
-def switch_prof(profname: str, flag: str = '') -> None:
-    """Function that plays the git profile switching.
-
-    This function can receive a '--global' flag to switch profile globally.
-
-    :param profname: Name of the gitcher profile to operate with
-    :type profname: str
-    :param flag: With '--global' flag switch profile globally
-    :type flag: str
-    :return: None
-    """
-    cwd = os.getcwd()  #  Current working directory path
-    prof = recover_prof(profname)
-
-    go_to_cwd = "cd {0} && ".format(cwd)
-    if flag == '--global':
-        go_to_cwd = ""
-
-    cmd = "{0}git config {1} user.name '{2}'".format(go_to_cwd, flag,
-                                                     prof.name)
-    os.system(cmd)
-
-    cmd = "{0}git config {1} user.email {2}".format(go_to_cwd, flag,
-                                                    prof.email)
-    os.system(cmd)
-
-    if prof.signkey is not None:
-        cmd = "{0}git config {1} user.signingkey {2}". \
-            format(go_to_cwd, flag, prof.signkey)
-        os.system(cmd)
-
-    # Is neccesary to run next command even preference is false because
-    # 	it would be neccesary overwrite git global criteria.
-    cmd = "{0}git config {1} commit.gpgsign {2}". \
-        format(go_to_cwd, flag, prof.signpref)
-    os.system(cmd)
-
-
-# ======================================
-# =           Main launchers           =
-# ======================================
+# ===============================================
+# =                Main launchers               =
+# ===============================================
 
 # noinspection PyShadowingNames
 def set_prof(profname: str) -> None:
@@ -234,7 +195,7 @@ def set_prof(profname: str) -> None:
     :return: None
     """
     if check_git_context():
-        switch_prof(profname)
+        model_layer.model_switch_prof(profname)
         print(MSG_OK + " Switched to {0} profile.".format(profname))
     else:
         print(MSG_ERROR + " Current directory not contains a git repository.")
@@ -250,7 +211,7 @@ def set_prof_global(profname: str) -> None:
     :type profname: str
     :return: None
     """
-    switch_prof(profname, '--global')
+    model_layer.model_switch_prof(profname, '--global')
     print(MSG_OK + " Set {0} as git default profile.".format(profname))
 
 
@@ -298,9 +259,9 @@ def delete_prof(profname: str) -> None:
         model_layer.model_delete_profile(profname)
 
 
-# ============================
-# =           MAIN           =
-# ============================
+# ===============================================
+# =                     MAIN                    =
+# ===============================================
 
 def main() -> None:
     """Main launcher of gitcher program package.

@@ -6,6 +6,7 @@
 This module access and manipulate the CHERFILE, isolating this operations to
 the rest of the program. """
 
+import os
 from os.path import expanduser
 
 from gitcher.prof import Prof
@@ -25,6 +26,10 @@ __status__ = 'Development'
 HOME = expanduser('~')
 CHERFILE = HOME + '/.cherfile'
 
+
+# ===============================================
+# =             CHERFILE model layer            =
+# ===============================================
 
 def model_recuperate_profs() -> [Prof]:
     """Function that access CHERFILE and extracts profiles to Prof objects
@@ -101,3 +106,46 @@ def model_delete_profile(profname: str) -> None:
             print(line, file=f)
     f.truncate()  # Delete possible dirty lines below
     f.close()
+
+
+# ===============================================
+# =               Git model layer               =
+# ===============================================
+
+# noinspection PyShadowingNames
+def model_switch_prof(profname: str, flag: str = '') -> None:
+    """Function that plays the git profile switching.
+
+    This function can receive a '--global' flag to switch profile globally.
+
+    :param profname: Name of the gitcher profile to operate with
+    :type profname: str
+    :param flag: With '--global' flag switch profile globally
+    :type flag: str
+    :return: None
+    """
+    cwd = os.getcwd()  #  Current working directory path
+    prof = model_recuperate_prof(profname)
+
+    go_to_cwd = "cd {0} && ".format(cwd)
+    if flag == '--global':
+        go_to_cwd = ""
+
+    cmd = "{0}git config {1} user.name '{2}'".format(go_to_cwd, flag,
+                                                     prof.name)
+    os.system(cmd)
+
+    cmd = "{0}git config {1} user.email {2}".format(go_to_cwd, flag,
+                                                    prof.email)
+    os.system(cmd)
+
+    if prof.signkey is not None:
+        cmd = "{0}git config {1} user.signingkey {2}". \
+            format(go_to_cwd, flag, prof.signkey)
+        os.system(cmd)
+
+    # Is necessary to run next command even preference is false because
+    # 	it would be necessary overwrite git global criteria.
+    cmd = "{0}git config {1} commit.gpgsign {2}". \
+        format(go_to_cwd, flag, prof.signpref)
+    os.system(cmd)
