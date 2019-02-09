@@ -75,8 +75,9 @@ def print_prof_list() -> None:
 
 
 def listen(text: str) -> str:
-    """Function that listen an user input, checks if it not a 'q' (i.e.:
-    quit escape command) and then canalize message to caller function.
+    """Function that listen an user input, validates it, checks if it not a
+    'q' (i.e.: quit escape command) and then canalize message to caller
+    function.
 
     :param text: Name of the gitcher profile to operate with
     :type text: str
@@ -86,6 +87,9 @@ def listen(text: str) -> str:
     reply = input(text)
     if reply == 'q':
         raise SystemExit
+    elif ',' in reply:  # The comma (',') is an illegal char
+        print(MSG_ERROR + " Do not use commas (','), is an illegal char here.")
+        raise ValueError
     else:
         return reply
 
