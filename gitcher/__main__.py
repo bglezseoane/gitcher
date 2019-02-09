@@ -217,7 +217,7 @@ def add_prof() -> None:
 
     if yes_or_no("Do you want to use a GPG sign key?"):
         signkey = listen("Enter the git user signkey: ")
-        signpref = str(yes_or_no("Do you want to autocheck every commit?"))
+        signpref = yes_or_no("Do you want to autosign every commit?")
     else:
         signkey = None
         signpref = False

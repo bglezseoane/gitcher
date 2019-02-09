@@ -48,12 +48,12 @@ def model_recuperate_profs() -> [Prof]:
             name = line.split(",")[1]
             email = line.split(",")[2]
             signkey = line.split(",")[3]
-            signpref = line.split(",")[4]
+            signpref = line.split(",")[4].split("\n")[0]
 
             # Type conversions
             if signkey == "None":
                 signkey = None
-            signpref = bool(signpref)
+            signpref = (signpref == "True")
 
             prof = Prof(profname, name, email, signkey, signpref)
             profs.append(prof)
@@ -86,7 +86,8 @@ def model_save_profile(prof: Prof) -> None:
     :type prof: str
     :return: None
     """
-    prof = [prof.profname, prof.name, prof.email, prof.signkey, prof.signpref]
+    prof = [prof.profname, prof.name, prof.email, str(prof.signkey),
+            str(prof.signpref)]
     prof_string = ','.join(prof)
     with open(CHERFILE, 'a') as f:
         print(prof_string, file=f)
@@ -165,14 +166,14 @@ def model_switch_prof(profname: str, flag: str = '') -> None:
             format(go_to_cwd, flag, prof.signkey)
         os.system(cmd)
     else:
-        cmd = "{0}git config {1} --remove-section user.signingkey". \
+        cmd = "{0}git config {1} --unset user.signingkey". \
             format(go_to_cwd, flag)
         os.system(cmd)
 
     # Is necessary to run next command even preference is false because
     # 	it would be necessary overwrite git global criteria.
     cmd = "{0}git config {1} commit.gpgsign {2}". \
-        format(go_to_cwd, flag, prof.signpref)
+        format(go_to_cwd, flag, str(prof.signpref).lower())
     os.system(cmd)
 
 
