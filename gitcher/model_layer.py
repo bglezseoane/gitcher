@@ -143,6 +143,10 @@ def model_switch_prof(profname: str, flag: str = '') -> None:
         cmd = "{0}git config {1} user.signingkey {2}". \
             format(go_to_cwd, flag, prof.signkey)
         os.system(cmd)
+    else:
+        cmd = "{0}git config {1} --remove-section user.signingkey". \
+            format(go_to_cwd, flag)
+        os.system(cmd)
 
     # Is necessary to run next command even preference is false because
     # 	it would be necessary overwrite git global criteria.
