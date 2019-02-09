@@ -2,6 +2,8 @@
 
 A git switcher. It facilitates the switching between git profiles,importing configuration settings such as name, email and user signatures.
 
+![Screen capture](docs/screen.png?raw=true "Screen capture")
+
 
 ## Purpose
 
