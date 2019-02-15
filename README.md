@@ -1,7 +1,6 @@
 # gitcher
 
-A git switcher. It facilitates the switching between git profiles, importing
- configuration settings such as name, email and user signatures.
+A git switcher. It facilitates the switching between git profiles, importing configuration settings such as name, email and user signatures.
 
 
 ## Purpose
