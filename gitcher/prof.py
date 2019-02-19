@@ -11,7 +11,7 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '0.2a1'
+__version__ = '0.3b0'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
 __status__ = 'Development'
@@ -28,7 +28,9 @@ class Prof(object):
         self.signkey = signkey
         self.signpref = signpref
 
-    def __str__(self):
+    def __tpl__(self):
+        """This function return a tuple representation of the object.
+        """
         if self.signkey is not None:
             signkey_str = self.signkey
             if self.signpref:
@@ -40,3 +42,15 @@ class Prof(object):
             signpref_str = ""
 
         return self.profname, self.name, self.email, signkey_str, signpref_str
+
+    def equivalent(self, other) -> bool:
+        """This function checks if self profile is equivalent to another
+        (i.e.: all params equal except the profname).
+        """
+        if self.name == other.name:
+            if self.email == other.email:
+                if self.signkey == other.signkey:
+                    if self.signpref == other.signpref:
+                        return True
+        # Else...
+        return False

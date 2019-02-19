@@ -14,9 +14,10 @@ A git switcher. It facilitates the switching between git profiles,importing conf
 - [C]: Create cherfile.
 
 
-## Summary of command line possibilities
+## Interactive mode
 
-Use `cher` command to open the interactive console. Once this is done, *gitcher* automatically assert cherfile is reachable. If not, offers you to create it [C]. Then automatically list your preset profiles [L]. Next ask you for orders:
+Use `gitcher` command to open the interactive console. Once this is done, 
+*gitcher* automatically assert cherfile is reachable. If not, offers you to create it [C]. Then automatically list your preset profiles [L]. Next ask you for orders:
 
 - `s` to set a profile to current directory repository [S].
 - `g` to set a profile as global git profile [G].
@@ -25,3 +26,15 @@ Use `cher` command to open the interactive console. Once this is done, *gitcher*
 - `d` to delete a profile [D].
 - `q` to quit *gitcher*.
 
+
+## Fast mode shortcuts
+
+Elementary options are available via command line to avoid gitcher to be 
+scriptable and integrable on POSIX systems. To use:
+
+- `gitcher -s <profname>`: [S]'s shortcut.
+- `gitcher -g <profname>`: [G]'s shortcut.
+- `gitcher -a <profname> <name> <email> <signkey or 'None'> <'True' or 
+'False' as signpref>`: 
+[A]'s shortcut.
+- `gitcher -d <profname>`: [D]'s shortcut.

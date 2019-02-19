@@ -13,3 +13,5 @@ File data rows are composed by:
 
 The `profName` parameter acts like primary key of the dataset and have to be unique. Comma (`,`) acts as separator, so quotation marks are not needed to enclose parameters of more than one word.
 
+Lines started with `#` will be ignored, so are perfect to use like comments.
+
