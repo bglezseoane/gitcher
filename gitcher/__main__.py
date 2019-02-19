@@ -9,6 +9,7 @@ as name, email and user signatures.
 """
 
 import os
+import sys
 
 from validate_email import validate_email
 from prettytable import PrettyTable
@@ -56,6 +57,26 @@ def print_prof_error(profname: str) -> None:
     print(MSG_ERROR + " Profile {0} not exists. Try again...".format(profname))
 
 
+def raise_order_format_error(arg: str = None) -> None:
+    """Function that prints a command line format error advise and raises an
+    exception. If arg is not specified, the function prints a complete order
+    format error. If yes, raises an error advising the concrete argument
+    implicated.
+
+    :param arg: Implicated argument
+    :type arg: str
+    :return: None, print function
+    :raise SyntaxErrorr: Raise error by a bad order compose.
+    """
+    if arg is not None:
+        adv = "Check param {0} syntax!".format(arg)
+        print(MSG_ERROR + " " + adv)
+    else:
+        adv = "Check order syntax composition!"
+        print(MSG_ERROR + " " + adv)
+    sys.exit(adv)
+
+
 def print_prof_list() -> None:
     """Function that prints the gitcher profile list.
 
@@ -85,12 +106,12 @@ def listen(text: str) -> str:
     """
     reply = input(text)
     if reply == 'q':
-        raise SystemExit
-    elif ',' in reply:  # The comma (',') is an illegal char
-        print(MSG_ERROR + " Do not use commas (','), is an illegal char here.")
-        raise ValueError
-    else:
-        return reply
+        sys.exit(0)
+    try:
+        check_syntax(reply)
+    except SyntaxError:
+        listen(text)  # Recursive loop to have a valid value
+    return reply
 
 
 def yes_or_no(question: str) -> bool:
@@ -109,6 +130,21 @@ def yes_or_no(question: str) -> bool:
     else:
         print(MSG_ERROR + " Enter (y|n) answer...")
         yes_or_no(question)
+
+
+def check_syntax(arg: str) -> None:
+    """Check strings syntax. Gitcher does not avoid to use commas ','
+    in string values.
+
+    :param arg: Argument to check syntax
+    :type arg: str
+    :return: True or false
+    :rtype: bool
+    :raise SyntaxError: If arg is illegal
+    """
+    if ',' in arg:  # The comma (',') is an illegal char
+        print(MSG_ERROR + " Do not use commas (','), is an illegal char here.")
+        raise SyntaxError("Do not use commas (',')")
 
 
 # noinspection PyShadowingNames
@@ -168,7 +204,7 @@ def set_prof(profname: str) -> None:
     """Function that sets the selected profile locally.
 
     It is imperative that it be called from a directory with a git
-    repository.
+    repository. Profile name must be checked before.
 
     :param profname: Name of the gitcher profile to operate with
     :type profname: str
@@ -186,6 +222,7 @@ def set_prof_global(profname: str) -> None:
     """Function that sets the selected profile globally.
 
     It is not necessary to be called from a directory with a git repository.
+    Profile name must be checked before.
 
     :param profname: Name of the gitcher profile to operate with
     :type profname: str
@@ -197,7 +234,8 @@ def set_prof_global(profname: str) -> None:
 
 # noinspection PyShadowingNames
 def add_prof() -> None:
-    """Function that adds a new profile.
+    """Function that adds a new profile on interactive mode. Profile name
+    have not to be checked before.
 
     :return: None
     """
@@ -228,58 +266,67 @@ def add_prof() -> None:
 
 
 # noinspection PyShadowingNames
+def add_prof_fast(profname: str, name: str, email: str, signkey: str,
+                  signpref: bool) -> None:
+    """Function that adds a new profile on fast mode. Profile name have not
+    to be checked before.
+
+    :param profname:
+    :type profname: str
+    :param name:
+    :type name: str
+    :param email:
+    :type email: str
+    :param signkey:
+    :type signkey: str
+    :param signpref:
+    :type signpref: bool
+    :return: None
+    """
+    if not check_profile(profname):  # Profname have to be unique
+        prof = model_layer.Prof(profname, name, email, signkey, signpref)
+        model_layer.model_save_profile(prof)
+    else:
+        print(MSG_ERROR + " {0} yet exists!".format(profname))
+        sys.exit("gitcher profile name already in use")
+
+
+# noinspection PyShadowingNames
 def delete_prof(profname: str) -> None:
     """Function that deletes the selected profile.
 
+    Profile name must be checked before.
+
     :param profname: Name of the gitcher profile to operate with
-    :type profname: str
+    :type profname: [str]
     :return: None
     """
-    if yes_or_no("Are you sure to delete {0}?".format(profname)):
-        model_layer.model_delete_profile(profname)
+    model_layer.model_delete_profile(profname)
 
 
 # ===============================================
 # =                     MAIN                    =
 # ===============================================
 
-def main() -> None:
-    """Main launcher of gitcher program package.
+def interactive_main() -> None:
+    """Main launcher of gitcher program interactive mode. Dialogue with the
+    user.
 
     :return: None
     """
     print(COLOR_BRI_BLUE + "**** gitcher: a git profile switcher ****" +
           COLOR_RST)
 
-    # First, check if CHERFILE exists and if not, propose to create it.
-    cherfile = model_layer.CHERFILE
-    if not os.path.exists(cherfile):
-        print(MSG_ERROR + " {0} not exists and it is necessary.".format(
-            cherfile))
-        if yes_or_no("Do you want to create {0}?".format(cherfile)):
-            open(cherfile, 'w')
-            print(MSG_OK + " Gitcher config dotfile created. Go on...")
-        else:
-            print(MSG_ERROR + " Impossible to go on without gitcher dotfile.")
-            exit(1)
-
-    # Next, check if git is installed
-    if not model_layer.check_git_installed():
-        print(
-            MSG_ERROR + " git is not installed in this machine. Impossible to "
-                        "continue.")
-        exit(1)
-
     print("gitcher profiles list:")
     print_prof_list()
     print("\nOptions:")
-    print(COLOR_CYAN + 's' + COLOR_RST + "    set a profile to current "
+    print(COLOR_CYAN + "s" + COLOR_RST + "    set a profile to current "
                                          "directory repository.")
-    print(COLOR_CYAN + 'g' + COLOR_RST + "    set a profile as global "
+    print(COLOR_CYAN + "g" + COLOR_RST + "    set a profile as global "
                                          "git configuration.")
-    print(COLOR_CYAN + 'a' + COLOR_RST + "    add a new profile.")
-    print(COLOR_CYAN + 'd' + COLOR_RST + "    delete a profile.")
-    print("\nUse " + COLOR_CYAN + 'q + ENTER' + COLOR_RST + " everywhere to "
+    print(COLOR_CYAN + "a" + COLOR_RST + "    add a new profile.")
+    print(COLOR_CYAN + "d" + COLOR_RST + "    delete a profile.")
+    print("\nUse " + COLOR_CYAN + "q + ENTER" + COLOR_RST + " everywhere to "
                                                             "quit.\n")
 
     opt = listen("Option: ")
@@ -298,10 +345,100 @@ def main() -> None:
         elif opt == 'g':
             set_prof_global(profname)
         else:
-            delete_prof(profname)
+            if yes_or_no("Are you sure to delete {0}?".format(profname)):
+                delete_prof(profname)
     else:
         add_prof()
 
 
+def fast_main(cmd: [str]) -> None:
+    """Runs fast passed options after to do necessary checks.
+
+    :param cmd: Command line order by the user
+    :type cmd: [str]
+    :return: None
+    """
+    # First, check param syntax
+    for param in cmd:
+        try:
+            check_syntax(param)
+        except SyntaxError:
+            sys.exit("Syntax error")
+
+    # If syntax is okey, go on and check selected option
+    opt = cmd[1].replace('-', '')
+    if not check_opt(opt):
+        print(MSG_ERROR + " Invalid option! Use -s|-g|-a|-d.")
+        sys.exit("Invalid option")
+    else:
+        if len(cmd) < 3:  # cmd have to be 'gitcher <-opt> <profname> [
+            # ...]'
+            raise_order_format_error()
+        # Catch profname, first parameter for all cases
+        profname = cmd[2]
+
+        if opt == 'a':
+            if len(cmd) != 7:  # cmd have to be 'gitcher <-opt> <profname>
+                # <name> <email> <signkey> <signpref>'
+                raise_order_format_error()
+            # Catch specific params
+            name = cmd[3]
+            email = cmd[4]
+            if not validate_email(email):
+                raise_order_format_error(email)
+            signkey = cmd[5]
+            if signkey == 'None':
+                signkey = None
+            signpref = cmd[6]
+            if signpref == 'True':
+                signpref = True
+            elif signpref == 'False':
+                signpref = False
+            else:
+                raise_order_format_error(cmd[5])
+
+            add_prof_fast(profname, name, email, signkey, signpref)
+        else:
+            if not check_profile(profname):
+                print_prof_error(profname)
+                sys.exit("gitcher profile not exists")
+            # Else, if the profile exists, continue...
+            if opt == 's':
+                set_prof(profname)
+            elif opt == 'g':
+                set_prof_global(profname)
+            elif opt == 'd':
+                delete_prof(profname)
+
+
 if __name__ == "__main__":
-    main()
+    # First, check if git is installed
+    if not model_layer.check_git_installed():
+        print(
+            MSG_ERROR + " git is not installed in this machine. Impossible to "
+                        "continue.")
+        sys.exit("git is not installed")
+
+    # Next, check if CHERFILE exists. If not and gitcher is ran as
+    # interactive mode, propose to create it
+    cherfile = model_layer.CHERFILE
+    if not os.path.exists(cherfile):
+        print(MSG_ERROR + " {0} not exists and it is necessary.".format(
+            cherfile))
+
+        if (len(sys.argv)) > 1:
+            if yes_or_no("Do you want to create {0}?".format(cherfile)):
+                open(cherfile, 'w')
+                print(MSG_OK + " Gitcher config dotfile created. Go on...")
+            else:
+                print(MSG_ERROR + "Impossible to go on without gitcher "
+                                  "dotfile.")
+                sys.exit("No gitcher file")
+        else:
+            sys.exit("No gitcher file")
+
+    # After firsts checks, run gitcher
+    if (len(sys.argv)) == 1:  # Interactive mode
+        interactive_main()
+    elif (len(sys.argv)) > 1:  # Fast mode
+        fast_main(sys.argv)
