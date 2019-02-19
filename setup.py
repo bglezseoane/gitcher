@@ -10,7 +10,7 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '0.2a1'
+__version__ = '0.3b0'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
 __status__ = 'Development'
@@ -19,7 +19,7 @@ __status__ = 'Development'
 # Run setup
 setup(
     name='gitcher',
-    version='0.2a1',
+    version='0.3b0',
     packages=['gitcher'],
     requires=['validate_email', 'prettytable'],
     data_files = [('share/man/man1', ['manpages/gitcher.1'])],
