@@ -270,6 +270,7 @@ def add_prof() -> None:
     # Save it...
     prof = model_layer.Prof(profname, name, email, signkey, signpref)
     model_layer.model_save_profile(prof)
+    print(MSG_OK + " New profile {0} added.".format(profname))
 
 
 # noinspection PyShadowingNames
@@ -293,6 +294,7 @@ def add_prof_fast(profname: str, name: str, email: str, signkey: str,
     if not check_profile(profname):  # Profname have to be unique
         prof = model_layer.Prof(profname, name, email, signkey, signpref)
         model_layer.model_save_profile(prof)
+        print(MSG_OK + " New profile {0} added.".format(profname))
     else:
         print(MSG_ERROR + " {0} yet exists!".format(profname))
         sys.exit("gitcher profile name already in use")
@@ -309,6 +311,8 @@ def delete_prof(profname: str) -> None:
     :return: None
     """
     model_layer.model_delete_profile(profname)
+    print(MSG_OK + " Profile {0} deleted.".format(profname))
+
 
 
 # ===============================================
