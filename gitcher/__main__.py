@@ -314,7 +314,6 @@ def delete_prof(profname: str) -> None:
     print(MSG_OK + " Profile {0} deleted.".format(profname))
 
 
-
 # ===============================================
 # =                     MAIN                    =
 # ===============================================

@@ -29,6 +29,8 @@ class Prof(object):
         self.signpref = signpref
 
     def __tpl__(self):
+        """This function return a tuple representation of the object.
+        """
         if self.signkey is not None:
             signkey_str = self.signkey
             if self.signpref:
@@ -42,6 +44,9 @@ class Prof(object):
         return self.profname, self.name, self.email, signkey_str, signpref_str
 
     def equivalent(self, other) -> bool:
+        """This function checks if self profile is equivalent to another
+        (i.e.: all params equal except the profname).
+        """
         if self.name == other.name:
             if self.email == other.email:
                 if self.signkey == other.signkey:
