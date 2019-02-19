@@ -2,7 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
-## Alpha phase
+## v0.3b0 of 2019-02-19
+
+#### Added
+
+- Fast mode: use shortcuts to run directly gitcher orders.
+- Current git profile status.
+- User input validation.
+- Cherfile comments support.
+
+
+#### Changed
+
+- Securize and better isolate model layer operative.
+- Fix some performance failures.
+
+
+## Previous alpha phase
 
 ### v0.2a1 of 2019-02-09
 
