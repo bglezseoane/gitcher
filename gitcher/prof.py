@@ -28,7 +28,7 @@ class Prof(object):
         self.signkey = signkey
         self.signpref = signpref
 
-    def __str__(self):
+    def __tpl__(self):
         if self.signkey is not None:
             signkey_str = self.signkey
             if self.signpref:
@@ -40,3 +40,12 @@ class Prof(object):
             signpref_str = ""
 
         return self.profname, self.name, self.email, signkey_str, signpref_str
+
+    def equivalent(self, other) -> bool:
+        if self.name == other.name:
+            if self.email == other.email:
+                if self.signkey == other.signkey:
+                    if self.signpref == other.signpref:
+                        return True
+        # Else...
+        return False

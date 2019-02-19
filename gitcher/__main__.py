@@ -31,7 +31,8 @@ __status__ = 'Development'
 # Prompt styles
 COLOR_BLUE = '\033[94m'
 COLOR_BRI_BLUE = '\033[94;1m'
-COLOR_CYAN = '\033[96;1m'
+COLOR_CYAN = '\033[96m'
+COLOR_BRI_CYAN = '\033[96;1m'
 COLOR_GREEN = '\033[92m'
 COLOR_RED = '\033[91m'
 COLOR_BOLD = '\033[1m'
@@ -82,14 +83,20 @@ def print_prof_list() -> None:
 
     :return: None, print function
     """
+    cprof = model_layer.model_recuperate_git_current_prof()  # Current profile
     profs = model_layer.model_recuperate_profs()
     if profs:  # If profs is not empty
         profs_table = PrettyTable(['Prof', 'Name', 'Email',
                                    'GPG key', 'Autosign'])
         for prof in profs:
-            profs_table.add_row(prof.__str__())
+            row = prof.__tpl__()
+            if prof.equivalent(cprof):
+                row = [(COLOR_CYAN + profeat + COLOR_RST) for profeat in row]
+                row[0] = row[0] + "*"
+            profs_table.add_row(row)
 
         print(profs_table)
+        print("*: current in use gitcher profile.")
     else:
         print("No gitcher profiles saved yet. Use 'a' option to add one.")
 
@@ -320,14 +327,15 @@ def interactive_main() -> None:
     print("gitcher profiles list:")
     print_prof_list()
     print("\nOptions:")
-    print(COLOR_CYAN + "s" + COLOR_RST + "    set a profile to current "
-                                         "directory repository.")
-    print(COLOR_CYAN + "g" + COLOR_RST + "    set a profile as global "
-                                         "git configuration.")
-    print(COLOR_CYAN + "a" + COLOR_RST + "    add a new profile.")
-    print(COLOR_CYAN + "d" + COLOR_RST + "    delete a profile.")
-    print("\nUse " + COLOR_CYAN + "q + ENTER" + COLOR_RST + " everywhere to "
-                                                            "quit.\n")
+    print(COLOR_BRI_CYAN + "s" + COLOR_RST + "    set a profile to current "
+                                             "directory repository.")
+    print(COLOR_BRI_CYAN + "g" + COLOR_RST + "    set a profile as global "
+                                             "git configuration.")
+    print(COLOR_BRI_CYAN + "a" + COLOR_RST + "    add a new profile.")
+    print(COLOR_BRI_CYAN + "d" + COLOR_RST + "    delete a profile.")
+    print(
+        "\nUse " + COLOR_BRI_CYAN + "q + ENTER" + COLOR_RST + " everywhere to "
+                                                              "quit.\n")
 
     opt = listen("Option: ")
     while not check_opt(opt):

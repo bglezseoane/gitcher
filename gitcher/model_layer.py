@@ -177,34 +177,54 @@ def model_switch_prof(profname: str, flag: str = '') -> None:
     os.system(cmd)
 
 
-def model_recuperate_git_current_prof(path: str) -> Prof:
-    """Function that recuperates the applicable git configuration of the param
-    passed path and builds with this data a gitcher Prof.
+def model_recuperate_git_current_prof(path: str = None) -> Prof:
+    """Function that recuperates the applicable git configuration of the
+    param passed path and builds with this data a gitcher Prof. If param
+    passed is None, then use the current working directory to evaluate it.
 
     Warnings:
-        - The path must be assert before or function raises error.
+        - The path must be assert before or function raises an error.
 
     :param path: Path to recuperates git user configuration.
     :type path: str
     :return: Rebuilt git profile as gitcher Prof object
     :rtype: Prof
     """
-    name = subprocess.check_output(
-        "cd {} && git config user.name".format(path), shell=True)
-    email = subprocess.check_output(
-        "cd {} && git config user.email".format(path), shell=True)
-    signkey = subprocess.check_output(
-        "cd {} && git config user.signingKey".format(path), shell=True)
-    signpref = subprocess.check_output(
-        "cd {} && config commit.gpgsign".format(path), shell=True)
+    if path is None:
+        path = os.getcwd()
+    go_to_path = "cd {0} && ".format(path)
+
+    with subprocess.Popen(go_to_path + "git config user.name",
+                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          shell=True) as p:
+        output, errors = p.communicate()
+    name = output.decode('utf-8').split("\n")[0]
+
+    with subprocess.Popen(go_to_path + "git config user.email",
+                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          shell=True) as p:
+        output, errors = p.communicate()
+    email = output.decode('utf-8').split("\n")[0]
+
+    with subprocess.Popen(go_to_path + "git config user.signingKey",
+                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          shell=True) as p:
+        output, errors = p.communicate()
+    signkey = output.decode('utf-8').split("\n")[0]
+
+    with subprocess.Popen(go_to_path + "git config commit.gpgsign",
+                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          shell=True) as p:
+        output, errors = p.communicate()
+    signpref = output.decode('utf-8').split("\n")[0]
 
     # Validations
     if signkey == "":
         signkey = None
 
-    if signpref == "True":
+    if signpref == "true":
         signpref = True
-    elif signpref == "False":
+    elif signpref == "false":
         signpref = False
 
     return Prof('tmp', name, email, signkey, signpref)
