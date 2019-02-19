@@ -4,7 +4,7 @@
 .SH NAME
 gitcher \- git switcher, manage git profiles
 .SH SYNOPSIS
-\fBgitcher\fR
+\fBgitcher\fR [\fB-s\fR|\fB-g\fR|\fB-a\fR|\fB-d\fR] [...]
 .SH DESCRIPTION
 \fBgitcher\fR is a git switcher. It facilitates the switching between git profiles, importing configuration settings such as name, email and user signatures.
 .SH OPTIONS
@@ -14,7 +14,7 @@ Opens the interactive mode. It is possible to access to all the operations with 
 Set into an existing repository a configuration profile.
 .IP "\fB\-g\fR \fIprofname\fR"
 Set global a configuration profile.
-.IP "\fB\-a\fR \fIprofname\fR \fIname\fR \fIemail\fR \fIsignkey\fR \fIsignpref\fR
+.IP "\fB\-a\fR \fIprofname\fR \fIname\fR \fIemail\fR \fIsignkey\fR|\fINone\fR \fITrue\fR|\fIFalse\fR
 Add a new profile. Inputs profname, git user name, git user email, GPG sign key or None (depending if you want to use one), and True or False depending if you want to use your GPG key to autosign every commit.
 .IP "\fB\-d\fR \fIprofname\fR"
 Delete a profile.
