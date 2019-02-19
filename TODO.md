@@ -1,6 +1,6 @@
-# Next tasks TO DO on this project
+# Next tasks TO DO on this project
 
-## User experience
+## User experience
 
 1. Profile update option.
 2. Profile create from duplicate option.
