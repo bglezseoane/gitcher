@@ -163,7 +163,8 @@ def check_opt(opt: str) -> bool:
     :return: Confirmation about the validation of the option
     :rtype: bool
     """
-    return opt == 's' or opt == 'g' or opt == 'a' or opt == 'd' or opt == 'q'
+    return opt == 's' or opt == 'g' or opt == 'a' or opt == 'u' or opt == 'd'\
+        or opt == 'q'
 
 
 # noinspection PyShadowingNames
@@ -314,6 +315,55 @@ def delete_prof(profname: str) -> None:
     print(MSG_OK + " Profile {0} deleted.".format(profname))
 
 
+# noinspection PyShadowingNames
+def update_prof() -> None:
+    """Function that updates a profile on interactive mode. Profile name
+    have not to be checked before.
+
+    :return: None
+    """
+    print("\nLets go to update a gitcher profile...")
+
+    old_profname = listen("Enter the profile name: ")
+    while not check_profile(old_profname):
+        print(MSG_ERROR + " {0} not exists. Change name...".format(
+            old_profname))
+        old_profname = listen("Enter profile name: ")
+
+    prof = model_layer.model_recuperate_prof(old_profname)
+
+    profname = old_profname
+    if yes_or_no("Do you want to update the profile name?"):
+        profname = listen("Enter the new profile name: ")
+    name = prof.name
+    if yes_or_no("Do you want to update the user name?"):
+        name = listen("Enter the new name: ")
+    email = prof.email
+    if yes_or_no("Do you want to update the user email?"):
+        email = listen("Enter the new email: ")
+        while not validate_email(email):
+            print(MSG_ERROR + " Invalid email format. Try again...".format(
+                email))
+            email = listen("Enter the new email: ")
+    if yes_or_no("Do you want to update the GPG sign config?"):
+        if yes_or_no("Do you want to use a GPG sign key?"):
+            signkey = listen("Enter the git user signkey: ")
+            signpref = yes_or_no("Do you want to autosign every commit?")
+        else:
+            signkey = None
+            signpref = False
+    else:
+        signkey = prof.signkey
+        signpref = prof.signpref
+
+    # Remove the old profile
+    model_layer.model_delete_profile(old_profname)
+    # And save the new...
+    prof = model_layer.Prof(profname, name, email, signkey, signpref)
+    model_layer.model_save_profile(prof)
+    print(MSG_OK + " Profile {0} updated.".format(profname))
+
+
 # ===============================================
 # =                     MAIN                    =
 # ===============================================
@@ -335,6 +385,7 @@ def interactive_main() -> None:
     print(COLOR_BRI_CYAN + "g" + COLOR_RST + "    set a profile as global "
                                              "git configuration.")
     print(COLOR_BRI_CYAN + "a" + COLOR_RST + "    add a new profile.")
+    print(COLOR_BRI_CYAN + "u" + COLOR_RST + "    update a profile.")
     print(COLOR_BRI_CYAN + "d" + COLOR_RST + "    delete a profile.")
     print(
         "\nUse " + COLOR_BRI_CYAN + "q + ENTER" + COLOR_RST + " everywhere to "
@@ -345,7 +396,7 @@ def interactive_main() -> None:
         print(MSG_ERROR + " Invalid opt! Use s|g|a|d. Type q to quit.")
         opt = listen("Enter option: ")
 
-    if not opt == 'a':
+    if not opt == 'a' and not opt == 'u':
         profname = listen("Select the desired profile entering its name: ")
         while not check_profile(profname):
             print_prof_error(profname)
@@ -355,11 +406,14 @@ def interactive_main() -> None:
             set_prof(profname)
         elif opt == 'g':
             set_prof_global(profname)
-        else:
+        else:  # Option 'd'
             if yes_or_no("Are you sure to delete {0}?".format(profname)):
                 delete_prof(profname)
     else:
-        add_prof()
+        if opt == 'a':
+            add_prof()
+        else:  # Option 'u'
+            update_prof()
 
 
 def fast_main(cmd: [str]) -> None:
