@@ -9,6 +9,7 @@ A git switcher. It facilitates the switching between git profiles,importing conf
 - [S]: Set into an existing repository a configuration profile.
 - [G]: Set global a configuration profile.
 - [A]: Add a new profile.
+- [M]: Mirror profile (create a copy of a profile with a different name).
 - [D]: Delete a profile.
 - [U]: Update a profile.
 - [C]: Create cherfile.
@@ -23,6 +24,7 @@ Use `gitcher` command to open the interactive console. Once this is done,
 - `g` to set a profile as global git profile [G].
 - `a` to add a new profile [A].
 - `u` to update a profile [U].
+- `m` to mirror a profile [M].
 - `d` to delete a profile [D].
 - `q` to quit *gitcher*.
 
