@@ -112,7 +112,8 @@ def listen(text: str) -> str:
     :rtype: str
     """
     reply = input(text)
-    if reply == 'q':
+    if reply == 'quit' or reply == 'QUIT' or reply == 'exit' \
+            or reply == 'EXIT':
         sys.exit(0)
     try:
         check_syntax(reply)
@@ -164,7 +165,8 @@ def check_opt(opt: str) -> bool:
     :rtype: bool
     """
     return opt == 's' or opt == 'g' or opt == 'a' or opt == 'u' or opt == 'm'\
-        or opt == 'd' or opt == 'q'
+        or opt == 'd' or opt == 'quit' or opt == 'QUIT' or opt == 'exit' \
+        or opt == 'EXIT'
 
 
 # noinspection PyShadowingNames
@@ -420,13 +422,13 @@ def interactive_main() -> None:
     print(COLOR_BRI_CYAN + "m" + COLOR_RST + "    mirror a profile to create a"
                                              " duplicate.")
     print(COLOR_BRI_CYAN + "d" + COLOR_RST + "    delete a profile.")
-    print(
-        "\nUse " + COLOR_BRI_CYAN + "q + ENTER" + COLOR_RST + " everywhere to "
-                                                              "quit.\n")
+    print("\nInput " + COLOR_BRI_CYAN + "quit" + COLOR_RST + " everywhere "
+                                                             "to quit "
+                                                             "gitcher.\n")
 
     opt = listen("Option: ")
     while not check_opt(opt):
-        print(MSG_ERROR + " Invalid opt! Use s|g|a|d. Type q to quit.")
+        print(MSG_ERROR + " Invalid opt! Use s|g|a|d. Type exit to quit.")
         opt = listen("Enter option: ")
 
     if not opt == 'a' and not opt == 'u':
