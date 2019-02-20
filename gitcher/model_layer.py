@@ -8,6 +8,7 @@ the rest of the program. """
 
 import os
 import subprocess
+import operator
 from os.path import expanduser
 from shutil import which
 
@@ -36,8 +37,10 @@ CHERFILE = HOME + '/.cherfile'
 def model_recuperate_profs() -> [Prof]:
     """Function that access CHERFILE and extracts profiles to Prof objects
     list. If there are not gitcher profiles in CHERFILE, returns an empty list.
+    This function sorts profiles on alphabetical order looking its profname
+    value.
 
-    :return: A list with all gitcher profiles saved.
+    :return: A sort list with all gitcher profiles saved.
     :rtype: [Prof]
     """
     profs = list()
@@ -58,7 +61,7 @@ def model_recuperate_profs() -> [Prof]:
             prof = Prof(profname, name, email, signkey, signpref)
             profs.append(prof)
 
-    return profs
+    return sorted(profs, key=operator.attrgetter('profname'))
 
 
 def model_recuperate_prof(profname: str) -> Prof:
