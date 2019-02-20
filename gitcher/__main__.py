@@ -35,12 +35,14 @@ COLOR_CYAN = '\033[96m'
 COLOR_BRI_CYAN = '\033[96;1m'
 COLOR_GREEN = '\033[92m'
 COLOR_RED = '\033[91m'
+COLOR_YELLOW = '\033[93m'
 COLOR_BOLD = '\033[1m'
 COLOR_RST = '\033[0m'  # Restore default prompt style
 
 # Predefined messages
 MSG_OK = "[" + COLOR_GREEN + "OK" + COLOR_RST + "]"
 MSG_ERROR = "[" + COLOR_RED + "ERROR" + COLOR_RST + "]"
+MSG_WARNING = "[" + COLOR_YELLOW + "WARNING" + COLOR_RST + "]"
 
 
 # ===============================================
@@ -114,6 +116,7 @@ def listen(text: str) -> str:
     reply = input(text)
     if reply == 'quit' or reply == 'QUIT' or reply == 'exit' \
             or reply == 'EXIT':
+        print(COLOR_BLUE + "Bye!" + COLOR_RST)
         sys.exit(0)
     try:
         check_syntax(reply)
@@ -444,7 +447,8 @@ def interactive_main() -> None:
         elif opt == 'm':
             mirror_prof(profname)
         else:  # Option 'd'
-            if yes_or_no("Are you sure to delete {0}?".format(profname)):
+            if yes_or_no(MSG_WARNING + " Are you sure to delete {0}?".format(
+                    profname)):
                 delete_prof(profname)
     else:
         if opt == 'a':
