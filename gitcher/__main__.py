@@ -163,8 +163,8 @@ def check_opt(opt: str) -> bool:
     :return: Confirmation about the validation of the option
     :rtype: bool
     """
-    return opt == 's' or opt == 'g' or opt == 'a' or opt == 'u' or opt == 'd'\
-        or opt == 'q'
+    return opt == 's' or opt == 'g' or opt == 'a' or opt == 'u' or opt == 'm'\
+        or opt == 'd' or opt == 'q'
 
 
 # noinspection PyShadowingNames
@@ -302,20 +302,6 @@ def add_prof_fast(profname: str, name: str, email: str, signkey: str,
 
 
 # noinspection PyShadowingNames
-def delete_prof(profname: str) -> None:
-    """Function that deletes the selected profile.
-
-    Profile name must be checked before.
-
-    :param profname: Name of the gitcher profile to operate with
-    :type profname: [str]
-    :return: None
-    """
-    model_layer.model_delete_profile(profname)
-    print(MSG_OK + " Profile {0} deleted.".format(profname))
-
-
-# noinspection PyShadowingNames
 def update_prof() -> None:
     """Function that updates a profile on interactive mode. Profile name
     have not to be checked before.
@@ -364,6 +350,51 @@ def update_prof() -> None:
     print(MSG_OK + " Profile {0} updated.".format(profname))
 
 
+# noinspection PyShadowingNames
+def mirror_prof(origin_profname: str) -> None:
+    """Function that mirrors a profile to create a duplicate of it.
+
+    Profile name must be checked before.
+
+    :param origin_profname: Name of the gitcher profile to operate with
+    :type origin_profname: [str]
+    :return: None
+    """
+    new_profname = listen("Enter the new profile name (can not be the same "
+                          "that the origin profile): ")
+    while check_profile(new_profname):
+        print(MSG_ERROR + " {0} yet exists. Change name...".format(
+            new_profname))
+        new_profname = listen("Enter profile name: ")
+
+    prof = model_layer.model_recuperate_prof(origin_profname)
+
+    profname = new_profname
+    name = prof.name
+    email = prof.email
+    signkey = prof.signkey
+    signpref = prof.signpref
+
+    # Save the new profile...
+    prof = model_layer.Prof(profname, name, email, signkey, signpref)
+    model_layer.model_save_profile(prof)
+    print(MSG_OK + " Profile {0} created.".format(profname))
+
+
+# noinspection PyShadowingNames
+def delete_prof(profname: str) -> None:
+    """Function that deletes the selected profile.
+
+    Profile name must be checked before.
+
+    :param profname: Name of the gitcher profile to operate with
+    :type profname: [str]
+    :return: None
+    """
+    model_layer.model_delete_profile(profname)
+    print(MSG_OK + " Profile {0} deleted.".format(profname))
+
+
 # ===============================================
 # =                     MAIN                    =
 # ===============================================
@@ -386,6 +417,8 @@ def interactive_main() -> None:
                                              "git configuration.")
     print(COLOR_BRI_CYAN + "a" + COLOR_RST + "    add a new profile.")
     print(COLOR_BRI_CYAN + "u" + COLOR_RST + "    update a profile.")
+    print(COLOR_BRI_CYAN + "m" + COLOR_RST + "    mirror a profile to create a"
+                                             " duplicate.")
     print(COLOR_BRI_CYAN + "d" + COLOR_RST + "    delete a profile.")
     print(
         "\nUse " + COLOR_BRI_CYAN + "q + ENTER" + COLOR_RST + " everywhere to "
@@ -406,6 +439,8 @@ def interactive_main() -> None:
             set_prof(profname)
         elif opt == 'g':
             set_prof_global(profname)
+        elif opt == 'm':
+            mirror_prof(profname)
         else:  # Option 'd'
             if yes_or_no("Are you sure to delete {0}?".format(profname)):
                 delete_prof(profname)
