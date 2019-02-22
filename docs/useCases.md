@@ -6,6 +6,7 @@ A git switcher. It facilitates the switching between git profiles,importing conf
 ## Use cases of gitcher
 
 - [L]: List the preset profiles.
+- [O]: See currently active (ON) profile.
 - [S]: Set into an existing repository a configuration profile.
 - [G]: Set global a configuration profile.
 - [A]: Add a new profile.
@@ -18,7 +19,9 @@ A git switcher. It facilitates the switching between git profiles,importing conf
 ## Interactive mode
 
 Use `gitcher` command to open the interactive console. Once this is done, 
-*gitcher* automatically assert cherfile is reachable. If not, offers you to create it [C]. Then automatically list your preset profiles [L]. Next ask you for orders:
+*gitcher* automatically assert cherfile is reachable. If not, offers you to 
+create it [C]. Then automatically list your preset profiles [[L], [O]]. Next 
+ask you for orders:
 
 - `s` to set a profile to current directory repository [S].
 - `g` to set a profile as global git profile [G].
@@ -34,6 +37,7 @@ Use `gitcher` command to open the interactive console. Once this is done,
 Elementary options are available via command line to avoid gitcher to be 
 scriptable and integrable on POSIX systems. To use:
 
+- `gitcher -o <profname>`: [O]'s shortcut.
 - `gitcher -s <profname>`: [S]'s shortcut.
 - `gitcher -g <profname>`: [G]'s shortcut.
 - `gitcher -a <profname> <name> <email> <signkey or 'None'> <'True' or 
