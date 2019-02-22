@@ -167,9 +167,9 @@ def check_opt(opt: str) -> bool:
     :return: Confirmation about the validation of the option
     :rtype: bool
     """
-    return opt == 's' or opt == 'g' or opt == 'a' or opt == 'u' or opt == 'm'\
-        or opt == 'd' or opt == 'quit' or opt == 'QUIT' or opt == 'exit' \
-        or opt == 'EXIT'
+    return opt == 's' or opt == 'g' or opt == 'o' or opt == 'a' or opt == 'u'\
+        or opt == 'm' or opt == 'd' or opt == 'quit' or opt == 'QUIT'\
+        or opt == 'exit' or opt == 'EXIT'
 
 
 # noinspection PyShadowingNames
@@ -211,6 +211,15 @@ def recover_prof(profname: str) -> Prof:
 # ===============================================
 # =                Main launchers               =
 # ===============================================
+
+def print_current_on_prof() -> None:
+    """Function that prints the current in use ON profile information.
+
+    :return: None, print function
+    """
+    cprof = model_layer.model_recuperate_git_current_prof()  # Current profile
+    print(cprof.__str__())
+
 
 # noinspection PyShadowingNames
 def set_prof(profname: str) -> None:
@@ -471,50 +480,57 @@ def fast_main(cmd: [str]) -> None:
         except SyntaxError:
             sys.exit("Syntax error")
 
-    # If syntax is okey, go on and check selected option
+    # If syntax is ok, go on and check selected option
     opt = cmd[1].replace('-', '')
     if not check_opt(opt):
-        print(MSG_ERROR + " Invalid option! Use -s|-g|-a|-d.")
+        print(MSG_ERROR + " Invalid option! Use -o|-s|-g|-a|-d.")
         sys.exit("Invalid option")
     else:
-        if len(cmd) < 3:  # cmd have to be 'gitcher <-opt> <profname> [
-            # ...]'
-            raise_order_format_error()
-        # Catch profname, first parameter for all cases
-        profname = cmd[2]
-
-        if opt == 'a':
-            if len(cmd) != 7:  # cmd have to be 'gitcher <-opt> <profname>
-                # <name> <email> <signkey> <signpref>'
-                raise_order_format_error()
-            # Catch specific params
-            name = cmd[3]
-            email = cmd[4]
-            if not validate_email(email):
-                raise_order_format_error(email)
-            signkey = cmd[5]
-            if signkey == 'None':
-                signkey = None
-            signpref = cmd[6]
-            if signpref == 'True':
-                signpref = True
-            elif signpref == 'False':
-                signpref = False
+        if opt == 'o':
+            if len(cmd) == 2:  # cmd have to be only 'gitcher <-o>'
+                print_current_on_prof()
             else:
-                raise_order_format_error(cmd[5])
+                raise_order_format_error()
+        elif len(cmd) < 3:  # cmd have to be 'gitcher <-opt> <profname> [...]'
+            raise_order_format_error()
+            # Catch profname, first parameter for all cases
+            profname = cmd[2]
 
-            add_prof_fast(profname, name, email, signkey, signpref)
-        else:
-            if not check_profile(profname):
-                print_prof_error(profname)
-                sys.exit("gitcher profile not exists")
-            # Else, if the profile exists, continue...
-            if opt == 's':
-                set_prof(profname)
-            elif opt == 'g':
-                set_prof_global(profname)
-            elif opt == 'd':
-                delete_prof(profname)
+            if opt == 'a':
+                if len(cmd) != 7:  # cmd have to be 'gitcher <-opt> <profname>
+                    # <name> <email> <signkey> <signpref>'
+                    raise_order_format_error()
+                # Catch specific params
+                name = cmd[3]
+                email = cmd[4]
+                if not validate_email(email):
+                    raise_order_format_error(email)
+                signkey = cmd[5]
+                if signkey == 'None':
+                    signkey = None
+                signpref = cmd[6]
+                if signpref == 'True':
+                    signpref = True
+                elif signpref == 'False':
+                    signpref = False
+                else:
+                    raise_order_format_error(cmd[5])
+
+                add_prof_fast(profname, name, email, signkey, signpref)
+            else:  # Else it is always necessary to check the profile
+                if len(cmd) == 3:  # Security check
+                    if not check_profile(profname):
+                        print_prof_error(profname)
+                        sys.exit("gitcher profile not exists")
+                    # Else, if the profile exists, continue...
+                    if opt == 's':
+                        set_prof(profname)
+                    elif opt == 'g':
+                        set_prof_global(profname)
+                    elif opt == 'd':
+                        delete_prof(profname)
+                else:
+                    raise_order_format_error()
 
 
 if __name__ == "__main__":

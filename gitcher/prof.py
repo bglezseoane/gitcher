@@ -28,6 +28,20 @@ class Prof(object):
         self.signkey = signkey
         self.signpref = signpref
 
+    def __str__(self):
+        if self.signkey is not None:
+            signkey_str = self.signkey
+            if self.signpref:
+                signpref_str = "Enabled"
+            else:
+                signpref_str = "Disabled"
+        else:
+            signkey_str = "Disabled"
+            signpref_str = ""
+
+        return self.profname + ": " + self.name + ", " + self.email + ", " +\
+            signkey_str + ", " + signpref_str
+
     def __tpl__(self):
         """This function return a tuple representation of the object.
         """
