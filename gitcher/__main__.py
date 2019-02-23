@@ -3,7 +3,7 @@
 
 """gitcher main
 
-gitcher is a git switcher. It facilitates the switching
+gitcher is a git profile switcher. It facilitates the switching
 between git profiles, importing configuration settings such
 as name, email and user signatures.
 """
@@ -462,7 +462,7 @@ def interactive_main() -> None:
 
     :return: None
     """
-    print(COLOR_BRI_BLUE + "**** gitcher: a git profile switcher ****" +
+    print(COLOR_BRI_BLUE + "**** gitcher: the git profile switcher ****" +
           COLOR_RST)
 
     print("gitcher profiles list:")
