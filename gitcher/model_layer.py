@@ -45,21 +45,22 @@ def model_recuperate_profs() -> [Prof]:
     """
     profs = list()
     f = open(CHERFILE, 'r')
-    for line in f:
-        if not line.startswith('#'):  # Comment line
-            profname = line.split(",")[0]
-            name = line.split(",")[1]
-            email = line.split(",")[2]
-            signkey = line.split(",")[3]
-            signpref = line.split(",")[4].split("\n")[0]
+    lines = filter(None, (line.rstrip() for line in f))  # Not empty lines
+    lines = [line for line in lines if not line.startswith('#')]  # Not comment
+    for line in lines:
+        profname = line.split(",")[0]
+        name = line.split(",")[1]
+        email = line.split(",")[2]
+        signkey = line.split(",")[3]
+        signpref = line.split(",")[4].split("\n")[0]
 
-            # Type conversions
-            if signkey == "None":
-                signkey = None
-            signpref = (signpref == "True")
+        # Type conversions
+        if signkey == "None":
+            signkey = None
+        signpref = (signpref == "True")
 
-            prof = Prof(profname, name, email, signkey, signpref)
-            profs.append(prof)
+        prof = Prof(profname, name, email, signkey, signpref)
+        profs.append(prof)
 
     return sorted(profs, key=operator.attrgetter('profname'))
 
