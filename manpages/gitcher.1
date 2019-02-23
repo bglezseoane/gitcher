@@ -1,23 +1,25 @@
 .\" Manpage for gitcher.
 .\" Contact dev@glezseoane.com to any requirement.
-.TH man 1 "4 Feb 2018" "0.1a0" "gitcher man page"
+.TH man 1 "23 Feb 2018" "0.1a0" "gitcher man page"
 .SH NAME
-gitcher \- git switcher, manage git profiles
+gitcher \- git profiles switcher
 .SH SYNOPSIS
-\fBgitcher\fR [\fB-s\fR|\fB-g\fR|\fB-a\fR|\fB-d\fR] [...]
+\fBgitcher\fR [\fB-o\fR|\fB-s\fR|\fB-g\fR|\fB-a\fR|\fB-d\fR ...]
 .SH DESCRIPTION
 \fBgitcher\fR is a git switcher. It facilitates the switching between git profiles, importing configuration settings such as name, email and user signatures.
 .SH OPTIONS
 .IP "\fINONE\fR"
 Opens the interactive mode. It is possible to access to all the operations with this mode, that offers you inline help.
+.IP "\fB\-o\fR"
+Displays the activated (ON) gitcher profile for the current working directory.
 .IP "\fB\-s\fR \fIprofname\fR"
-Set into an existing repository a configuration profile.
+Set into the existing repository of the current working directory the selected profile.
 .IP "\fB\-g\fR \fIprofname\fR"
-Set global a configuration profile.
+Set globally the selected gitcher profile.
 .IP "\fB\-a\fR \fIprofname\fR \fIname\fR \fIemail\fR \fIsignkey\fR|\fINone\fR \fITrue\fR|\fIFalse\fR
 Add a new profile. Inputs profname, git user name, git user email, GPG sign key or None (depending if you want to use one), and True or False depending if you want to use your GPG key to autosign every commit.
 .IP "\fB\-d\fR \fIprofname\fR"
-Delete a profile.
+Delete the selected profile.
 .SH SAVED DATA
 \fBgitcher\fR works with a dotfile saved on user $HOME directory. It is \fI~/.cherfile\fR. It is not recommended to edit it manually.
 .SH EXIT STATUS
