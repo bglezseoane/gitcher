@@ -1,0 +1,5 @@
+# CHERFILE SAMPLE
+
+home,Jane Doe,janedoe@home,BBBB5678,False
+work,Jane Doe,janedoe@work,AAAA1234,True
+work not sign,Jane Doe,janedoe@work,None,False
