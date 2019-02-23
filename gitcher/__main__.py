@@ -261,7 +261,19 @@ def print_current_on_prof() -> None:
     :return: None, print function
     """
     cprof = model_layer.model_recuperate_git_current_prof()  # Current profile
-    print(cprof.__str__())
+
+    # Now, cprof is compared against saved profiles list. cprof is an
+    # extract of the git user configuration, that is independent of the
+    # gitcher data and scope. So, with next operations it is checked if
+    # current config is saved on gitcher, and it is created a mixed dataset to
+    # print the information
+    profs = model_layer.model_recuperate_profs()
+    for prof in profs:
+        if cprof.equivalent(prof):
+            print(MSG_OK + " " + prof.profname + ": " + cprof.__simple_str__())
+            return
+    # If not found in list...
+    print(MSG_OK + " Unsaved profile: " + cprof.__simple_str__())
 
 
 # noinspection PyShadowingNames
