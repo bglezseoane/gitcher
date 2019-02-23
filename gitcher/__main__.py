@@ -105,8 +105,7 @@ def print_prof_list() -> None:
 
 def listen(text: str) -> str:
     """Function that listen an user input, validates it, checks if it not a
-    'q' (i.e.: quit escape command) and then canalize message to caller
-    function.
+    escape command and then canalize message to caller function.
 
     :param text: Name of the gitcher profile to operate with
     :type text: str
@@ -114,8 +113,7 @@ def listen(text: str) -> str:
     :rtype: str
     """
     reply = input(text)
-    if reply == 'quit' or reply == 'QUIT' or reply == 'exit' \
-            or reply == 'EXIT':
+    if check_opt(reply, escape=True):
         print(COLOR_BLUE + "Bye!" + COLOR_RST)
         sys.exit(0)
     try:
@@ -159,17 +157,62 @@ def check_syntax(arg: str) -> None:
 
 
 # noinspection PyShadowingNames
-def check_opt(opt: str) -> bool:
-    """Function that checks the integrity of the listen option.
+def check_opt(opt_input: str, escape: bool = False, fast_mode: bool = False,
+              both_modes: bool = False) -> bool:
+    """Function that checks the integrity of the listen option. Options codes
+    of the interactive and the fast mode can be passed.
 
-    :param opt: User input option
-    :type opt: str
-    :return: Confirmation about the validation of the option
+    escape flag set to true is to indicate that the check is only to validate
+    if opt is a correct escape command, discarding the other option commands.
+    Use the others flags expands this case.
+
+    The fast mode options should to be passed with the fast_mode bool flag
+    set to true. This is because there are some options that only works for one
+    of the modes.
+
+    The both_mode flag may be passed to true to check if one option is valid
+    for at least one of the two program modes.
+
+    If both_modes is passed set to true, the result will include fast_mode
+    necessary. So both_modes set to true overwrite fast_mode and always set
+    it to true. And evidently, also includes escape commands.
+
+    Note that the default mode, if all flags are passed set to false or are
+    not passed is the for interactive mode options check.
+
+    :param opt_input: User input option
+    :type opt_input: str
+    :param escape: Flag to indicate that the check is only to validate if opt
+        is a correct escape command
+    :type escape: bool
+    :param fast_mode: Flag to indicate that the option provides to a fast mode
+        call
+    :type fast_mode: bool
+    :param both_modes: Flag to check if the passed opt its valid for at least
+        one of the modes: "opt is ok for interactive or fast mode?"
+    :type both_modes: bool
+    :return: Confirmation about the validation of the passed option
     :rtype: bool
     """
-    return opt == 's' or opt == 'g' or opt == 'o' or opt == 'a' or opt == 'u'\
-        or opt == 'm' or opt == 'd' or opt == 'quit' or opt == 'QUIT'\
-        or opt == 'exit' or opt == 'EXIT'
+    # Always included options stock
+    opts_stock = ['quit', 'QUIT', 'exit', 'EXIT']
+
+    if not escape:  # Expand to two modes common options codes
+        opts_stock.extend(['s', 'g', 'a', 'd'])
+        if both_modes:
+            # Recursive loop to evaluate the two possibilities
+            return check_opt(opt_input, fast_mode=False)\
+                or check_opt(opt_input, fast_mode=True)
+        else:
+            if not fast_mode:  # Interactive mode exclusive options extension
+                opts_stock.extend(['u', 'm'])
+            else:  # Fast mode exclusive options extension
+                opts_stock.append('o')
+
+    if any(opt_input == opt_pattern for opt_pattern in opts_stock):
+        return True
+    else:
+        return False
 
 
 # noinspection PyShadowingNames
@@ -482,7 +525,7 @@ def fast_main(cmd: [str]) -> None:
 
     # If syntax is ok, go on and check selected option
     opt = cmd[1].replace('-', '')
-    if not check_opt(opt):
+    if not check_opt(opt, fast_mode=True):
         print(MSG_ERROR + " Invalid option! Use -o|-s|-g|-a|-d.")
         sys.exit("Invalid option")
     else:
