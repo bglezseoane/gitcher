@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## v0.4b0 of 2019-02-23
+
+#### Added
+
+- Update use case option.
+- Mirror use case option.
+- Fast mode get current active profile option.
+- Sort profiles list display.
+
+
+#### Changed
+
+- Escape command: 'q' by 'quit'. 'q' may be interesting like name or profile 
+param.
+- Securize and better isolate option validation.
+- Relevant performance fixes.
+
+
 ## v0.3b0 of 2019-02-19
 
 #### Added
