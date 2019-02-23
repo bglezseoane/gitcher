@@ -1,3 +1,0 @@
-home,John Doe,johndoe@home,BBBB5678,False
-work,John Doe,johndoe@work,AAAA1234,True
-work not sign,John Doe,johndoe@work,None,False

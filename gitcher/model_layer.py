@@ -8,6 +8,7 @@ the rest of the program. """
 
 import os
 import subprocess
+import operator
 from os.path import expanduser
 from shutil import which
 
@@ -19,7 +20,7 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '0.3b0'
+__version__ = '0.4b0'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
 __status__ = 'Development'
@@ -36,29 +37,32 @@ CHERFILE = HOME + '/.cherfile'
 def model_recuperate_profs() -> [Prof]:
     """Function that access CHERFILE and extracts profiles to Prof objects
     list. If there are not gitcher profiles in CHERFILE, returns an empty list.
+    This function sorts profiles on alphabetical order looking its profname
+    value.
 
-    :return: A list with all gitcher profiles saved.
+    :return: A sort list with all gitcher profiles saved.
     :rtype: [Prof]
     """
     profs = list()
     f = open(CHERFILE, 'r')
-    for line in f:
-        if not line.startswith('#'):  # Comment line
-            profname = line.split(",")[0]
-            name = line.split(",")[1]
-            email = line.split(",")[2]
-            signkey = line.split(",")[3]
-            signpref = line.split(",")[4].split("\n")[0]
+    lines = filter(None, (line.rstrip() for line in f))  # Not empty lines
+    lines = [line for line in lines if not line.startswith('#')]  # Not comment
+    for line in lines:
+        profname = line.split(",")[0]
+        name = line.split(",")[1]
+        email = line.split(",")[2]
+        signkey = line.split(",")[3]
+        signpref = line.split(",")[4].split("\n")[0]
 
-            # Type conversions
-            if signkey == "None":
-                signkey = None
-            signpref = (signpref == "True")
+        # Type conversions
+        if signkey == "None":
+            signkey = None
+        signpref = (signpref == "True")
 
-            prof = Prof(profname, name, email, signkey, signpref)
-            profs.append(prof)
+        prof = Prof(profname, name, email, signkey, signpref)
+        profs.append(prof)
 
-    return profs
+    return sorted(profs, key=operator.attrgetter('profname'))
 
 
 def model_recuperate_prof(profname: str) -> Prof:

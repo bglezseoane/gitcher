@@ -23,7 +23,7 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '0.3b0'
+__version__ = '0.4b0'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
 __status__ = 'Development'
@@ -35,12 +35,14 @@ COLOR_CYAN = '\033[96m'
 COLOR_BRI_CYAN = '\033[96;1m'
 COLOR_GREEN = '\033[92m'
 COLOR_RED = '\033[91m'
+COLOR_YELLOW = '\033[93m'
 COLOR_BOLD = '\033[1m'
 COLOR_RST = '\033[0m'  # Restore default prompt style
 
 # Predefined messages
 MSG_OK = "[" + COLOR_GREEN + "OK" + COLOR_RST + "]"
 MSG_ERROR = "[" + COLOR_RED + "ERROR" + COLOR_RST + "]"
+MSG_WARNING = "[" + COLOR_YELLOW + "WARNING" + COLOR_RST + "]"
 
 
 # ===============================================
@@ -103,8 +105,7 @@ def print_prof_list() -> None:
 
 def listen(text: str) -> str:
     """Function that listen an user input, validates it, checks if it not a
-    'q' (i.e.: quit escape command) and then canalize message to caller
-    function.
+    escape command and then canalize message to caller function.
 
     :param text: Name of the gitcher profile to operate with
     :type text: str
@@ -112,7 +113,8 @@ def listen(text: str) -> str:
     :rtype: str
     """
     reply = input(text)
-    if reply == 'q':
+    if check_opt(reply, escape=True):
+        print(COLOR_BLUE + "Bye!" + COLOR_RST)
         sys.exit(0)
     try:
         check_syntax(reply)
@@ -155,15 +157,62 @@ def check_syntax(arg: str) -> None:
 
 
 # noinspection PyShadowingNames
-def check_opt(opt: str) -> bool:
-    """Function that checks the integrity of the listen option.
+def check_opt(opt_input: str, escape: bool = False, fast_mode: bool = False,
+              both_modes: bool = False) -> bool:
+    """Function that checks the integrity of the listen option. Options codes
+    of the interactive and the fast mode can be passed.
 
-    :param opt: User input option
-    :type opt: str
-    :return: Confirmation about the validation of the option
+    escape flag set to true is to indicate that the check is only to validate
+    if opt is a correct escape command, discarding the other option commands.
+    Use the others flags expands this case.
+
+    The fast mode options should to be passed with the fast_mode bool flag
+    set to true. This is because there are some options that only works for one
+    of the modes.
+
+    The both_mode flag may be passed to true to check if one option is valid
+    for at least one of the two program modes.
+
+    If both_modes is passed set to true, the result will include fast_mode
+    necessary. So both_modes set to true overwrite fast_mode and always set
+    it to true. And evidently, also includes escape commands.
+
+    Note that the default mode, if all flags are passed set to false or are
+    not passed is the for interactive mode options check.
+
+    :param opt_input: User input option
+    :type opt_input: str
+    :param escape: Flag to indicate that the check is only to validate if opt
+        is a correct escape command
+    :type escape: bool
+    :param fast_mode: Flag to indicate that the option provides to a fast mode
+        call
+    :type fast_mode: bool
+    :param both_modes: Flag to check if the passed opt its valid for at least
+        one of the modes: "opt is ok for interactive or fast mode?"
+    :type both_modes: bool
+    :return: Confirmation about the validation of the passed option
     :rtype: bool
     """
-    return opt == 's' or opt == 'g' or opt == 'a' or opt == 'd' or opt == 'q'
+    # Always included options stock
+    opts_stock = ['quit', 'QUIT', 'exit', 'EXIT']
+
+    if not escape:  # Expand to two modes common options codes
+        opts_stock.extend(['s', 'g', 'a', 'd'])
+        if both_modes:
+            # Recursive loop to evaluate the two possibilities
+            return check_opt(opt_input, fast_mode=False)\
+                or check_opt(opt_input, fast_mode=True)
+        else:
+            if not fast_mode:  # Interactive mode exclusive options extension
+                opts_stock.extend(['u', 'm'])
+            else:  # Fast mode exclusive options extension
+                opts_stock.append('o')
+
+    if any(opt_input == opt_pattern for opt_pattern in opts_stock):
+        return True
+    else:
+        return False
 
 
 # noinspection PyShadowingNames
@@ -205,6 +254,15 @@ def recover_prof(profname: str) -> Prof:
 # ===============================================
 # =                Main launchers               =
 # ===============================================
+
+def print_current_on_prof() -> None:
+    """Function that prints the current in use ON profile information.
+
+    :return: None, print function
+    """
+    cprof = model_layer.model_recuperate_git_current_prof()  # Current profile
+    print(cprof.__str__())
+
 
 # noinspection PyShadowingNames
 def set_prof(profname: str) -> None:
@@ -301,6 +359,86 @@ def add_prof_fast(profname: str, name: str, email: str, signkey: str,
 
 
 # noinspection PyShadowingNames
+def update_prof() -> None:
+    """Function that updates a profile on interactive mode. Profile name
+    have not to be checked before.
+
+    :return: None
+    """
+    print("\nLets go to update a gitcher profile...")
+
+    old_profname = listen("Enter the profile name: ")
+    while not check_profile(old_profname):
+        print(MSG_ERROR + " {0} not exists. Change name...".format(
+            old_profname))
+        old_profname = listen("Enter profile name: ")
+
+    prof = model_layer.model_recuperate_prof(old_profname)
+
+    profname = old_profname
+    if yes_or_no("Do you want to update the profile name?"):
+        profname = listen("Enter the new profile name: ")
+    name = prof.name
+    if yes_or_no("Do you want to update the user name?"):
+        name = listen("Enter the new name: ")
+    email = prof.email
+    if yes_or_no("Do you want to update the user email?"):
+        email = listen("Enter the new email: ")
+        while not validate_email(email):
+            print(MSG_ERROR + " Invalid email format. Try again...".format(
+                email))
+            email = listen("Enter the new email: ")
+    if yes_or_no("Do you want to update the GPG sign config?"):
+        if yes_or_no("Do you want to use a GPG sign key?"):
+            signkey = listen("Enter the git user signkey: ")
+            signpref = yes_or_no("Do you want to autosign every commit?")
+        else:
+            signkey = None
+            signpref = False
+    else:
+        signkey = prof.signkey
+        signpref = prof.signpref
+
+    # Remove the old profile
+    model_layer.model_delete_profile(old_profname)
+    # And save the new...
+    prof = model_layer.Prof(profname, name, email, signkey, signpref)
+    model_layer.model_save_profile(prof)
+    print(MSG_OK + " Profile {0} updated.".format(profname))
+
+
+# noinspection PyShadowingNames
+def mirror_prof(origin_profname: str) -> None:
+    """Function that mirrors a profile to create a duplicate of it.
+
+    Profile name must be checked before.
+
+    :param origin_profname: Name of the gitcher profile to operate with
+    :type origin_profname: [str]
+    :return: None
+    """
+    new_profname = listen("Enter the new profile name (can not be the same "
+                          "that the origin profile): ")
+    while check_profile(new_profname):
+        print(MSG_ERROR + " {0} yet exists. Change name...".format(
+            new_profname))
+        new_profname = listen("Enter profile name: ")
+
+    prof = model_layer.model_recuperate_prof(origin_profname)
+
+    profname = new_profname
+    name = prof.name
+    email = prof.email
+    signkey = prof.signkey
+    signpref = prof.signpref
+
+    # Save the new profile...
+    prof = model_layer.Prof(profname, name, email, signkey, signpref)
+    model_layer.model_save_profile(prof)
+    print(MSG_OK + " Profile {0} created.".format(profname))
+
+
+# noinspection PyShadowingNames
 def delete_prof(profname: str) -> None:
     """Function that deletes the selected profile.
 
@@ -335,17 +473,20 @@ def interactive_main() -> None:
     print(COLOR_BRI_CYAN + "g" + COLOR_RST + "    set a profile as global "
                                              "git configuration.")
     print(COLOR_BRI_CYAN + "a" + COLOR_RST + "    add a new profile.")
+    print(COLOR_BRI_CYAN + "u" + COLOR_RST + "    update a profile.")
+    print(COLOR_BRI_CYAN + "m" + COLOR_RST + "    mirror a profile to create a"
+                                             " duplicate.")
     print(COLOR_BRI_CYAN + "d" + COLOR_RST + "    delete a profile.")
-    print(
-        "\nUse " + COLOR_BRI_CYAN + "q + ENTER" + COLOR_RST + " everywhere to "
-                                                              "quit.\n")
+    print("\nInput " + COLOR_BRI_CYAN + "quit" + COLOR_RST + " everywhere "
+                                                             "to quit "
+                                                             "gitcher.\n")
 
     opt = listen("Option: ")
     while not check_opt(opt):
-        print(MSG_ERROR + " Invalid opt! Use s|g|a|d. Type q to quit.")
+        print(MSG_ERROR + " Invalid opt! Use s|g|a|u|m|d. Type exit to quit.")
         opt = listen("Enter option: ")
 
-    if not opt == 'a':
+    if not opt == 'a' and not opt == 'u':
         profname = listen("Select the desired profile entering its name: ")
         while not check_profile(profname):
             print_prof_error(profname)
@@ -355,11 +496,17 @@ def interactive_main() -> None:
             set_prof(profname)
         elif opt == 'g':
             set_prof_global(profname)
-        else:
-            if yes_or_no("Are you sure to delete {0}?".format(profname)):
+        elif opt == 'm':
+            mirror_prof(profname)
+        else:  # Option 'd'
+            if yes_or_no(MSG_WARNING + " Are you sure to delete {0}?".format(
+                    profname)):
                 delete_prof(profname)
     else:
-        add_prof()
+        if opt == 'a':
+            add_prof()
+        else:  # Option 'u'
+            update_prof()
 
 
 def fast_main(cmd: [str]) -> None:
@@ -376,50 +523,58 @@ def fast_main(cmd: [str]) -> None:
         except SyntaxError:
             sys.exit("Syntax error")
 
-    # If syntax is okey, go on and check selected option
+    # If syntax is ok, go on and check selected option
     opt = cmd[1].replace('-', '')
-    if not check_opt(opt):
-        print(MSG_ERROR + " Invalid option! Use -s|-g|-a|-d.")
+    if not check_opt(opt, fast_mode=True):
+        print(MSG_ERROR + " Invalid option! Use -o|-s|-g|-a|-d.")
         sys.exit("Invalid option")
     else:
-        if len(cmd) < 3:  # cmd have to be 'gitcher <-opt> <profname> [
-            # ...]'
-            raise_order_format_error()
-        # Catch profname, first parameter for all cases
-        profname = cmd[2]
-
-        if opt == 'a':
-            if len(cmd) != 7:  # cmd have to be 'gitcher <-opt> <profname>
-                # <name> <email> <signkey> <signpref>'
-                raise_order_format_error()
-            # Catch specific params
-            name = cmd[3]
-            email = cmd[4]
-            if not validate_email(email):
-                raise_order_format_error(email)
-            signkey = cmd[5]
-            if signkey == 'None':
-                signkey = None
-            signpref = cmd[6]
-            if signpref == 'True':
-                signpref = True
-            elif signpref == 'False':
-                signpref = False
+        if opt == 'o':
+            if len(cmd) == 2:  # cmd have to be only 'gitcher <-o>'
+                print_current_on_prof()
             else:
-                raise_order_format_error(cmd[5])
+                raise_order_format_error()
+        elif len(cmd) >= 3:  # cmd have to be 'gitcher <-opt> <profname> [...]'
+            # Catch profname, first parameter for all cases
+            profname = cmd[2]
 
-            add_prof_fast(profname, name, email, signkey, signpref)
+            if opt == 'a':
+                if len(cmd) != 7:  # cmd have to be 'gitcher <-opt> <profname>
+                    # <name> <email> <signkey> <signpref>'
+                    raise_order_format_error()
+                # Catch specific params
+                name = cmd[3]
+                email = cmd[4]
+                if not validate_email(email):
+                    raise_order_format_error(email)
+                signkey = cmd[5]
+                if signkey == 'None':
+                    signkey = None
+                signpref = cmd[6]
+                if signpref == 'True':
+                    signpref = True
+                elif signpref == 'False':
+                    signpref = False
+                else:
+                    raise_order_format_error(cmd[5])
+
+                add_prof_fast(profname, name, email, signkey, signpref)
+            else:  # Else it is always necessary to check the profile
+                if len(cmd) == 3:  # Security check
+                    if not check_profile(profname):
+                        print_prof_error(profname)
+                        sys.exit("gitcher profile not exists")
+                    # Else, if the profile exists, continue...
+                    if opt == 's':
+                        set_prof(profname)
+                    elif opt == 'g':
+                        set_prof_global(profname)
+                    elif opt == 'd':
+                        delete_prof(profname)
+                else:
+                    raise_order_format_error()
         else:
-            if not check_profile(profname):
-                print_prof_error(profname)
-                sys.exit("gitcher profile not exists")
-            # Else, if the profile exists, continue...
-            if opt == 's':
-                set_prof(profname)
-            elif opt == 'g':
-                set_prof_global(profname)
-            elif opt == 'd':
-                delete_prof(profname)
+            raise_order_format_error()
 
 
 if __name__ == "__main__":
