@@ -440,7 +440,7 @@ def interactive_main() -> None:
 
     opt = listen("Option: ")
     while not check_opt(opt):
-        print(MSG_ERROR + " Invalid opt! Use s|g|a|d. Type exit to quit.")
+        print(MSG_ERROR + " Invalid opt! Use s|g|a|u|m|d. Type exit to quit.")
         opt = listen("Enter option: ")
 
     if not opt == 'a' and not opt == 'u':
