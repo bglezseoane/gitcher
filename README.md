@@ -12,7 +12,7 @@ It is possible that you have multiple git configurations. E.g.:
 - Work profile
 
 ```
-Name: John Doe
+Name: Jane Doe
 Email: johndoe@work
 GPG Key: AAAA1234
 ```
@@ -20,7 +20,7 @@ GPG Key: AAAA1234
 - Personal profile
 
 ```
-Name: John Doe
+Name: Jane Doe
 Email: johndoe@home
 GPG Key: BBBB5678
 ```
