@@ -534,8 +534,7 @@ def fast_main(cmd: [str]) -> None:
                 print_current_on_prof()
             else:
                 raise_order_format_error()
-        elif len(cmd) < 3:  # cmd have to be 'gitcher <-opt> <profname> [...]'
-            raise_order_format_error()
+        elif len(cmd) >= 3:  # cmd have to be 'gitcher <-opt> <profname> [...]'
             # Catch profname, first parameter for all cases
             profname = cmd[2]
 
@@ -574,6 +573,8 @@ def fast_main(cmd: [str]) -> None:
                         delete_prof(profname)
                 else:
                     raise_order_format_error()
+        else:
+            raise_order_format_error()
 
 
 if __name__ == "__main__":
