@@ -1,0 +1,66 @@
+# -*- coding: utf-8 -*-
+
+
+"""gitcher dictionary class module
+
+This module contains the class that represents the gitcher dictionary
+container class.
+"""
+
+from gitcher import model_layer
+
+# Authorship
+__author__ = 'Borja González Seoane'
+__copyright__ = 'Copyright 2019, Borja González Seoane'
+__credits__ = 'Borja González Seoane'
+__license__ = 'LICENSE'
+__version__ = '0.4b0'
+__maintainer__ = 'Borja González Seoane'
+__email__ = 'dev@glezseoane.com'
+__status__ = 'Development'
+
+
+class Dictionary(object):
+    """This class presents the gitcher dictionary container, with all the
+    options and escape keys and also with a collection of the user data
+    obtained with the start of the program execution."""
+
+    # noinspection PyShadowingNames
+    def __init__(self):
+        self.cmds_escape = ['quit', 'QUIT', 'exit', 'EXIT']
+        self.cmds_interactive_mode = ['s', 'g', 'a', 'd', 'u', 'm']
+        self.cmds_fast_mode = ['s', 'g', 'a', 'd', 'o']
+
+        profs = model_layer.model_recuperate_profs()
+        self.profs_profnames = [prof.profname for prof in profs]
+        self.profs_names = [prof.name for prof in profs]
+        self.profs_emails = [prof.email for prof in profs]
+        # Next force string cast because signkey could be None
+        self.profs_signkeys = [str(prof.signkey) for prof in profs]
+
+    def get_union_all(self) -> [str]:
+        """This function returns a list with the union of all the dictionary
+        subsets."""
+        return self.cmds_escape + self.cmds_interactive_mode + \
+            self.cmds_fast_mode + self.profs_profnames + self.profs_names + \
+            self.profs_signkeys
+
+    def get_union_cmds_set(self) -> [str]:
+        """This function returns a list with the union of all the dictionary
+        subsets relatives to the gitcher operative context (i.e.: escape
+        and options keys)."""
+        return self.cmds_interactive_mode + self.cmds_fast_mode +\
+            self.cmds_escape
+
+    def get_intersection_mode_cmds_set(self) -> [str]:
+        """This function returns a list with the intersection of the
+        dictionary subsets relatives to the program fast mode and the
+        program interactive mode."""
+        return [set(self.cmds_interactive_mode) & set(self.cmds_fast_mode)]
+
+    def get_union_git_set(self) -> [str]:
+        """This function returns a list with the union of all the dictionary
+        subsets relatives to the git context (i.e.: git profile names,
+        user names, emails and signing keys)."""
+        return self.profs_profnames + self.profs_names +\
+            self.profs_emails + self.profs_signkeys
