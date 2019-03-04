@@ -42,7 +42,7 @@ class Prof(object):
         return self.profname + ": " + self.name + ", " + self.email + ", " +\
             signkey_str + ", " + signpref_str
 
-    def __simple_str__(self):
+    def simple_str(self):
         """This function return a minimalistic representation of the profile,
         without its name. It is util to some high level functions.
         """
@@ -59,7 +59,7 @@ class Prof(object):
         return self.name + ", " + self.email + ", " + signkey_str\
             + ", " + signpref_str
 
-    def __tpl__(self):
+    def tpl(self):
         """This function return a tuple representation of the object."""
         if self.signkey is not None:
             signkey_str = self.signkey
