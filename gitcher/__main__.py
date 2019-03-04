@@ -9,12 +9,14 @@ as name, email and user signatures.
 """
 
 import os
+import readline
 import sys
 
 from validate_email import validate_email
 from prettytable import PrettyTable
 
-from gitcher import model_layer
+from gitcher import model_layer, dictionary
+from gitcher.completer import TabCompleter
 from gitcher.prof import Prof
 from gitcher.not_found_prof_error import NotFoundProfError
 
@@ -91,7 +93,7 @@ def print_prof_list() -> None:
         profs_table = PrettyTable(['Prof', 'Name', 'Email',
                                    'GPG key', 'Autosign'])
         for prof in profs:
-            row = prof.__tpl__()
+            row = prof.tpl()
             if prof.equivalent(cprof):
                 row = [(COLOR_CYAN + profeat + COLOR_RST) for profeat in row]
                 row[0] = row[0] + "*"
@@ -112,12 +114,12 @@ def listen(text: str) -> str:
     :return: User reply after canalize question via 'input()' function.
     :rtype: str
     """
-    reply = input(text)
-    if check_opt(reply, escape=True):
-        print(COLOR_BLUE + "Bye!" + COLOR_RST)
-        sys.exit(0)
+    reply = input(text).strip()
     try:
         check_syntax(reply)
+        if check_opt(reply, escape=True):
+            print(COLOR_BLUE + "Bye!" + COLOR_RST)
+            sys.exit(0)
     except SyntaxError:
         listen(text)  # Recursive loop to have a valid value
     return reply
@@ -195,19 +197,16 @@ def check_opt(opt_input: str, escape: bool = False, fast_mode: bool = False,
     :rtype: bool
     """
     # Always included options stock
-    opts_stock = ['quit', 'QUIT', 'exit', 'EXIT']
+    opts_stock = dictionary.cmds_escape
 
-    if not escape:  # Expand to two modes common options codes
-        opts_stock.extend(['s', 'g', 'a', 'd'])
-        if both_modes:
-            # Recursive loop to evaluate the two possibilities
-            return check_opt(opt_input, fast_mode=False)\
-                or check_opt(opt_input, fast_mode=True)
+    if not escape:
+        if both_modes:  # Full extension
+            opts_stock.extend(dictionary.get_union_cmds_set())
         else:
-            if not fast_mode:  # Interactive mode exclusive options extension
-                opts_stock.extend(['u', 'm'])
-            else:  # Fast mode exclusive options extension
-                opts_stock.append('o')
+            if not fast_mode:  # Interactive mode extension
+                opts_stock.extend(dictionary.cmds_interactive_mode)
+            else:  # Fast mode extension
+                opts_stock.append(dictionary.cmds_fast_mode)
 
     if any(opt_input == opt_pattern for opt_pattern in opts_stock):
         return True
@@ -270,10 +269,10 @@ def print_current_on_prof() -> None:
     profs = model_layer.model_recuperate_profs()
     for prof in profs:
         if cprof.equivalent(prof):
-            print(MSG_OK + " " + prof.profname + ": " + cprof.__simple_str__())
+            print(MSG_OK + " " + prof.profname + ": " + cprof.simple_str())
             return
     # If not found in list...
-    print(MSG_OK + " Unsaved profile: " + cprof.__simple_str__())
+    print(MSG_OK + " Unsaved profile: " + cprof.simple_str())
 
 
 # noinspection PyShadowingNames
@@ -492,10 +491,18 @@ def interactive_main() -> None:
     print("\nInput " + COLOR_BRI_CYAN + "quit" + COLOR_RST + " everywhere "
                                                              "to quit "
                                                              "gitcher.\n")
+    # Init autocompletion support
+    completer = TabCompleter()
+    completer.create_list_completer(dictionary.get_union_all())
+    readline.set_completer_delims('\t')
+    readline.parse_and_bind("tab: complete")
+    readline.set_completer(completer.completer)
 
     opt = listen("Option: ")
     while not check_opt(opt):
-        print(MSG_ERROR + " Invalid opt! Use s|g|a|u|m|d. Type exit to quit.")
+        print(MSG_ERROR + " Invalid opt! Use " +
+              '|'.join(dictionary.cmds_interactive_mode) +
+              ". Type exit to quit.")
         opt = listen("Enter option: ")
 
     if not opt == 'a' and not opt == 'u':
@@ -538,7 +545,8 @@ def fast_main(cmd: [str]) -> None:
     # If syntax is ok, go on and check selected option
     opt = cmd[1].replace('-', '')
     if not check_opt(opt, fast_mode=True):
-        print(MSG_ERROR + " Invalid option! Use -o|-s|-g|-a|-d.")
+        print(MSG_ERROR + " Invalid option! Use -" +
+              '-|'.join(dictionary.cmds_fast_mode))
         sys.exit("Invalid option")
     else:
         if opt == 'o':
@@ -614,6 +622,9 @@ if __name__ == "__main__":
                 sys.exit("No gitcher file")
         else:
             sys.exit("No gitcher file")
+
+    # Now, create an instance for the execution gitcher dictionary
+    dictionary = dictionary.Dictionary()
 
     # After firsts checks, run gitcher
     if (len(sys.argv)) == 1:  # Interactive mode
