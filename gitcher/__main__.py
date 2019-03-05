@@ -181,55 +181,62 @@ def check_syntax(arg: str) -> None:
 
 
 # noinspection PyShadowingNames
-def check_opt(opt_input: str, escape: bool = False, fast_mode: bool = False,
-              both_modes: bool = False) -> bool:
+def check_opt(opt_input: str, escape: bool = False,
+              interactive_mode: bool =False,
+              fast_mode: bool = False,
+              whole: bool = False) -> bool:
     """Function that checks the integrity of the listen option. Options codes
     of the interactive and the fast mode can be passed.
 
-    escape flag set to true is to indicate that the check is only to validate
-    if opt is a correct escape command, discarding the other option commands.
-    Use the others flags expands this case.
+    escape flag set to true is to indicate that the check is to validate if
+    opt is a correct escape command.
 
-    The fast mode options should to be passed with the fast_mode bool flag
-    set to true. This is because there are some options that only works for one
-    of the modes.
+    interactive_mode flag is to indicate that the check provides to an
+    interactive_mode call.
 
-    The both_mode flag may be passed to true to check if one option is valid
-    for at least one of the two program modes.
+    fast_mode flag is to indicate that the check provides to an fast_mode call.
 
-    If both_modes is passed set to true, the result will include fast_mode
-    necessary. So both_modes set to true overwrite fast_mode and always set
-    it to true. And evidently, also includes escape commands.
+    This flags act as switches to their respective modes. It is possible to
+    combine various or even all modes simply by setting to True their
+    respective flags. It is like the algebraic union operation.
 
-    Note that the default mode, if all flags are passed set to false or are
-    not passed is the for interactive mode options check.
+    The whole flag traces the subscribed union of sets directly.
+
+    Note that the default sets every flags to False, so the reply will be
+    always False.
 
     :param opt_input: User input option
     :type opt_input: str
-    :param escape: Flag to indicate that the check is only to validate if opt
+    :param escape: Flag to indicate that the check is to validate if opt
         is a correct escape command
     :type escape: bool
-    :param fast_mode: Flag to indicate that the option provides to a fast mode
-        call
+    :param fast_mode: Flag to indicate that the check is to validate from a
+        fast mode call
     :type fast_mode: bool
-    :param both_modes: Flag to check if the passed opt its valid for at least
-        one of the modes: "opt is ok for interactive or fast mode?"
-    :type both_modes: bool
+    :param interactive_mode: Flag to indicate that the check is to validate
+        from a interactive mode call
+    :type interactive_mode: bool
+    :param whole: Flag to check if the passed opt its valid for at least
+        one of the modes or the an escape key: "opt is ok for interactive or
+        fast mode or escape?" So this flag makes the union of the others
+    :type whole: bool
     :return: Confirmation about the validation of the passed option
     :rtype: bool
     """
-    # Always included options stock
-    opts_stock = dictionary.cmds_escape
+    opts_stock = []  # Initial empty
 
-    if not escape:
-        if both_modes:  # Full extension
-            opts_stock.extend(dictionary.get_union_cmds_set())
-        else:
-            if not fast_mode:  # Interactive mode extension
-                opts_stock.extend(dictionary.cmds_interactive_mode)
-            else:  # Fast mode extension
-                opts_stock.append(dictionary.cmds_fast_mode)
+    # Expansions attending to config
+    if whole:
+        opts_stock.extend(dictionary.get_union_all())
+    else:
+        if escape:
+            opts_stock.extend(dictionary.cmds_escape)
+        if interactive_mode:
+            opts_stock.extend(dictionary.cmds_interactive_mode)
+        if fast_mode:
+            opts_stock.extend(dictionary.cmds_fast_mode)
 
+    # Try to match
     if any(opt_input == opt_pattern for opt_pattern in opts_stock):
         return True
     else:
@@ -516,7 +523,7 @@ def interactive_main() -> None:
           COLOR_BRI_CYAN + "exit" + COLOR_RST + "everywhere to quit.\n")
 
     opt = listen("Option: ", dictionary.get_union_cmds_set())
-    while not check_opt(opt):
+    while not check_opt(opt, interactive_mode=True):
         print(MSG_ERROR + " Invalid opt! Use " +
               '|'.join(dictionary.cmds_interactive_mode) +
               ". Type exit to quit.")
