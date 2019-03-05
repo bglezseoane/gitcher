@@ -105,16 +105,37 @@ def print_prof_list() -> None:
         print("No gitcher profiles saved yet. Use 'a' option to add one.")
 
 
-def listen(text: str) -> str:
+def listen(text: str, autocompletion_context: [str] = None) -> str:
     """Function that listen an user input, validates it, checks if it not a
-    escape command and then canalize message to caller function.
+    escape command (if it is, exits) and then canalize message to caller
+    function. This function also provides the support for autocompletion. To
+    use it, its neccesary to pass as second param the context list of keys
+    against match.
 
     :param text: Name of the gitcher profile to operate with
     :type text: str
+    :param autocompletion_context: List of keys against match text to
+        autocompletion
+    :type autocompletion_context: [str]
     :return: User reply after canalize question via 'input()' function.
     :rtype: str
     """
+    if autocompletion_context:
+        # Init autocompletion support
+        readline.set_completer_delims('\t')
+        readline.parse_and_bind("tab: complete")
+        completer = TabCompleter()
+        # Set context properly autocompletion set
+        completer.create_list_completer(autocompletion_context)
+        readline.set_completer(completer.completer_list)
+
     reply = input(text).strip()
+
+    if autocompletion_context:  # Clean autocompletion set
+        # noinspection PyUnboundLocalVariable
+        completer.create_list_completer([])
+        readline.set_completer(completer.completer_list)
+
     try:
         check_syntax(reply)
         if check_opt(reply, escape=True):
@@ -378,11 +399,13 @@ def update_prof() -> None:
     """
     print("\nLets go to update a gitcher profile...")
 
-    old_profname = listen("Enter the profile name: ")
+    old_profname = listen("Enter the profile name: ",
+                          dictionary.profs_profnames)
     while not check_profile(old_profname):
         print(MSG_ERROR + " {0} not exists. Change name...".format(
             old_profname))
-        old_profname = listen("Enter profile name: ")
+        old_profname = listen("Enter profile name: ",
+                              dictionary.profs_profnames)
 
     prof = model_layer.model_recuperate_prof(old_profname)
 
@@ -491,25 +514,20 @@ def interactive_main() -> None:
     print("\nInput " + COLOR_BRI_CYAN + "quit" + COLOR_RST + " everywhere "
                                                              "to quit "
                                                              "gitcher.\n")
-    # Init autocompletion support
-    completer = TabCompleter()
-    completer.create_list_completer(dictionary.get_union_all())
-    readline.set_completer_delims('\t')
-    readline.parse_and_bind("tab: complete")
-    readline.set_completer(completer.completer)
-
-    opt = listen("Option: ")
+    opt = listen("Option: ", dictionary.get_union_cmds_set())
     while not check_opt(opt):
         print(MSG_ERROR + " Invalid opt! Use " +
               '|'.join(dictionary.cmds_interactive_mode) +
               ". Type exit to quit.")
-        opt = listen("Enter option: ")
+        opt = listen("Enter option: ", dictionary.get_union_cmds_set())
 
     if not opt == 'a' and not opt == 'u':
-        profname = listen("Select the desired profile entering its name: ")
+        profname = listen("Select the desired profile entering its name: ",
+                          dictionary.profs_profnames)
         while not check_profile(profname):
             print_prof_error(profname)
-            profname = listen("Enter profile name: ")
+            profname = listen("Enter profile name: ",
+                              dictionary.profs_profnames)
 
         if opt == 's':
             set_prof(profname)
@@ -623,7 +641,7 @@ if __name__ == "__main__":
         else:
             sys.exit("No gitcher file")
 
-    # Now, create an instance for the execution gitcher dictionary
+    # Now, create an unique instance for the execution gitcher dictionary
     dictionary = dictionary.Dictionary()
 
     # After firsts checks, run gitcher
