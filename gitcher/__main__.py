@@ -120,21 +120,19 @@ def listen(text: str, autocompletion_context: [str] = None) -> str:
     :return: User reply after canalize question via 'input()' function
     :rtype: str
     """
-    if autocompletion_context:
+    if autocompletion_context:  # Set autocompletion set
         # Init autocompletion support
         readline.set_completer_delims('\t')
         readline.parse_and_bind("tab: complete")
-        completer = TabCompleter()
-        # Set context properly autocompletion set
-        completer.create_list_completer(autocompletion_context)
-        readline.set_completer(completer.completer_list)
+        completer = TabCompleter(autocompletion_context)
+        readline.set_completer(completer.service)
 
     reply = input(text).strip()
 
     if autocompletion_context:  # Clean autocompletion set
         # noinspection PyUnboundLocalVariable
-        completer.create_list_completer([])
-        readline.set_completer(completer.completer_list)
+        completer = TabCompleter([])
+        readline.set_completer(completer.service)
 
     try:
         check_syntax(reply)

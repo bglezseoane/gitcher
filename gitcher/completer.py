@@ -23,33 +23,26 @@ __status__ = 'Development'
 class TabCompleter(object):
     """Class that represents a gitcher tab user input completer."""
 
-    # noinspection PyShadowingNames
-    def create_list_completer(self, pattern_list: [str]) -> None:
-        """This is a closure that creates a method that autocompletes from
-        the given list.
+    def __completer(self, input: str, state: int) -> str:
+        """This function provides an autocompletion service for the user
+        inputs.
 
-        :param pattern_list: List of patterns to match
-        :type pattern_list: [str]
+        :param input: User input try
+        :type input: str
+        :param state: User input prediction selector
+        :type state: int
+        :return: User reply after canalize question via 'input()' function.
+        :rtype: str
         """
+        line = readline.get_line_buffer()
 
-        def completer(input: str, state: int) -> str:
-            """This function provides an autocompletion service for the user
-            inputs.
+        if not line:
+            return [pat + " " for pat in self.pattern_list][state]
 
-            :param input: User input try
-            :type input: str
-            :param state: User input prediction selector
-            :type state: int
-            :return: User reply after canalize question via 'input()' function.
-            :rtype: str
-            """
-            line = readline.get_line_buffer()
+        else:
+            return [pat + " " for pat in self.pattern_list
+                    if pat.startswith(line)][state]
 
-            if not line:
-                return [pat + " " for pat in pattern_list][state]
-
-            else:
-                return [pat + " " for pat in pattern_list
-                        if pat.startswith(line)][state]
-
-        self.completer = completer
+    def __init__(self, pattern_list: [str]):
+        self.pattern_list = pattern_list
+        self.service = self.__completer
