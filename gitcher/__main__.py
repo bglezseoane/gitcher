@@ -8,7 +8,6 @@ between git profiles, importing configuration settings such
 as name, email and user signatures.
 """
 
-import os
 import readline
 import signal
 import sys
@@ -300,7 +299,7 @@ def print_current_on_prof() -> None:
     profs = model_layer.recuperate_profs()
     for prof in profs:
         if cprof.equivalent(prof):
-            print(MSG_OK + " " + prof.profname + ": " + cprof.simple_str())
+            print(prof.profname + ": " + cprof.simple_str())
             return
     # If not found in list...
     print(MSG_OK + " Unsaved profile: " + cprof.simple_str())
@@ -635,17 +634,15 @@ if __name__ == "__main__":
 
     # Next, check if CHERFILE exists. If not and gitcher is ran as
     # interactive mode, propose to create it
-    cherfile = model_layer.CHERFILE
-    if not os.path.exists(cherfile):
-        print(MSG_ERROR + " {0} not exists and it is necessary.".format(
-            cherfile))
+    if not model_layer.check_cherfile():
+        print(MSG_ERROR + " CHERFILE not exists and it is necessary.")
 
-        if (len(sys.argv)) > 1:
-            if yes_or_no("Do you want to create {0}?".format(cherfile)):
-                open(cherfile, 'w')
+        if not len(sys.argv) > 1:  # Interactive mode
+            if yes_or_no("Do you want to create the CHERFILE?"):
+                model_layer.create_cherfile()
                 print(MSG_OK + " Gitcher config dotfile created. Go on...")
             else:
-                print(MSG_ERROR + "Impossible to go on without gitcher "
+                print(MSG_ERROR + " Impossible to go on without gitcher "
                                   "dotfile.")
                 sys.exit(1)
         else:

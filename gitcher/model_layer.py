@@ -34,13 +34,34 @@ CHERFILE = HOME + '/.cherfile'
 # =             CHERFILE model layer            =
 # ===============================================
 
-def model_recuperate_profs() -> [Prof]:
+def check_cherfile() -> bool:
+    """Function that checks if CHERFILE exists.
+
+    :return: Confirmation about the existence of CHERFILE
+    :rtype: bool
+    """
+    return os.path.exists(CHERFILE)
+
+
+def create_cherfile() -> None:
+    """Function that creates a CHERFILE.
+
+    :return: None
+    """
+    open(CHERFILE, 'w')
+    with open(CHERFILE, 'a') as f:
+        print("####################"
+              "# GITCHER CHERFILE #"
+              "####################", file=f)
+
+
+def recuperate_profs() -> [Prof]:
     """Function that access CHERFILE and extracts profiles to Prof objects
     list. If there are not gitcher profiles in CHERFILE, returns an empty list.
     This function sorts profiles on alphabetical order looking its profname
     value.
 
-    :return: A sort list with all gitcher profiles saved.
+    :return: A sort list with all gitcher profiles saved
     :rtype: [Prof]
     """
     profs = list()
