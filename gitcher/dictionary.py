@@ -27,7 +27,7 @@ class Dictionary(object):
 
     # noinspection PyShadowingNames
     def __init__(self):
-        self.cmds_escape = ['quit', 'exit']
+        self.cmds_escape = ['quit']
         self.cmds_interactive_mode = ['s', 'g', 'a', 'd', 'u', 'm']
         self.cmds_fast_mode = ['s', 'g', 'a', 'd', 'o']
 
