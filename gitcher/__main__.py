@@ -115,9 +115,9 @@ def listen(text: str, autocompletion_context: [str] = None) -> str:
     :param text: Name of the gitcher profile to operate with
     :type text: str
     :param autocompletion_context: List of keys against match text to
-        autocompletion
+        autocompletion. None to do not use this service
     :type autocompletion_context: [str]
-    :return: User reply after canalize question via 'input()' function.
+    :return: User reply after canalize question via 'input()' function
     :rtype: str
     """
     if autocompletion_context:
@@ -143,6 +143,7 @@ def listen(text: str, autocompletion_context: [str] = None) -> str:
             sys.exit(0)
     except SyntaxError:
         listen(text)  # Recursive loop to have a valid value
+
     return reply
 
 
