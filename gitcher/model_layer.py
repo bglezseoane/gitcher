@@ -65,7 +65,7 @@ def model_recuperate_profs() -> [Prof]:
     return sorted(profs, key=operator.attrgetter('profname'))
 
 
-def model_recuperate_prof(profname: str) -> Prof:
+def recuperate_prof(profname: str) -> Prof:
     """ Function that return the required gitcher profile. If it does not
     exist, raise a not found exception.
 
@@ -75,7 +75,7 @@ def model_recuperate_prof(profname: str) -> Prof:
     :rtype: Prof
     :raise: NotFoundProfError
     """
-    profs = model_recuperate_profs()
+    profs = recuperate_profs()
     for prof in profs:
         if prof.profname == profname:
             return prof
@@ -83,7 +83,7 @@ def model_recuperate_prof(profname: str) -> Prof:
     raise NotFoundProfError  # If not founds profile and not returns before
 
 
-def model_save_profile(prof: Prof) -> None:
+def save_profile(prof: Prof) -> None:
     """ Function that saves a new gitcher profile to the CHERFILE.
 
     :param prof: Gitcher profile to save
@@ -97,7 +97,7 @@ def model_save_profile(prof: Prof) -> None:
         print(prof_string, file=f)
 
 
-def model_delete_profile(profname: str) -> None:
+def delete_profile(profname: str) -> None:
     """ Function that deletes a gitcher profile from the CHERFILE.
 
     :param profname: Name of the gitcher profile to operate with
@@ -139,7 +139,7 @@ def check_git_context() -> bool:
 
 
 # noinspection PyShadowingNames
-def model_switch_prof(profname: str, flag: str = '') -> None:
+def switch_prof(profname: str, flag: str = '') -> None:
     """Function that plays the git profile switching.
 
     This function can receive a '--global' flag to switch profile globally.
@@ -151,7 +151,7 @@ def model_switch_prof(profname: str, flag: str = '') -> None:
     :return: None
     """
     cwd = os.getcwd()  #  Current working directory path
-    prof = model_recuperate_prof(profname)
+    prof = recuperate_prof(profname)
 
     go_to_cwd = "cd {0} && ".format(cwd)
     if flag == '--global':
@@ -181,7 +181,7 @@ def model_switch_prof(profname: str, flag: str = '') -> None:
     os.system(cmd)
 
 
-def model_recuperate_git_current_prof(path: str = None) -> Prof:
+def recuperate_git_current_prof(path: str = None) -> Prof:
     """Function that recuperates the applicable git configuration of the
     param passed path and builds with this data a gitcher Prof. If param
     passed is None, then use the current working directory to evaluate it.
@@ -189,7 +189,7 @@ def model_recuperate_git_current_prof(path: str = None) -> Prof:
     Warnings:
         - The path must be assert before or function raises an error.
 
-    :param path: Path to recuperates git user configuration.
+    :param path: Path to recuperates git user configuration
     :type path: str
     :return: Rebuilt git profile as gitcher Prof object
     :rtype: Prof

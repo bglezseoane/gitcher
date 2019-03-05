@@ -103,8 +103,8 @@ def print_prof_list() -> None:
 
     :return: None, print function
     """
-    cprof = model_layer.model_recuperate_git_current_prof()  # Current profile
-    profs = model_layer.model_recuperate_profs()
+    cprof = model_layer.recuperate_git_current_prof()  # Current profile
+    profs = model_layer.recuperate_profs()
     if profs:  # If profs is not empty
         profs_table = PrettyTable(['Prof', 'Name', 'Email',
                                    'GPG key', 'Autosign'])
@@ -276,7 +276,7 @@ def recover_prof(profname: str) -> Prof:
     :raise: NotFoundProfError
     """
     try:
-        return model_layer.model_recuperate_prof(profname)
+        return model_layer.recuperate_prof(profname)
     except NotFoundProfError:
         raise NotFoundProfError
 
@@ -290,14 +290,14 @@ def print_current_on_prof() -> None:
 
     :return: None, print function
     """
-    cprof = model_layer.model_recuperate_git_current_prof()  # Current profile
+    cprof = model_layer.recuperate_git_current_prof()  # Current profile
 
     # Now, cprof is compared against saved profiles list. cprof is an
     # extract of the git user configuration, that is independent of the
     # gitcher data and scope. So, with next operations it is checked if
     # current config is saved on gitcher, and it is created a mixed dataset to
     # print the information
-    profs = model_layer.model_recuperate_profs()
+    profs = model_layer.recuperate_profs()
     for prof in profs:
         if cprof.equivalent(prof):
             print(MSG_OK + " " + prof.profname + ": " + cprof.simple_str())
@@ -318,7 +318,7 @@ def set_prof(profname: str) -> None:
     :return: None
     """
     if model_layer.check_git_context():
-        model_layer.model_switch_prof(profname)
+        model_layer.switch_prof(profname)
         print(MSG_OK + " Switched to {0} profile.".format(profname))
     else:
         print(MSG_ERROR + " Current directory not contains a git repository.")
@@ -335,7 +335,7 @@ def set_prof_global(profname: str) -> None:
     :type profname: str
     :return: None
     """
-    model_layer.model_switch_prof(profname, '--global')
+    model_layer.switch_prof(profname, '--global')
     print(MSG_OK + " Set {0} as git default profile.".format(profname))
 
 
@@ -369,7 +369,7 @@ def add_prof() -> None:
 
     # Save it...
     prof = model_layer.Prof(profname, name, email, signkey, signpref)
-    model_layer.model_save_profile(prof)
+    model_layer.save_profile(prof)
     print(MSG_OK + " New profile {0} added.".format(profname))
 
 
@@ -393,7 +393,7 @@ def add_prof_fast(profname: str, name: str, email: str, signkey: str,
     """
     if not check_profile(profname):  # Profname have to be unique
         prof = model_layer.Prof(profname, name, email, signkey, signpref)
-        model_layer.model_save_profile(prof)
+        model_layer.save_profile(prof)
         print(MSG_OK + " New profile {0} added.".format(profname))
     else:
         print(MSG_ERROR + " {0} yet exists!".format(profname))
@@ -417,7 +417,7 @@ def update_prof() -> None:
         old_profname = listen("Enter profile name: ",
                               dictionary.profs_profnames)
 
-    prof = model_layer.model_recuperate_prof(old_profname)
+    prof = model_layer.recuperate_prof(old_profname)
 
     profname = old_profname
     if yes_or_no("Do you want to update the profile name?"):
@@ -444,10 +444,10 @@ def update_prof() -> None:
         signpref = prof.signpref
 
     # Remove the old profile
-    model_layer.model_delete_profile(old_profname)
+    model_layer.delete_profile(old_profname)
     # And save the new...
     prof = model_layer.Prof(profname, name, email, signkey, signpref)
-    model_layer.model_save_profile(prof)
+    model_layer.save_profile(prof)
     print(MSG_OK + " Profile {0} updated.".format(profname))
 
 
@@ -468,7 +468,7 @@ def mirror_prof(origin_profname: str) -> None:
             new_profname))
         new_profname = listen("Enter profile name: ")
 
-    prof = model_layer.model_recuperate_prof(origin_profname)
+    prof = model_layer.recuperate_prof(origin_profname)
 
     profname = new_profname
     name = prof.name
@@ -478,7 +478,7 @@ def mirror_prof(origin_profname: str) -> None:
 
     # Save the new profile...
     prof = model_layer.Prof(profname, name, email, signkey, signpref)
-    model_layer.model_save_profile(prof)
+    model_layer.save_profile(prof)
     print(MSG_OK + " Profile {0} created.".format(profname))
 
 
@@ -492,7 +492,7 @@ def delete_prof(profname: str) -> None:
     :type profname: [str]
     :return: None
     """
-    model_layer.model_delete_profile(profname)
+    model_layer.delete_profile(profname)
     print(MSG_OK + " Profile {0} deleted.".format(profname))
 
 

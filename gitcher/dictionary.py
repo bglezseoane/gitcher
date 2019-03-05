@@ -30,7 +30,7 @@ class Dictionary(object):
         self.cmds_interactive_mode = ['s', 'g', 'a', 'd', 'u', 'm']
         self.cmds_fast_mode = ['s', 'g', 'a', 'd', 'o']
 
-        profs = model_layer.model_recuperate_profs()
+        profs = model_layer.recuperate_profs()
         self.profs_profnames = [prof.profname for prof in profs]
         self.profs_names = [prof.name for prof in profs]
         self.profs_emails = [prof.email for prof in profs]
