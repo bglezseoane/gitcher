@@ -10,6 +10,7 @@ as name, email and user signatures.
 
 import os
 import readline
+import signal
 import sys
 
 from validate_email import validate_email
@@ -50,6 +51,21 @@ MSG_WARNING = "[" + COLOR_YELLOW + "WARNING" + COLOR_RST + "]"
 # ===============================================
 # =             Auxiliary functions             =
 # ===============================================
+
+def quit_gracefully(signum, frame) -> None:
+    """Function that prints a bye message. It is used to attach to escape
+    signal (i.e.: Ctrl.+C) during the performance of the program. So, it
+    is the exit function.
+
+    :return: None, print function
+    """
+    print(COLOR_BLUE + "Bye!" + COLOR_RST)
+    sys.exit(0)
+
+
+# Register previous function, linking it with Ctrl.+C
+signal.signal(signal.SIGINT, quit_gracefully)
+
 
 # noinspection PyShadowingNames
 def print_prof_error(profname: str) -> None:
