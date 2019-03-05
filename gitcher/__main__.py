@@ -347,20 +347,21 @@ def add_prof() -> None:
     """
     print("\nLets go to add a new gitcher profile...")
 
-    profname = listen("Enter the profile name: ")
+    profname = listen("Enter the profile name: ", dictionary.cmds_escape)
     while check_profile(profname):
         print(MSG_ERROR + " {0} yet exists. Change name...".format(profname))
-        profname = listen("Enter profile name: ")
+        profname = listen("Enter profile name: ", dictionary.cmds_escape)
 
-    name = listen("Enter the git user name: ")
+    name = listen("Enter the git user name: ", dictionary.cmds_escape)
 
-    email = listen("Enter the git user email: ")
+    email = listen("Enter the git user email: ", dictionary.cmds_escape)
     while not validate_email(email):
         print(MSG_ERROR + " Invalid email format. Try again...".format(email))
-        email = listen("Enter the git user email: ")
+        email = listen("Enter the git user email: ", dictionary.cmds_escape)
 
     if yes_or_no("Do you want to use a GPG sign key?"):
-        signkey = listen("Enter the git user signkey: ")
+        signkey = listen("Enter the git user signkey: ",
+                         dictionary.cmds_escape)
         signpref = yes_or_no("Do you want to autosign every commit?")
     else:
         signkey = None
@@ -409,31 +410,34 @@ def update_prof() -> None:
     print("\nLets go to update a gitcher profile...")
 
     old_profname = listen("Enter the profile name: ",
-                          dictionary.profs_profnames)
+                          dictionary.profs_profnames + dictionary.cmds_escape)
     while not check_profile(old_profname):
         print(MSG_ERROR + " {0} not exists. Change name...".format(
             old_profname))
         old_profname = listen("Enter profile name: ",
-                              dictionary.profs_profnames)
+                              dictionary.profs_profnames +
+                              dictionary.cmds_escape)
 
     prof = model_layer.model_recuperate_prof(old_profname)
 
     profname = old_profname
     if yes_or_no("Do you want to update the profile name?"):
-        profname = listen("Enter the new profile name: ")
+        profname = listen("Enter the new profile name: ",
+                          dictionary.cmds_escape)
     name = prof.name
     if yes_or_no("Do you want to update the user name?"):
-        name = listen("Enter the new name: ")
+        name = listen("Enter the new name: ", dictionary.cmds_escape)
     email = prof.email
     if yes_or_no("Do you want to update the user email?"):
-        email = listen("Enter the new email: ")
+        email = listen("Enter the new email: ", dictionary.cmds_escape)
         while not validate_email(email):
             print(MSG_ERROR + " Invalid email format. Try again...".format(
                 email))
-            email = listen("Enter the new email: ")
+            email = listen("Enter the new email: ", dictionary.cmds_escape)
     if yes_or_no("Do you want to update the GPG sign config?"):
         if yes_or_no("Do you want to use a GPG sign key?"):
-            signkey = listen("Enter the git user signkey: ")
+            signkey = listen("Enter the git user signkey: ",
+                             dictionary.cmds_escape)
             signpref = yes_or_no("Do you want to autosign every commit?")
         else:
             signkey = None
@@ -461,11 +465,11 @@ def mirror_prof(origin_profname: str) -> None:
     :return: None
     """
     new_profname = listen("Enter the new profile name (can not be the same "
-                          "that the origin profile): ")
+                          "that the origin profile): ", dictionary.cmds_escape)
     while check_profile(new_profname):
         print(MSG_ERROR + " {0} yet exists. Change name...".format(
             new_profname))
-        new_profname = listen("Enter profile name: ")
+        new_profname = listen("Enter profile name: ", dictionary.cmds_escape)
 
     prof = model_layer.model_recuperate_prof(origin_profname)
 
@@ -531,11 +535,12 @@ def interactive_main() -> None:
 
     if not opt == 'a' and not opt == 'u':
         profname = listen("Select the desired profile entering its name: ",
-                          dictionary.profs_profnames)
+                          dictionary.profs_profnames + dictionary.cmds_escape)
         while not check_profile(profname):
             print_prof_error(profname)
             profname = listen("Enter profile name: ",
-                              dictionary.profs_profnames)
+                              dictionary.profs_profnames +
+                              dictionary.cmds_escape)
 
         if opt == 's':
             set_prof(profname)
