@@ -511,7 +511,7 @@ def interactive_main() -> None:
     print(COLOR_BRI_CYAN + "m" + COLOR_RST + "    mirror a profile to create a"
                                              " duplicate.")
     print(COLOR_BRI_CYAN + "d" + COLOR_RST + "    delete a profile.")
-    print("\nInput " + COLOR_BRI_CYAN + "quit" + COLOR_RST + "or" +
+    print("\nInput " + COLOR_BRI_CYAN + "quit" + COLOR_RST + " or " +
           COLOR_BRI_CYAN + "exit" + COLOR_RST + "everywhere to quit.\n")
 
     opt = listen("Option: ", dictionary.get_union_cmds_set())
