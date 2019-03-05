@@ -122,11 +122,10 @@ def print_prof_list() -> None:
 
 
 def listen(text: str, autocompletion_context: [str] = None) -> str:
-    """Function that listen an user input, validates it, checks if it not a
-    escape command (if it is, exits) and then canalize message to caller
-    function. This function also provides the support for autocompletion. To
-    use it, its neccesary to pass as second param the context list of keys
-    against match.
+    """Function that listen an user input, validates it and then canalize 
+    message to caller function. This function also provides the support for 
+    autocompletion. To use it, its neccesary to pass as second param the 
+    context list of keys against match.
 
     :param text: Name of the gitcher profile to operate with
     :type text: str
@@ -152,9 +151,6 @@ def listen(text: str, autocompletion_context: [str] = None) -> str:
 
     try:
         check_syntax(reply)
-        if check_opt(reply, escape=True):
-            print(COLOR_BLUE + "Bye!" + COLOR_RST)
-            sys.exit(0)
     except SyntaxError:
         listen(text)  # Recursive loop to have a valid value
 
@@ -196,15 +192,12 @@ def check_syntax(arg: str) -> None:
 
 
 # noinspection PyShadowingNames
-def check_opt(opt_input: str, escape: bool = False,
+def check_opt(opt_input: str,
               interactive_mode: bool = False,
               fast_mode: bool = False,
               whole: bool = False) -> bool:
     """Function that checks the integrity of the listen option. Options codes
     of the interactive and the fast mode can be passed.
-
-    escape flag set to true is to indicate that the check is to validate if
-    opt is a correct escape command.
 
     interactive_mode flag is to indicate that the check provides to an
     interactive_mode call.
@@ -222,9 +215,6 @@ def check_opt(opt_input: str, escape: bool = False,
 
     :param opt_input: User input option
     :type opt_input: str
-    :param escape: Flag to indicate that the check is to validate if opt
-        is a correct escape command
-    :type escape: bool
     :param fast_mode: Flag to indicate that the check is to validate from a
         fast mode call
     :type fast_mode: bool
@@ -232,8 +222,7 @@ def check_opt(opt_input: str, escape: bool = False,
         from a interactive mode call
     :type interactive_mode: bool
     :param whole: Flag to check if the passed opt its valid for at least
-        one of the modes or the an escape key: "opt is ok for interactive or
-        fast mode or escape?" So this flag makes the union of the others
+        one of the modes
     :type whole: bool
     :return: Confirmation about the validation of the passed option
     :rtype: bool
@@ -244,8 +233,6 @@ def check_opt(opt_input: str, escape: bool = False,
     if whole:
         opts_stock.extend(dictionary.get_union_all())
     else:
-        if escape:
-            opts_stock.extend(dictionary.cmds_escape)
         if interactive_mode:
             opts_stock.extend(dictionary.cmds_interactive_mode)
         if fast_mode:
@@ -361,21 +348,20 @@ def add_prof() -> None:
     """
     print("\nLets go to add a new gitcher profile...")
 
-    profname = listen("Enter the profile name: ", dictionary.cmds_escape)
+    profname = listen("Enter the profile name: ")
     while check_profile(profname):
         print(MSG_ERROR + " {0} yet exists. Change name...".format(profname))
-        profname = listen("Enter profile name: ", dictionary.cmds_escape)
+        profname = listen("Enter profile name: ")
 
-    name = listen("Enter the git user name: ", dictionary.cmds_escape)
+    name = listen("Enter the git user name: ")
 
-    email = listen("Enter the git user email: ", dictionary.cmds_escape)
+    email = listen("Enter the git user email: ")
     while not validate_email(email):
         print(MSG_ERROR + " Invalid email format. Try again...".format(email))
-        email = listen("Enter the git user email: ", dictionary.cmds_escape)
+        email = listen("Enter the git user email: ")
 
     if yes_or_no("Do you want to use a GPG sign key?"):
-        signkey = listen("Enter the git user signkey: ",
-                         dictionary.cmds_escape)
+        signkey = listen("Enter the git user signkey: ")
         signpref = yes_or_no("Do you want to autosign every commit?")
     else:
         signkey = None
@@ -424,34 +410,31 @@ def update_prof() -> None:
     print("\nLets go to update a gitcher profile...")
 
     old_profname = listen("Enter the profile name: ",
-                          dictionary.profs_profnames + dictionary.cmds_escape)
+                          dictionary.profs_profnames)
     while not check_profile(old_profname):
         print(MSG_ERROR + " {0} not exists. Change name...".format(
             old_profname))
         old_profname = listen("Enter profile name: ",
-                              dictionary.profs_profnames +
-                              dictionary.cmds_escape)
+                              dictionary.profs_profnames)
 
     prof = model_layer.model_recuperate_prof(old_profname)
 
     profname = old_profname
     if yes_or_no("Do you want to update the profile name?"):
-        profname = listen("Enter the new profile name: ",
-                          dictionary.cmds_escape)
+        profname = listen("Enter the new profile name: ")
     name = prof.name
     if yes_or_no("Do you want to update the user name?"):
-        name = listen("Enter the new name: ", dictionary.cmds_escape)
+        name = listen("Enter the new name: ")
     email = prof.email
     if yes_or_no("Do you want to update the user email?"):
-        email = listen("Enter the new email: ", dictionary.cmds_escape)
+        email = listen("Enter the new email: ")
         while not validate_email(email):
             print(MSG_ERROR + " Invalid email format. Try again...".format(
                 email))
-            email = listen("Enter the new email: ", dictionary.cmds_escape)
+            email = listen("Enter the new email: ")
     if yes_or_no("Do you want to update the GPG sign config?"):
         if yes_or_no("Do you want to use a GPG sign key?"):
-            signkey = listen("Enter the git user signkey: ",
-                             dictionary.cmds_escape)
+            signkey = listen("Enter the git user signkey: ")
             signpref = yes_or_no("Do you want to autosign every commit?")
         else:
             signkey = None
@@ -479,11 +462,11 @@ def mirror_prof(origin_profname: str) -> None:
     :return: None
     """
     new_profname = listen("Enter the new profile name (can not be the same "
-                          "that the origin profile): ", dictionary.cmds_escape)
+                          "that the origin profile): ")
     while check_profile(new_profname):
         print(MSG_ERROR + " {0} yet exists. Change name...".format(
             new_profname))
-        new_profname = listen("Enter profile name: ", dictionary.cmds_escape)
+        new_profname = listen("Enter profile name: ")
 
     prof = model_layer.model_recuperate_prof(origin_profname)
 
@@ -538,7 +521,7 @@ def interactive_main() -> None:
     print(COLOR_BRI_CYAN + "m" + COLOR_RST + "    mirror a profile to create a"
                                              " duplicate.")
     print(COLOR_BRI_CYAN + "d" + COLOR_RST + "    delete a profile.")
-    print("\nInput " + COLOR_BRI_CYAN + "quit" + COLOR_RST +
+    print("\nUse " + COLOR_BRI_CYAN + "Ctrl.+C" + COLOR_RST +
           " everywhere to quit.\n")
 
     opt = listen("Option: ", dictionary.get_union_cmds_set())
@@ -550,12 +533,11 @@ def interactive_main() -> None:
 
     if not opt == 'a' and not opt == 'u':
         profname = listen("Select the desired profile entering its name: ",
-                          dictionary.profs_profnames + dictionary.cmds_escape)
+                          dictionary.profs_profnames)
         while not check_profile(profname):
             print_prof_error(profname)
             profname = listen("Enter profile name: ",
-                              dictionary.profs_profnames +
-                              dictionary.cmds_escape)
+                              dictionary.profs_profnames)
 
         if opt == 's':
             set_prof(profname)

@@ -22,12 +22,11 @@ __status__ = 'Development'
 
 class Dictionary(object):
     """This class presents the gitcher dictionary container, with all the
-    options and escape keys and also with a collection of the user data
-    obtained with the start of the program execution."""
+    options keys and also with a collection of the user data obtained with
+    the start of the program execution."""
 
     # noinspection PyShadowingNames
     def __init__(self):
-        self.cmds_escape = ['quit']
         self.cmds_interactive_mode = ['s', 'g', 'a', 'd', 'u', 'm']
         self.cmds_fast_mode = ['s', 'g', 'a', 'd', 'o']
 
@@ -41,18 +40,15 @@ class Dictionary(object):
     def get_union_all(self) -> [str]:
         """This function returns a list with the union of all the dictionary
         subsets."""
-        return self.cmds_escape + self.cmds_interactive_mode + \
-            self.cmds_fast_mode + self.profs_profnames + self.profs_names + \
-            self.profs_signkeys
+        return self.cmds_interactive_mode + self.cmds_fast_mode + \
+            self.profs_profnames + self.profs_names + self.profs_signkeys
 
     def get_union_cmds_set(self) -> [str]:
         """This function returns a list with the union of all the dictionary
-        subsets relatives to the gitcher operative context (i.e.: escape
-        and options keys)."""
-        return self.cmds_interactive_mode + self.cmds_fast_mode +\
-            self.cmds_escape
+        subsets relatives to the gitcher operative context."""
+        return self.cmds_interactive_mode + self.cmds_fast_mode
 
-    def get_intersection_mode_cmds_set(self) -> [str]:
+    def get_intersection_cmds_set(self) -> [str]:
         """This function returns a list with the intersection of the
         dictionary subsets relatives to the program fast mode and the
         program interactive mode."""
