@@ -155,7 +155,8 @@ def yes_or_no(question: str) -> bool:
     :return: User reply
     :rtype: bool
     """
-    reply = str(listen(question + " (y|n): ")).lower().strip()
+    reply = str(listen(question + " (y|n): ",
+                       autocompletion_context=['y', 'n'])).lower().strip()
     if reply[0] == 'y':
         return True
     if reply[0] == 'n':
