@@ -95,7 +95,7 @@ def raise_order_format_error(arg: str = None) -> None:
     else:
         adv = "Check order syntax composition!"
         print(MSG_ERROR + " " + adv)
-    sys.exit(adv)
+    sys.exit(1)
 
 
 def print_prof_list() -> None:
@@ -397,7 +397,7 @@ def add_prof_fast(profname: str, name: str, email: str, signkey: str,
         print(MSG_OK + " New profile {0} added.".format(profname))
     else:
         print(MSG_ERROR + " {0} yet exists!".format(profname))
-        sys.exit("gitcher profile name already in use")
+        sys.exit(1)
 
 
 # noinspection PyShadowingNames
@@ -575,7 +575,7 @@ def fast_main(cmd: [str]) -> None:
     if not check_opt(opt, fast_mode=True):
         print(MSG_ERROR + " Invalid option! Use -" +
               '-|'.join(dictionary.cmds_fast_mode))
-        sys.exit("Invalid option")
+        sys.exit(1)
     else:
         if opt == 'o':
             if len(cmd) == 2:  # cmd have to be only 'gitcher <-o>'
@@ -611,7 +611,7 @@ def fast_main(cmd: [str]) -> None:
                 if len(cmd) == 3:  # Security check
                     if not check_profile(profname):
                         print_prof_error(profname)
-                        sys.exit("gitcher profile not exists")
+                        sys.exit(1)
                     # Else, if the profile exists, continue...
                     if opt == 's':
                         set_prof(profname)
@@ -631,7 +631,7 @@ if __name__ == "__main__":
         print(
             MSG_ERROR + " git is not installed in this machine. Impossible to "
                         "continue.")
-        sys.exit("git is not installed")
+        sys.exit(1)
 
     # Next, check if CHERFILE exists. If not and gitcher is ran as
     # interactive mode, propose to create it
@@ -647,9 +647,9 @@ if __name__ == "__main__":
             else:
                 print(MSG_ERROR + "Impossible to go on without gitcher "
                                   "dotfile.")
-                sys.exit("No gitcher file")
+                sys.exit(1)
         else:
-            sys.exit("No gitcher file")
+            sys.exit(1)
 
     # Now, create an unique instance for the execution gitcher dictionary
     dictionary = dictionary.Dictionary()
