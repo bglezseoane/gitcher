@@ -181,7 +181,7 @@ def check_syntax(arg: str) -> None:
 
 # noinspection PyShadowingNames
 def check_opt(opt_input: str, escape: bool = False,
-              interactive_mode: bool =False,
+              interactive_mode: bool = False,
               fast_mode: bool = False,
               whole: bool = False) -> bool:
     """Function that checks the integrity of the listen option. Options codes
