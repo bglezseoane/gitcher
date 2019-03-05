@@ -10,19 +10,19 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '0.4b0'
+__version__ = '0.1'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
-__status__ = 'Development'
+__status__ = 'Production'
 
 
 # Run setup
 setup(
     name='gitcher',
-    version='0.4b0',
+    version='0.1',
     packages=['gitcher'],
     requires=['validate_email', 'prettytable'],
-    data_files = [('share/man/man1', ['manpages/gitcher.1'])],
+    data_files=[('share/man/man1', ['manpages/gitcher.1'])],
     url='https://gitlab.com/GlezSeoane/gitcher',
     license='LICENSE',
     author='Borja González Seoane',
@@ -34,7 +34,7 @@ setup(
     classifiers=[
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Intended Audience :: Developers',
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Operating System :: Unix',
