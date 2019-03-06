@@ -3,14 +3,14 @@
 
 """gitcher setup module"""
 
-from distutils.core import setup
+from setuptools import setup
 
 # Authorship
 __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '1.2.1'
+__version__ = '1.2.2'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
 __status__ = 'Production'
@@ -19,14 +19,14 @@ __status__ = 'Production'
 # Run setup
 setup(
     name='gitcher',
-    version='1.2.1',
+    version='1.2.2',
     packages=['gitcher'],
-    requires=['validate_email', 'prettytable'],
+    install_requires=['validate_email', 'prettytable'],
     data_files=[('share/man/man1', ['manpages/gitcher.1']),
                 ("", ["LICENSE"])],
     url='https://gitlab.com/GlezSeoane/gitcher',
-    download_url='https://gitlab.com/GlezSeoane/gitcher/-/archive/v1.2.1'
-                 '/gitcher-v1.2.1.tar.gz',
+    download_url='https://gitlab.com/GlezSeoane/gitcher/-/archive/v1.2.2'
+                 '/gitcher-v1.2.2.tar.gz',
     license='LICENSE',
     author='Borja González Seoane',
     author_email='dev@glezseoane.com',
