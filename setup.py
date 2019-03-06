@@ -19,12 +19,12 @@ __status__ = 'Production'
 # Run setup
 setup(
     name='gitcher',
-    version='0.1',
+    version='1.0',
     packages=['gitcher'],
     requires=['validate_email', 'prettytable'],
     data_files=[('share/man/man1', ['manpages/gitcher.1'])],
     url='https://gitlab.com/GlezSeoane/gitcher',
-    download_url='https://gitlab.com/GlezSeoane/gitcher/-/archive/v0.4b0'
+    download_url='https://gitlab.com/GlezSeoane/gitcher/-/archive/v1.0'
                  '/gitcher-v1.0.tar.gz',
     license='LICENSE',
     author='Borja González Seoane',
