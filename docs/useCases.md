@@ -29,7 +29,7 @@ ask you for orders:
 - `u` to update a profile [U].
 - `m` to mirror a profile [M].
 - `d` to delete a profile [D].
-- `q` to quit *gitcher*.
+- `Ctrl.+C` to quit *gitcher*.
 
 
 ## Fast mode shortcuts

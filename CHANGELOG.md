@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.0 of 2019-03-06
+
+This is the first stable version of the program and the first version available on PyPI. It is fully tested.
+
+#### Added
+
+- Autocompleter helper support (only for interactive mode).
+
+
+#### Changed
+
+- Now a dictionary module recopilates every program keys.
+- Escape mode: Ctrl.+C is the new method to escape. Command words like 'quit' or 'exit' will not be supported from this version.
+- Relevant performance fixes and user experience improvements.
+
+
 ## v0.4b0 of 2019-02-23
 
 #### Added

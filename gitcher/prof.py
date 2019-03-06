@@ -11,10 +11,10 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '0.4b0'
+__version__ = '0.1'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
-__status__ = 'Development'
+__status__ = 'Production'
 
 
 class Prof(object):
@@ -42,9 +42,25 @@ class Prof(object):
         return self.profname + ": " + self.name + ", " + self.email + ", " +\
             signkey_str + ", " + signpref_str
 
-    def __tpl__(self):
-        """This function return a tuple representation of the object.
+    def simple_str(self):
+        """This function return a minimalistic representation of the profile,
+        without its name. It is util to some high level functions.
         """
+        if self.signkey is not None:
+            signkey_str = self.signkey
+            if self.signpref:
+                signpref_str = "Enabled"
+            else:
+                signpref_str = "Disabled"
+        else:
+            signkey_str = "Disabled"
+            signpref_str = ""
+
+        return self.name + ", " + self.email + ", " + signkey_str\
+            + ", " + signpref_str
+
+    def tpl(self):
+        """This function return a tuple representation of the object."""
         if self.signkey is not None:
             signkey_str = self.signkey
             if self.signpref:

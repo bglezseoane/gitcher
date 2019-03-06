@@ -8,13 +8,15 @@ between git profiles, importing configuration settings such
 as name, email and user signatures.
 """
 
-import os
+import readline
+import signal
 import sys
 
 from validate_email import validate_email
 from prettytable import PrettyTable
 
-from gitcher import model_layer
+from gitcher import model_layer, dictionary
+from gitcher.completer import TabCompleter
 from gitcher.prof import Prof
 from gitcher.not_found_prof_error import NotFoundProfError
 
@@ -23,10 +25,10 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '0.4b0'
+__version__ = '0.1'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
-__status__ = 'Development'
+__status__ = 'Production'
 
 # Prompt styles
 COLOR_BLUE = '\033[94m'
@@ -48,6 +50,21 @@ MSG_WARNING = "[" + COLOR_YELLOW + "WARNING" + COLOR_RST + "]"
 # ===============================================
 # =             Auxiliary functions             =
 # ===============================================
+
+def quit_gracefully(signum, frame) -> None:
+    """Function that prints a bye message. It is used to attach to escape
+    signal (i.e.: Ctrl.+C) during the performance of the program. So, it
+    is the exit function.
+
+    :return: None, print function
+    """
+    print(COLOR_BLUE + "Bye!" + COLOR_RST)
+    sys.exit(0)
+
+
+# Register previous function, linking it with Ctrl.+C
+signal.signal(signal.SIGINT, quit_gracefully)
+
 
 # noinspection PyShadowingNames
 def print_prof_error(profname: str) -> None:
@@ -77,7 +94,7 @@ def raise_order_format_error(arg: str = None) -> None:
     else:
         adv = "Check order syntax composition!"
         print(MSG_ERROR + " " + adv)
-    sys.exit(adv)
+    sys.exit(1)
 
 
 def print_prof_list() -> None:
@@ -85,13 +102,13 @@ def print_prof_list() -> None:
 
     :return: None, print function
     """
-    cprof = model_layer.model_recuperate_git_current_prof()  # Current profile
-    profs = model_layer.model_recuperate_profs()
+    cprof = model_layer.recuperate_git_current_prof()  # Current profile
+    profs = model_layer.recuperate_profs()
     if profs:  # If profs is not empty
         profs_table = PrettyTable(['Prof', 'Name', 'Email',
                                    'GPG key', 'Autosign'])
         for prof in profs:
-            row = prof.__tpl__()
+            row = prof.tpl()
             if prof.equivalent(cprof):
                 row = [(COLOR_CYAN + profeat + COLOR_RST) for profeat in row]
                 row[0] = row[0] + "*"
@@ -103,23 +120,39 @@ def print_prof_list() -> None:
         print("No gitcher profiles saved yet. Use 'a' option to add one.")
 
 
-def listen(text: str) -> str:
-    """Function that listen an user input, validates it, checks if it not a
-    escape command and then canalize message to caller function.
+def listen(text: str, autocompletion_context: [str] = None) -> str:
+    """Function that listen an user input, validates it and then canalize 
+    message to caller function. This function also provides the support for 
+    autocompletion. To use it, its neccesary to pass as second param the 
+    context list of keys against match.
 
     :param text: Name of the gitcher profile to operate with
     :type text: str
-    :return: User reply after canalize question via 'input()' function.
+    :param autocompletion_context: List of keys against match text to
+        autocompletion. None to do not use this service
+    :type autocompletion_context: [str]
+    :return: User reply after canalize question via 'input()' function
     :rtype: str
     """
-    reply = input(text)
-    if check_opt(reply, escape=True):
-        print(COLOR_BLUE + "Bye!" + COLOR_RST)
-        sys.exit(0)
+    if autocompletion_context:  # Set autocompletion set
+        # Init autocompletion support
+        readline.set_completer_delims('\t')
+        readline.parse_and_bind("tab: complete")
+        completer = TabCompleter(autocompletion_context)
+        readline.set_completer(completer.service)
+
+    reply = input(text).strip()
+
+    if autocompletion_context:  # Clean autocompletion set
+        # noinspection PyUnboundLocalVariable
+        completer = TabCompleter([])
+        readline.set_completer(completer.service)
+
     try:
         check_syntax(reply)
     except SyntaxError:
         listen(text)  # Recursive loop to have a valid value
+
     return reply
 
 
@@ -131,7 +164,8 @@ def yes_or_no(question: str) -> bool:
     :return: User reply
     :rtype: bool
     """
-    reply = str(listen(question + " (y|n): ")).lower().strip()
+    reply = str(listen(question + " (y|n): ",
+                       autocompletion_context=['y', 'n'])).lower().strip()
     if reply[0] == 'y':
         return True
     if reply[0] == 'n':
@@ -157,58 +191,53 @@ def check_syntax(arg: str) -> None:
 
 
 # noinspection PyShadowingNames
-def check_opt(opt_input: str, escape: bool = False, fast_mode: bool = False,
-              both_modes: bool = False) -> bool:
+def check_opt(opt_input: str,
+              interactive_mode: bool = False,
+              fast_mode: bool = False,
+              whole: bool = False) -> bool:
     """Function that checks the integrity of the listen option. Options codes
     of the interactive and the fast mode can be passed.
 
-    escape flag set to true is to indicate that the check is only to validate
-    if opt is a correct escape command, discarding the other option commands.
-    Use the others flags expands this case.
+    interactive_mode flag is to indicate that the check provides to an
+    interactive_mode call.
 
-    The fast mode options should to be passed with the fast_mode bool flag
-    set to true. This is because there are some options that only works for one
-    of the modes.
+    fast_mode flag is to indicate that the check provides to an fast_mode call.
 
-    The both_mode flag may be passed to true to check if one option is valid
-    for at least one of the two program modes.
+    This flags act as switches to their respective modes. It is possible to
+    combine various or even all modes simply by setting to True their
+    respective flags. It is like the algebraic union operation.
 
-    If both_modes is passed set to true, the result will include fast_mode
-    necessary. So both_modes set to true overwrite fast_mode and always set
-    it to true. And evidently, also includes escape commands.
+    The whole flag traces the subscribed union of sets directly.
 
-    Note that the default mode, if all flags are passed set to false or are
-    not passed is the for interactive mode options check.
+    Note that the default sets every flags to False, so the reply will be
+    always False.
 
     :param opt_input: User input option
     :type opt_input: str
-    :param escape: Flag to indicate that the check is only to validate if opt
-        is a correct escape command
-    :type escape: bool
-    :param fast_mode: Flag to indicate that the option provides to a fast mode
-        call
+    :param fast_mode: Flag to indicate that the check is to validate from a
+        fast mode call
     :type fast_mode: bool
-    :param both_modes: Flag to check if the passed opt its valid for at least
-        one of the modes: "opt is ok for interactive or fast mode?"
-    :type both_modes: bool
+    :param interactive_mode: Flag to indicate that the check is to validate
+        from a interactive mode call
+    :type interactive_mode: bool
+    :param whole: Flag to check if the passed opt its valid for at least
+        one of the modes
+    :type whole: bool
     :return: Confirmation about the validation of the passed option
     :rtype: bool
     """
-    # Always included options stock
-    opts_stock = ['quit', 'QUIT', 'exit', 'EXIT']
+    opts_stock = []  # Initial empty
 
-    if not escape:  # Expand to two modes common options codes
-        opts_stock.extend(['s', 'g', 'a', 'd'])
-        if both_modes:
-            # Recursive loop to evaluate the two possibilities
-            return check_opt(opt_input, fast_mode=False)\
-                or check_opt(opt_input, fast_mode=True)
-        else:
-            if not fast_mode:  # Interactive mode exclusive options extension
-                opts_stock.extend(['u', 'm'])
-            else:  # Fast mode exclusive options extension
-                opts_stock.append('o')
+    # Expansions attending to config
+    if whole:
+        opts_stock.extend(dictionary.get_union_all())
+    else:
+        if interactive_mode:
+            opts_stock.extend(dictionary.cmds_interactive_mode)
+        if fast_mode:
+            opts_stock.extend(dictionary.cmds_fast_mode)
 
+    # Try to match
     if any(opt_input == opt_pattern for opt_pattern in opts_stock):
         return True
     else:
@@ -246,7 +275,7 @@ def recover_prof(profname: str) -> Prof:
     :raise: NotFoundProfError
     """
     try:
-        return model_layer.model_recuperate_prof(profname)
+        return model_layer.recuperate_prof(profname)
     except NotFoundProfError:
         raise NotFoundProfError
 
@@ -260,8 +289,20 @@ def print_current_on_prof() -> None:
 
     :return: None, print function
     """
-    cprof = model_layer.model_recuperate_git_current_prof()  # Current profile
-    print(cprof.__str__())
+    cprof = model_layer.recuperate_git_current_prof()  # Current profile
+
+    # Now, cprof is compared against saved profiles list. cprof is an
+    # extract of the git user configuration, that is independent of the
+    # gitcher data and scope. So, with next operations it is checked if
+    # current config is saved on gitcher, and it is created a mixed dataset to
+    # print the information
+    profs = model_layer.recuperate_profs()
+    for prof in profs:
+        if cprof.equivalent(prof):
+            print(prof.profname + ": " + cprof.simple_str())
+            return
+    # If not found in list...
+    print(MSG_OK + " Unsaved profile: " + cprof.simple_str())
 
 
 # noinspection PyShadowingNames
@@ -276,7 +317,7 @@ def set_prof(profname: str) -> None:
     :return: None
     """
     if model_layer.check_git_context():
-        model_layer.model_switch_prof(profname)
+        model_layer.switch_prof(profname)
         print(MSG_OK + " Switched to {0} profile.".format(profname))
     else:
         print(MSG_ERROR + " Current directory not contains a git repository.")
@@ -293,7 +334,7 @@ def set_prof_global(profname: str) -> None:
     :type profname: str
     :return: None
     """
-    model_layer.model_switch_prof(profname, '--global')
+    model_layer.switch_prof(profname, '--global')
     print(MSG_OK + " Set {0} as git default profile.".format(profname))
 
 
@@ -327,7 +368,7 @@ def add_prof() -> None:
 
     # Save it...
     prof = model_layer.Prof(profname, name, email, signkey, signpref)
-    model_layer.model_save_profile(prof)
+    model_layer.save_profile(prof)
     print(MSG_OK + " New profile {0} added.".format(profname))
 
 
@@ -351,11 +392,11 @@ def add_prof_fast(profname: str, name: str, email: str, signkey: str,
     """
     if not check_profile(profname):  # Profname have to be unique
         prof = model_layer.Prof(profname, name, email, signkey, signpref)
-        model_layer.model_save_profile(prof)
+        model_layer.save_profile(prof)
         print(MSG_OK + " New profile {0} added.".format(profname))
     else:
         print(MSG_ERROR + " {0} yet exists!".format(profname))
-        sys.exit("gitcher profile name already in use")
+        sys.exit(1)
 
 
 # noinspection PyShadowingNames
@@ -367,13 +408,15 @@ def update_prof() -> None:
     """
     print("\nLets go to update a gitcher profile...")
 
-    old_profname = listen("Enter the profile name: ")
+    old_profname = listen("Enter the profile name: ",
+                          dictionary.profs_profnames)
     while not check_profile(old_profname):
         print(MSG_ERROR + " {0} not exists. Change name...".format(
             old_profname))
-        old_profname = listen("Enter profile name: ")
+        old_profname = listen("Enter profile name: ",
+                              dictionary.profs_profnames)
 
-    prof = model_layer.model_recuperate_prof(old_profname)
+    prof = model_layer.recuperate_prof(old_profname)
 
     profname = old_profname
     if yes_or_no("Do you want to update the profile name?"):
@@ -400,10 +443,10 @@ def update_prof() -> None:
         signpref = prof.signpref
 
     # Remove the old profile
-    model_layer.model_delete_profile(old_profname)
+    model_layer.delete_profile(old_profname)
     # And save the new...
     prof = model_layer.Prof(profname, name, email, signkey, signpref)
-    model_layer.model_save_profile(prof)
+    model_layer.save_profile(prof)
     print(MSG_OK + " Profile {0} updated.".format(profname))
 
 
@@ -424,7 +467,7 @@ def mirror_prof(origin_profname: str) -> None:
             new_profname))
         new_profname = listen("Enter profile name: ")
 
-    prof = model_layer.model_recuperate_prof(origin_profname)
+    prof = model_layer.recuperate_prof(origin_profname)
 
     profname = new_profname
     name = prof.name
@@ -434,7 +477,7 @@ def mirror_prof(origin_profname: str) -> None:
 
     # Save the new profile...
     prof = model_layer.Prof(profname, name, email, signkey, signpref)
-    model_layer.model_save_profile(prof)
+    model_layer.save_profile(prof)
     print(MSG_OK + " Profile {0} created.".format(profname))
 
 
@@ -448,7 +491,7 @@ def delete_prof(profname: str) -> None:
     :type profname: [str]
     :return: None
     """
-    model_layer.model_delete_profile(profname)
+    model_layer.delete_profile(profname)
     print(MSG_OK + " Profile {0} deleted.".format(profname))
 
 
@@ -477,20 +520,23 @@ def interactive_main() -> None:
     print(COLOR_BRI_CYAN + "m" + COLOR_RST + "    mirror a profile to create a"
                                              " duplicate.")
     print(COLOR_BRI_CYAN + "d" + COLOR_RST + "    delete a profile.")
-    print("\nInput " + COLOR_BRI_CYAN + "quit" + COLOR_RST + " everywhere "
-                                                             "to quit "
-                                                             "gitcher.\n")
+    print("\nUse " + COLOR_BRI_CYAN + "Ctrl.+C" + COLOR_RST +
+          " everywhere to quit.\n")
 
-    opt = listen("Option: ")
-    while not check_opt(opt):
-        print(MSG_ERROR + " Invalid opt! Use s|g|a|u|m|d. Type exit to quit.")
-        opt = listen("Enter option: ")
+    opt = listen("Option: ", dictionary.get_union_cmds_set())
+    while not check_opt(opt, interactive_mode=True):
+        print(MSG_ERROR + " Invalid opt! Use " +
+              '|'.join(dictionary.cmds_interactive_mode) +
+              ". Type exit to quit.")
+        opt = listen("Enter option: ", dictionary.get_union_cmds_set())
 
     if not opt == 'a' and not opt == 'u':
-        profname = listen("Select the desired profile entering its name: ")
+        profname = listen("Select the desired profile entering its name: ",
+                          dictionary.profs_profnames)
         while not check_profile(profname):
             print_prof_error(profname)
-            profname = listen("Enter profile name: ")
+            profname = listen("Enter profile name: ",
+                              dictionary.profs_profnames)
 
         if opt == 's':
             set_prof(profname)
@@ -526,8 +572,9 @@ def fast_main(cmd: [str]) -> None:
     # If syntax is ok, go on and check selected option
     opt = cmd[1].replace('-', '')
     if not check_opt(opt, fast_mode=True):
-        print(MSG_ERROR + " Invalid option! Use -o|-s|-g|-a|-d.")
-        sys.exit("Invalid option")
+        print(MSG_ERROR + " Invalid option! Use -" +
+              '-|'.join(dictionary.cmds_fast_mode))
+        sys.exit(1)
     else:
         if opt == 'o':
             if len(cmd) == 2:  # cmd have to be only 'gitcher <-o>'
@@ -563,7 +610,7 @@ def fast_main(cmd: [str]) -> None:
                 if len(cmd) == 3:  # Security check
                     if not check_profile(profname):
                         print_prof_error(profname)
-                        sys.exit("gitcher profile not exists")
+                        sys.exit(1)
                     # Else, if the profile exists, continue...
                     if opt == 's':
                         set_prof(profname)
@@ -583,25 +630,26 @@ if __name__ == "__main__":
         print(
             MSG_ERROR + " git is not installed in this machine. Impossible to "
                         "continue.")
-        sys.exit("git is not installed")
+        sys.exit(1)
 
     # Next, check if CHERFILE exists. If not and gitcher is ran as
     # interactive mode, propose to create it
-    cherfile = model_layer.CHERFILE
-    if not os.path.exists(cherfile):
-        print(MSG_ERROR + " {0} not exists and it is necessary.".format(
-            cherfile))
+    if not model_layer.check_cherfile():
+        print(MSG_ERROR + " CHERFILE not exists and it is necessary.")
 
-        if (len(sys.argv)) > 1:
-            if yes_or_no("Do you want to create {0}?".format(cherfile)):
-                open(cherfile, 'w')
+        if not len(sys.argv) > 1:  # Interactive mode
+            if yes_or_no("Do you want to create the CHERFILE?"):
+                model_layer.create_cherfile()
                 print(MSG_OK + " Gitcher config dotfile created. Go on...")
             else:
-                print(MSG_ERROR + "Impossible to go on without gitcher "
+                print(MSG_ERROR + " Impossible to go on without gitcher "
                                   "dotfile.")
-                sys.exit("No gitcher file")
+                sys.exit(1)
         else:
-            sys.exit("No gitcher file")
+            sys.exit(1)
+
+    # Now, create an unique instance for the execution gitcher dictionary
+    dictionary = dictionary.Dictionary()
 
     # After firsts checks, run gitcher
     if (len(sys.argv)) == 1:  # Interactive mode
