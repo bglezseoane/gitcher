@@ -21,7 +21,7 @@ setup(
     name='gitcher',
     version='1.2.2',
     packages=['gitcher'],
-    install_requires=['validate_email', 'prettytable'],
+    install_requires=['validate_email=1.3', 'prettytable=0.7.2'],
     data_files=[('share/man/man1', ['manpages/gitcher.1']),
                 ("", ["LICENSE"])],
     url='https://gitlab.com/GlezSeoane/gitcher',
