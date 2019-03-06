@@ -49,15 +49,29 @@ The `~/.cherfile` file contains the saved profiles data.
 
 ## To set up
 
-Go to this repository home directory and run:
+You can use PyPI to install this program:
+
+```
+$ python install gitcher
+```
+
+Alternative, clone and go to this repository home directory, and then run:
 
 ```
 $ python setup.py install
 ```
 
-This install gitcher on your machine. Now you can run it on your shell using:
+Both methods install last **gitcher** stable version on your machine. Now you can run it on your shell using:
 
 ```
 $ python -m gitcher
 ```
 
+In addiction, you can add next lines to your shell configuration file (`.zshrc`, `~/.bash_profile`) to abbreviation **gitcher** invocation:
+
+```
+########################
+# gitcher abbreviation #
+########################
+alias gitcher="python -m gitcher"
+```
