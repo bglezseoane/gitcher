@@ -3,7 +3,7 @@
 
 """gitcher setup module"""
 
-from distutils.core import setup
+from setuptools import setup
 
 # Authorship
 __author__ = 'Borja González Seoane'
@@ -21,7 +21,7 @@ setup(
     name='gitcher',
     version='1.2.1',
     packages=['gitcher'],
-    requires=['validate_email', 'prettytable'],
+    install_requires=['validate_email', 'prettytable'],
     data_files=[('share/man/man1', ['manpages/gitcher.1']),
                 ("", ["LICENSE"])],
     url='https://gitlab.com/GlezSeoane/gitcher',
