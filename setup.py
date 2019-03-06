@@ -22,17 +22,18 @@ setup(
     version='1.2',
     packages=['gitcher'],
     requires=['validate_email', 'prettytable'],
-    data_files=[('share/man/man1', ['manpages/gitcher.1'])],
+    data_files=[('share/man/man1', ['manpages/gitcher.1']),
+                ("", ["LICENSE"])],
     url='https://gitlab.com/GlezSeoane/gitcher',
     download_url='https://gitlab.com/GlezSeoane/gitcher/-/archive/v1.2'
                  '/gitcher-v1.2.tar.gz',
     license='LICENSE',
     author='Borja González Seoane',
     author_email='dev@glezseoane.com',
-    description='A git switcher.',
-    long_description='A git switcher. It facilitates the switching between '
-                     'git profiles,importing configuration settings such as '
-                     'name email and user signatures.',
+    description='The git profile switcher.',
+    long_description='The git profile switcher. It facilitates the switching '
+                     'between git profiles, importing configuration settings '
+                     'such as name, email and user signatures.',
     classifiers=[
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Intended Audience :: Developers',
