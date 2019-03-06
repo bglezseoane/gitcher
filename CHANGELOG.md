@@ -2,9 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.2 of 2019-03-06
+
+This is the first version available on PyPI
+
+
 ## v1.0 of 2019-03-06
 
-This is the first stable version of the program and the first version available on PyPI. It is fully tested.
+This is the first stable version of the program. It is fully tested.
 
 #### Added
 
