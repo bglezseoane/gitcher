@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.3 of 2019-03-06
+
+#### Changed
+
+- Fix small fails with PyPI distribution.
+
+
 ## v1.2 of 2019-03-06
 
 This is the first version available on PyPI
