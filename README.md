@@ -52,7 +52,7 @@ The `~/.cherfile` file contains the saved profiles data.
 You can use PyPI to install this program:
 
 ```
-$ python install gitcher
+$ pip install gitcher
 ```
 
 Alternative, clone and go to this repository home directory, and then run:
