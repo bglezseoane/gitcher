@@ -109,7 +109,7 @@ def print_prof_list() -> None:
                                    'GPG key', 'Autosign'])
         for prof in profs:
             row = prof.tpl()
-            if prof.equivalent(cprof):
+            if prof == cprof:
                 row = [(COLOR_CYAN + profeat + COLOR_RST) for profeat in row]
                 row[0] = row[0] + "*"
             profs_table.add_row(row)
@@ -298,7 +298,7 @@ def print_current_on_prof() -> None:
     # print the information
     profs = model_layer.recuperate_profs()
     for prof in profs:
-        if cprof.equivalent(prof):
+        if cprof == prof:
             print(prof.profname + ": " + cprof.simple_str())
             return
     # If not found in list...
