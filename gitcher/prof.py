@@ -73,14 +73,9 @@ class Prof(object):
 
         return self.profname, self.name, self.email, signkey_str, signpref_str
 
-    def equivalent(self, other) -> bool:
-        """This function checks if self profile is equivalent to another
-        (i.e.: all params equal except the profname).
-        """
-        if self.name == other.name:
-            if self.email == other.email:
-                if self.signkey == other.signkey:
-                    if self.signpref == other.signpref:
-                        return True
-        # Else...
-        return False
+    def __hash__(self):
+        return hash((self.name + self.email + self.signkey +
+                     str(self.signpref)))
+
+    def __eq__(self, other):
+        return hash(self) == hash(other)
