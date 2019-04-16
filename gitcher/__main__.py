@@ -86,7 +86,7 @@ def raise_order_format_error(arg: str = None) -> None:
     :param arg: Implicated argument
     :type arg: str
     :return: None, print function
-    :raise SyntaxErrorr: Raise error by a bad order compose.
+    :raise SyntaxError: Raise error by a bad order compose.
     """
     if arg is not None:
         adv = "Check param {0} syntax!".format(arg)
