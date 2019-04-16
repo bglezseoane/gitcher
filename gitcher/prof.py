@@ -36,11 +36,11 @@ class Prof(object):
             else:
                 signpref_str = "Disabled"
         else:
-            signkey_str = "Disabled"
-            signpref_str = ""
+            signkey_str = "Sign disabled"
+            signpref_str = "Autosign disabled"
 
-        return self.profname + ": " + self.name + ", " + self.email + ", " +\
-            signkey_str + ", " + signpref_str
+        return self.profname + ": " + ", ".join([self.name, self.email,
+                                                 signkey_str, signpref_str])
 
     def simple_str(self):
         """This function return a minimalistic representation of the profile,
@@ -49,15 +49,14 @@ class Prof(object):
         if self.signkey is not None:
             signkey_str = self.signkey
             if self.signpref:
-                signpref_str = "Enabled"
+                signpref_str = "Autosign enabled"
             else:
-                signpref_str = "Disabled"
+                signpref_str = "Autosign disabled"
         else:
-            signkey_str = "Disabled"
-            signpref_str = ""
+            signkey_str = "Sign disabled"
+            signpref_str = "Autosign disabled"
 
-        return self.name + ", " + self.email + ", " + signkey_str\
-            + ", " + signpref_str
+        return ", ".join([self.name, self.email, signkey_str, signpref_str])
 
     def tpl(self):
         """This function return a tuple representation of the object."""
