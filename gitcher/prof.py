@@ -73,7 +73,7 @@ class Prof(object):
         return self.profname, self.name, self.email, signkey_str, signpref_str
 
     def __hash__(self):
-        return hash((self.name + self.email + self.signkey +
+        return hash((self.name + self.email + str(self.signkey) +
                      str(self.signpref)))
 
     def __eq__(self, other):
