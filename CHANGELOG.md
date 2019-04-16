@@ -2,7 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
-## v1.3 of 2019-03-06
+## v1.3 of 2019-04-16
+
+This is the first version available on Homebrew.
+
+#### Added
+
+- Profiles list representation switch.
+
+
+## v1.2.2 of 2019-03-06
 
 #### Changed
 
@@ -11,7 +20,7 @@ All notable changes to this project will be documented in this file.
 
 ## v1.2 of 2019-03-06
 
-This is the first version available on PyPI
+This is the first version available on PyPI.
 
 
 ## v1.0 of 2019-03-06
