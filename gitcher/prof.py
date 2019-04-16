@@ -11,7 +11,7 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '1.2.2'
+__version__ = '1.3'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
 __status__ = 'Production'
@@ -36,11 +36,11 @@ class Prof(object):
             else:
                 signpref_str = "Disabled"
         else:
-            signkey_str = "Disabled"
-            signpref_str = ""
+            signkey_str = "Sign disabled"
+            signpref_str = "Autosign disabled"
 
-        return self.profname + ": " + self.name + ", " + self.email + ", " +\
-            signkey_str + ", " + signpref_str
+        return self.profname + ": " + ", ".join([self.name, self.email,
+                                                 signkey_str, signpref_str])
 
     def simple_str(self):
         """This function return a minimalistic representation of the profile,
@@ -49,15 +49,14 @@ class Prof(object):
         if self.signkey is not None:
             signkey_str = self.signkey
             if self.signpref:
-                signpref_str = "Enabled"
+                signpref_str = "Autosign enabled"
             else:
-                signpref_str = "Disabled"
+                signpref_str = "Autosign disabled"
         else:
-            signkey_str = "Disabled"
-            signpref_str = ""
+            signkey_str = "Sign disabled"
+            signpref_str = "Autosign disabled"
 
-        return self.name + ", " + self.email + ", " + signkey_str\
-            + ", " + signpref_str
+        return ", ".join([self.name, self.email, signkey_str, signpref_str])
 
     def tpl(self):
         """This function return a tuple representation of the object."""
@@ -73,14 +72,9 @@ class Prof(object):
 
         return self.profname, self.name, self.email, signkey_str, signpref_str
 
-    def equivalent(self, other) -> bool:
-        """This function checks if self profile is equivalent to another
-        (i.e.: all params equal except the profname).
-        """
-        if self.name == other.name:
-            if self.email == other.email:
-                if self.signkey == other.signkey:
-                    if self.signpref == other.signpref:
-                        return True
-        # Else...
-        return False
+    def __hash__(self):
+        return hash((self.name + self.email + str(self.signkey) +
+                     str(self.signpref)))
+
+    def __eq__(self, other):
+        return hash(self) == hash(other)

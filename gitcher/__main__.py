@@ -7,7 +7,7 @@ gitcher is a git profile switcher. It facilitates the switching
 between git profiles, importing configuration settings such
 as name, email and user signatures.
 """
-
+import os
 import readline
 import signal
 import sys
@@ -25,7 +25,7 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '1.2.2'
+__version__ = '1.3'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
 __status__ = 'Production'
@@ -86,7 +86,7 @@ def raise_order_format_error(arg: str = None) -> None:
     :param arg: Implicated argument
     :type arg: str
     :return: None, print function
-    :raise SyntaxErrorr: Raise error by a bad order compose.
+    :raise SyntaxError: Raise error by a bad order compose.
     """
     if arg is not None:
         adv = "Check param {0} syntax!".format(arg)
@@ -105,17 +105,35 @@ def print_prof_list() -> None:
     cprof = model_layer.recuperate_git_current_prof()  # Current profile
     profs = model_layer.recuperate_profs()
     if profs:  # If profs is not empty
-        profs_table = PrettyTable(['Prof', 'Name', 'Email',
-                                   'GPG key', 'Autosign'])
-        for prof in profs:
-            row = prof.tpl()
-            if prof.equivalent(cprof):
-                row = [(COLOR_CYAN + profeat + COLOR_RST) for profeat in row]
-                row[0] = row[0] + "*"
-            profs_table.add_row(row)
+        _, terminal_width = os.popen('stty size', 'r').read().split()
+        terminal_width = int(terminal_width)
 
-        print(profs_table)
-        print("*: current in use gitcher profile.")
+        big_prof_len = max([sum(len(str(att)) for att in prof) for prof in
+                            [prof.tpl() for prof in profs]])
+        big_prof_len += 10 + 6  # Spaces and bars to separate attributes
+
+        if terminal_width >= big_prof_len:  # Viable table representation
+            """Switchs between table and list representations to avoid graphic 
+            crashes. Compares the terminal width with the length of the biggest 
+            profs list element."""
+            profs_table = PrettyTable(['Prof', 'Name', 'Email',
+                                       'GPG key', 'Autosign'])
+            for prof in profs:
+                row = prof.tpl()
+                if prof == cprof:
+                    row = [(COLOR_CYAN + profatt + COLOR_RST) for profatt in
+                           row]
+                    row[0] += "*"
+                profs_table.add_row(row)
+            print(profs_table)
+            print("*: current in use gitcher profile.")
+        else:  # Not viable table representation
+            for prof in profs:
+                if prof == cprof:
+                    print("- " + COLOR_CYAN + prof.simple_str() + COLOR_RST +
+                          " [CURRENT]")
+                else:
+                    print("- " + prof.simple_str())
     else:
         print("No gitcher profiles saved yet. Use 'a' option to add one.")
 
@@ -298,7 +316,7 @@ def print_current_on_prof() -> None:
     # print the information
     profs = model_layer.recuperate_profs()
     for prof in profs:
-        if cprof.equivalent(prof):
+        if cprof == prof:
             print(prof.profname + ": " + cprof.simple_str())
             return
     # If not found in list...
