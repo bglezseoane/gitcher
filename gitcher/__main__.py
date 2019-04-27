@@ -46,11 +46,13 @@ MSG_OK = "[" + COLOR_GREEN + "OK" + COLOR_RST + "]"
 MSG_ERROR = "[" + COLOR_RED + "ERROR" + COLOR_RST + "]"
 MSG_WARNING = "[" + COLOR_YELLOW + "WARNING" + COLOR_RST + "]"
 
+# Unique global instance for the execution gitcher dictionary
+dictionary = dictionary.Dictionary()
+
 
 # ===============================================
 # =             Auxiliary functions             =
 # ===============================================
-
 def quit_gracefully(signum, frame) -> None:
     """Function that prints a bye message. It is used to attach to escape
     signal (i.e.: Ctrl.+C) during the performance of the program. So, it
@@ -642,7 +644,7 @@ def fast_main(cmd: [str]) -> None:
             raise_order_format_error()
 
 
-if __name__ == "__main__":
+def main():
     # First, check if git is installed
     if not model_layer.check_git_installed():
         print(
@@ -666,11 +668,12 @@ if __name__ == "__main__":
         else:
             sys.exit(1)
 
-    # Now, create an unique instance for the execution gitcher dictionary
-    dictionary = dictionary.Dictionary()
-
     # After firsts checks, run gitcher
     if (len(sys.argv)) == 1:  # Interactive mode
         interactive_main()
     elif (len(sys.argv)) > 1:  # Fast mode
         fast_main(sys.argv)
+
+
+if __name__ == "__main__":
+    main()

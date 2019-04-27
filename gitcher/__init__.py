@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 
-"""gitcher not_found_prof_error class module
+"""gitcher module init file
 
-This module constains the class taht represents a gitcher not found profile
-exception.
+gitcher is a git profile switcher. It facilitates the switching
+between git profiles, importing configuration settings such
+as name, email and user signatures.
 """
 
 # Authorship
@@ -16,8 +17,3 @@ __version__ = '1.3'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
 __status__ = 'Production'
-
-
-class NotFoundProfError(Exception):
-    """Class that represents a gitcher not found profile exception."""
-    pass

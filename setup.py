@@ -16,12 +16,17 @@ __email__ = 'dev@glezseoane.com'
 __status__ = 'Production'
 
 
-# Run setup
 setup(
     name='gitcher',
     version='1.3',
     packages=['gitcher'],
-    install_requires=['validate_email=1.3', 'prettytable=0.7.2'],
+    entry_points={
+        'console_scripts': [
+            'gitcher=gitcher.__main__:main',
+        ],
+    },
+    python_requires='>=3.6',
+    install_requires=['validate_email==1.3', 'prettytable==0.7.2'],
     data_files=[('share/man/man1', ['manpages/gitcher.1']),
                 ("", ["LICENSE"])],
     url='https://gitlab.com/GlezSeoane/gitcher',
