@@ -25,7 +25,7 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '1.3'
+__version__ = '2.0'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
 __status__ = 'Production'
@@ -46,11 +46,13 @@ MSG_OK = "[" + COLOR_GREEN + "OK" + COLOR_RST + "]"
 MSG_ERROR = "[" + COLOR_RED + "ERROR" + COLOR_RST + "]"
 MSG_WARNING = "[" + COLOR_YELLOW + "WARNING" + COLOR_RST + "]"
 
+# Unique global instance for the execution gitcher dictionary
+dictionary = dictionary.Dictionary()
+
 
 # ===============================================
 # =             Auxiliary functions             =
 # ===============================================
-
 def quit_gracefully(signum, frame) -> None:
     """Function that prints a bye message. It is used to attach to escape
     signal (i.e.: Ctrl.+C) during the performance of the program. So, it
@@ -302,8 +304,21 @@ def recover_prof(profname: str) -> Prof:
 # =                Main launchers               =
 # ===============================================
 
-def print_current_on_prof() -> None:
-    """Function that prints the current in use ON profile information.
+def list_profs() -> None:
+    """Function that prints a list with saved profiles.
+
+    :return: None, print function
+    """
+    profs = model_layer.recuperate_profs()
+    if profs:  # If profs is not empty
+        for prof in profs:
+            print("- " + prof.simple_str())
+    else:
+        print("No gitcher profiles saved yet. Use 'a' option to add one.")
+
+
+def show_current_on_prof() -> None:
+    """Function that shows the current in use ON profile information.
 
     :return: None, print function
     """
@@ -572,6 +587,8 @@ def interactive_main() -> None:
         else:  # Option 'u'
             update_prof()
 
+    print("\n")  # Graphical interaction separator in loop context
+
 
 def fast_main(cmd: [str]) -> None:
     """Runs fast passed options after to do necessary checks.
@@ -596,7 +613,12 @@ def fast_main(cmd: [str]) -> None:
     else:
         if opt == 'o':
             if len(cmd) == 2:  # cmd have to be only 'gitcher <-o>'
-                print_current_on_prof()
+                show_current_on_prof()
+            else:
+                raise_order_format_error()
+        if opt == 'l':
+            if len(cmd) == 2:  # cmd have to be only 'gitcher <-l>'
+                list_profs()
             else:
                 raise_order_format_error()
         elif len(cmd) >= 3:  # cmd have to be 'gitcher <-opt> <profname> [...]'
@@ -642,7 +664,7 @@ def fast_main(cmd: [str]) -> None:
             raise_order_format_error()
 
 
-if __name__ == "__main__":
+def main():
     # First, check if git is installed
     if not model_layer.check_git_installed():
         print(
@@ -666,11 +688,13 @@ if __name__ == "__main__":
         else:
             sys.exit(1)
 
-    # Now, create an unique instance for the execution gitcher dictionary
-    dictionary = dictionary.Dictionary()
-
     # After firsts checks, run gitcher
-    if (len(sys.argv)) == 1:  # Interactive mode
-        interactive_main()
+    if (len(sys.argv)) == 1:  # Interactive mode, closure execution in a loop
+        while True:  # The user inputs the exit order during the session
+            interactive_main()
     elif (len(sys.argv)) > 1:  # Fast mode
         fast_main(sys.argv)
+
+
+if __name__ == "__main__":
+    main()
