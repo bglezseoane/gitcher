@@ -616,7 +616,7 @@ def fast_main(cmd: [str]) -> None:
                 show_current_on_prof()
             else:
                 raise_order_format_error()
-        if opt == 'l':
+        elif opt == 'l':
             if len(cmd) == 2:  # cmd have to be only 'gitcher <-l>'
                 list_profs()
             else:
