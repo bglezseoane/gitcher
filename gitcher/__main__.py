@@ -574,6 +574,8 @@ def interactive_main() -> None:
         else:  # Option 'u'
             update_prof()
 
+    print("\n")  # Graphical interaction separator in loop context
+
 
 def fast_main(cmd: [str]) -> None:
     """Runs fast passed options after to do necessary checks.
@@ -669,8 +671,9 @@ def main():
             sys.exit(1)
 
     # After firsts checks, run gitcher
-    if (len(sys.argv)) == 1:  # Interactive mode
-        interactive_main()
+    if (len(sys.argv)) == 1:  # Interactive mode, closure execution in a loop
+        while True:  # The user inputs the exit order during the session
+            interactive_main()
     elif (len(sys.argv)) > 1:  # Fast mode
         fast_main(sys.argv)
 
