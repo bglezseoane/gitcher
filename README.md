@@ -49,7 +49,13 @@ The `~/.cherfile` file contains the saved profiles data.
 
 ## To set up
 
-You can use PyPI to install this program:
+You can use Homebrew to install this program via my tap repository. The formula is in pull request to be added to Homebrew core:
+
+```
+$ brew install glezseoane/homebrew-tap/gitcher
+```
+
+You also can use PyPI to install this program:
 
 ```
 $ pip install gitcher
