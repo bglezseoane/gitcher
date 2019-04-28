@@ -64,14 +64,7 @@ $ python setup.py install
 Both methods install last **gitcher** stable version on your machine. Now you can run it on your shell using:
 
 ```
-$ python -m gitcher
+$ gitcher
 ```
 
-In addiction, you can add next lines to your shell configuration file (`.zshrc`, `~/.bash_profile`) to abbreviation **gitcher** invocation:
-
-```
-########################
-# gitcher abbreviation #
-########################
-alias gitcher="python -m gitcher"
-```
+Read the man of this tool to known more about its use.
