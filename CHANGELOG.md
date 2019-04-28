@@ -2,13 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-## v1.3 of 2019-04-16
+## v2.0 of 2019-04-28
 
-This is the first version available on Homebrew.
+This is the first version available to download via Homebrew.
+
+#### Added
+
+- Automatic setup of script endpoint to run the module directly using `$ gitcher` command.
+- Interactive mode loop closure.
+- Fast mode profiles listing operation.
+
+
+
+## v1.3 of 2019-04-16
 
 #### Added
 
 - Profiles list representation switch.
+
 
 
 ## v1.2.2 of 2019-03-06
@@ -21,6 +32,7 @@ This is the first version available on Homebrew.
 ## v1.2 of 2019-03-06
 
 This is the first version available on PyPI.
+
 
 
 ## v1.0 of 2019-03-06
@@ -37,6 +49,7 @@ This is the first stable version of the program. It is fully tested.
 - Now a dictionary module recopilates every program keys.
 - Escape mode: Ctrl.+C is the new method to escape. Command words like 'quit' or 'exit' will not be supported from this version.
 - Relevant performance fixes and user experience improvements.
+
 
 
 ## v0.4b0 of 2019-02-23
@@ -57,6 +70,7 @@ param.
 - Relevant performance fixes.
 
 
+
 ## v0.3b0 of 2019-02-19
 
 #### Added
@@ -73,6 +87,8 @@ param.
 - Fix some performance failures.
 
 
+
+
 ## Previous alpha phase
 
 ### v0.2a1 of 2019-02-09
@@ -80,6 +96,7 @@ param.
 #### Changed
 
 This version fixes an error with the set up routine. The necessary libraries were not being imported.
+
 
 
 ### v0.2a0 of 2019-02-09
@@ -95,6 +112,7 @@ This version fixes an error with the set up routine. The necessary libraries wer
 - Improves the user experience with better output printing presentation.
 
 
+
 ### v0.1a1 of 2019-02-07
 
 #### Changed
@@ -102,9 +120,9 @@ This version fixes an error with the set up routine. The necessary libraries wer
 Set global option crashed when try to use from a directory that does not contains a git repository. It was by a performance dependencies of 'gitpython' library. The library will be removed from imports and the git commands will be played with operating system calls instead.
 
 
+
 ### v0.1a0 of 2019-02-05
 
 #### Added
 
 First alpha release. This version is a first approximation of the tool. It covers the entire initial scope of functionalities proposed.
-
