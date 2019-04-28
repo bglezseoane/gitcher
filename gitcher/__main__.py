@@ -304,8 +304,21 @@ def recover_prof(profname: str) -> Prof:
 # =                Main launchers               =
 # ===============================================
 
-def print_current_on_prof() -> None:
-    """Function that prints the current in use ON profile information.
+def list_profs() -> None:
+    """Function that prints a list with saved profiles.
+
+    :return: None, print function
+    """
+    profs = model_layer.recuperate_profs()
+    if profs:  # If profs is not empty
+        for prof in profs:
+            print("- " + prof.simple_str())
+    else:
+        print("No gitcher profiles saved yet. Use 'a' option to add one.")
+
+
+def show_current_on_prof() -> None:
+    """Function that shows the current in use ON profile information.
 
     :return: None, print function
     """
@@ -600,7 +613,12 @@ def fast_main(cmd: [str]) -> None:
     else:
         if opt == 'o':
             if len(cmd) == 2:  # cmd have to be only 'gitcher <-o>'
-                print_current_on_prof()
+                show_current_on_prof()
+            else:
+                raise_order_format_error()
+        if opt == 'l':
+            if len(cmd) == 2:  # cmd have to be only 'gitcher <-l>'
+                list_profs()
             else:
                 raise_order_format_error()
         elif len(cmd) >= 3:  # cmd have to be 'gitcher <-opt> <profname> [...]'
