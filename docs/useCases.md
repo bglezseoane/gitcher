@@ -37,7 +37,8 @@ ask you for orders:
 Elementary options are available via command line to avoid gitcher to be 
 scriptable and integrable on POSIX systems. To use:
 
-- `gitcher -o <profname>`: [O]'s shortcut.
+- `gitcher -l`: [L]'s shortcut.
+- `gitcher -o`: [O]'s shortcut.
 - `gitcher -s <profname>`: [S]'s shortcut.
 - `gitcher -g <profname>`: [G]'s shortcut.
 - `gitcher -a <profname> <name> <email> <signkey or 'None'> <'True' or 
