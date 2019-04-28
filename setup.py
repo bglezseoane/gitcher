@@ -10,7 +10,7 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '1.3'
+__version__ = '2.0'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
 __status__ = 'Production'
@@ -18,7 +18,7 @@ __status__ = 'Production'
 
 setup(
     name='gitcher',
-    version='1.3',
+    version='2.0',
     packages=['gitcher'],
     entry_points={
         'console_scripts': [
