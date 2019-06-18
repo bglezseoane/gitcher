@@ -174,7 +174,7 @@ def switch_prof(profname: str, flag: str = '') -> None:
     cwd = os.getcwd()  #  Current working directory path
     prof = recuperate_prof(profname)
 
-    go_to_cwd = "cd {0} && ".format(cwd)
+    go_to_cwd = "cd '{0}' && ".format(cwd)
     if flag == '--global':
         go_to_cwd = ""
 
@@ -217,7 +217,7 @@ def recuperate_git_current_prof(path: str = None) -> Prof:
     """
     if path is None:
         path = os.getcwd()
-    go_to_path = "cd {0} && ".format(path)
+    go_to_path = "cd '{0}' && ".format(path)
 
     with subprocess.Popen(go_to_path + "git config user.name",
                           stdout=subprocess.PIPE, stderr=subprocess.PIPE,
