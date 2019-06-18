@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.1 of 2019-06-18
+
+#### Changed
+
+- This version solves some performance bugs.
+
+
+
 ## v2.0 of 2019-04-28
 
 This is the first version available to download via Homebrew.
