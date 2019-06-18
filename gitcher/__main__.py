@@ -25,7 +25,7 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '2.0'
+__version__ = '2.1'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'dev@glezseoane.com'
 __status__ = 'Production'
@@ -616,7 +616,7 @@ def fast_main(cmd: [str]) -> None:
                 show_current_on_prof()
             else:
                 raise_order_format_error()
-        if opt == 'l':
+        elif opt == 'l':
             if len(cmd) == 2:  # cmd have to be only 'gitcher <-l>'
                 list_profs()
             else:
