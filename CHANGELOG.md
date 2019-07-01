@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.2 of 2019-07-01
+
+#### Added
+
+- Test suite.
+
+
+#### Changed
+
+- Mirroring configuration. Set GitHub copy as main.
+
+
+
 ## v2.1 of 2019-06-18
 
 #### Changed
