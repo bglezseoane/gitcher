@@ -160,21 +160,24 @@ def check_git_context() -> bool:
 
 
 # noinspection PyShadowingNames
-def switch_prof(profname: str, flag: str = '') -> None:
+def switch_prof(profname: str, path: str = None, flag: str = '') -> None:
     """Function that plays the git profile switching.
 
     This function can receive a '--global' flag to switch profile globally.
 
     :param profname: Name of the gitcher profile to operate with
     :type profname: str
+    :param path: The optional specified repository path
+    :type path: str
     :param flag: With '--global' flag switch profile globally
     :type flag: str
     :return: None
     """
-    cwd = os.getcwd()  #  Current working directory path
+    if not path:
+        path = os.getcwd()  #  Current working directory path
     prof = recuperate_prof(profname)
 
-    go_to_cwd = "cd '{0}' && ".format(cwd)
+    go_to_cwd = "cd '{0}' && ".format(path)
     if flag == '--global':
         go_to_cwd = ""
 
