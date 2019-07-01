@@ -3,7 +3,7 @@
 A git switcher. It facilitates the switching between git profiles,importing configuration settings such as name, email and user signatures.
 
 
-## Use cases of gitcher
+## Use cases of Gitcher
 
 - [L]: List the preset profiles.
 - [O]: See currently active (ON) profile.
@@ -19,7 +19,7 @@ A git switcher. It facilitates the switching between git profiles,importing conf
 ## Interactive mode
 
 Use `gitcher` command to open the interactive console. Once this is done, 
-*gitcher* automatically assert cherfile is reachable. If not, offers you to 
+Gitcher automatically assert cherfile is reachable. If not, offers you to 
 create it [C]. Then automatically list your preset profiles [[L], [O]]. Next 
 ask you for orders:
 
@@ -34,7 +34,7 @@ ask you for orders:
 
 ## Fast mode shortcuts
 
-Elementary options are available via command line to avoid gitcher to be 
+Elementary options are available via command line to allow Gitcher to be 
 scriptable and integrable on POSIX systems. To use:
 
 - `gitcher -l`: [L]'s shortcut.
