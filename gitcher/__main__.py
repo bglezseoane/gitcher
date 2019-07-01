@@ -367,7 +367,7 @@ def set_prof_global(profname: str) -> None:
     :type profname: str
     :return: None
     """
-    model_layer.switch_prof(profname, '--global')
+    model_layer.switch_prof(profname, flag='--global')
     print(MSG_OK + " Set {0} as git default profile.".format(profname))
 
 

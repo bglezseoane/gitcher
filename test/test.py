@@ -80,7 +80,7 @@ class UnitTestSuite(TestCase):
                               commiter2_mail, commiter2_sign,
                               commiter2_sign_pref)
 
-        model_layer.switch_prof(prof1.profname, str(repo_path))
+        model_layer.switch_prof(prof1.profname, path=str(repo_path))
         current_prof = model_layer.recuperate_git_current_prof(str(repo_path))
 
         self.assertEqual(prof1, current_prof)
