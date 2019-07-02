@@ -51,26 +51,26 @@ The `~/.cherfile` file contains the saved profiles data.
 
 You can use Homebrew to install this program via my tap repository:
 
-```
-$ brew install glezseoane/homebrew-tap/gitcher
+```sh
+brew install glezseoane/homebrew-tap/gitcher
 ```
 
 You also can use PyPI to install this program:
 
-```
-$ pip install gitcher
+```sh
+pip install gitcher
 ```
 
 Alternative, clone and go to this repository home directory, and then run:
 
-```
-$ python setup.py install
+```sh
+python setup.py install
 ```
 
 Both methods install last Gitcher stable version on your machine. Now you can run it on your shell using:
 
-```
-$ gitcher
+```sh
+gitcher
 ```
 
 <br>
