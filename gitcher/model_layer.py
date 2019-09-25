@@ -50,9 +50,9 @@ def create_cherfile() -> None:
     """
     open(CHERFILE, 'w')
     with open(CHERFILE, 'a') as f:
-        print("####################"
-              "# GITCHER CHERFILE #"
-              "####################", file=f)
+        print("####################\n"
+              "# GITCHER CHERFILE #\n"
+              "####################\n", file=f)
 
 
 def recuperate_profs() -> [Prof]:
