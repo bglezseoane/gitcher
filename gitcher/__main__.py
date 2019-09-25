@@ -570,8 +570,8 @@ def interactive_main() -> None:
     print(COLOR_BRI_CYAN + "m" + COLOR_RST + "    mirror a profile to create a"
                                              " duplicate.")
     print(COLOR_BRI_CYAN + "d" + COLOR_RST + "    delete a profile.")
-    print("\nUse " + COLOR_BRI_CYAN + "Ctrl.+C" + COLOR_RST +
-          " everywhere to quit.\n")
+    print(COLOR_BRI_CYAN + "q" + COLOR_RST + "    quit. Also can use " + COLOR_BRI_CYAN +
+          "Ctrl.+C" + COLOR_RST + " everywhere.\n")
 
     opt = listen("Option: ", dictionary.get_union_cmds_set())
     while not check_opt(opt, interactive_mode=True):
@@ -580,6 +580,9 @@ def interactive_main() -> None:
               ". Type exit to quit.")
         opt = listen("Enter option: ", dictionary.get_union_cmds_set())
 
+    if opt == 'q':  # Always quite
+        print(COLOR_BLUE + "Bye!" + COLOR_RST)
+        sys.exit(0)
     if not opt == 'a' and not opt == 'u':
         profname = listen("Select the desired profile entering its name: ",
                           dictionary.profs_profnames)

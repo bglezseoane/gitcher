@@ -27,7 +27,7 @@ class Dictionary(object):
 
     # noinspection PyShadowingNames
     def __init__(self):
-        self.cmds_interactive_mode = ['s', 'g', 'a', 'd', 'u', 'm']
+        self.cmds_interactive_mode = ['s', 'g', 'a', 'd', 'u', 'm', 'q']
         self.cmds_fast_mode = ['l', 's', 'g', 'a', 'd', 'o']
 
         profs = model_layer.recuperate_profs()
