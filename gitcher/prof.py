@@ -49,12 +49,12 @@ class Prof(object):
         if self.signkey is not None:
             signkey_str = self.signkey
             if self.signpref:
-                signpref_str = "Autosign enabled"
+                signpref_str = "autosign enabled"
             else:
-                signpref_str = "Autosign disabled"
+                signpref_str = "autosign disabled"
         else:
-            signkey_str = "Sign disabled"
-            signpref_str = "Autosign disabled"
+            signkey_str = "sign disabled"
+            signpref_str = "autosign disabled"
 
         return ", ".join([self.name, self.email, signkey_str, signpref_str])
 

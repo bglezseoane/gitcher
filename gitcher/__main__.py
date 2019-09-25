@@ -329,7 +329,7 @@ def list_profs() -> None:
     profs = model_layer.recuperate_profs()
     if profs:  # If profs is not empty
         for prof in profs:
-            print("- " + prof.simple_str())
+            print("Profile " + prof.profname + ": " + prof.simple_str())
     else:
         print("No gitcher profiles saved yet. Use 'a' option to add one.")
 
@@ -349,7 +349,7 @@ def show_current_on_prof() -> None:
     profs = model_layer.recuperate_profs()
     for prof in profs:
         if cprof == prof:
-            print(prof.profname + ": " + cprof.simple_str())
+            print("Profile " + prof.profname + ": " + cprof.simple_str())
             return
     # If not found in list...
     print(MSG_OK + " Unsaved profile: " + cprof.simple_str())
@@ -627,8 +627,8 @@ def fast_main(cmd: [str]) -> None:
     # If syntax is ok, go on and check selected option
     opt = cmd[1].replace('-', '')
     if not check_opt(opt, fast_mode=True):
-        print(MSG_ERROR + " Invalid option! Use -" +
-              '-|'.join(dictionary.cmds_fast_mode))
+        print(MSG_ERROR + " Invalid option! Use -[" +
+              '|'.join(dictionary.cmds_fast_mode) + "]")
         sys.exit(1)
     else:
         if opt == 'o':
