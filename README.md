@@ -79,3 +79,6 @@ Read the man of this tool to known more about its use.
 
 > Note about man pages: if you use `pip` method to install this program, assert that man directories of your Python environment are added to your `MANPATH` to can get this program's man pages with the `man` command. Python might install man pages in default machine level directories.
 
+
+## Acknowledgments
+Santiago Fernández González for an effusive reception of the tool, being the highest tester of Gitcher after its own author.
