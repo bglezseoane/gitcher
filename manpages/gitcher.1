@@ -6,7 +6,7 @@ gitcher \- the git profile switcher
 .SH SYNOPSIS
 \fBgitcher\fR [\fB-l\fR|\fB-o\fR|\fB-s\fR|\fB-g\fR|\fB-a\fR|\fB-d\fR ...]
 .SH DESCRIPTION
-\fBgitcher\fR is a git switcher. It facilitates the switching between git profiles, importing configuration settings such as name, email and user signatures.
+\fBgitcher\fR is a git profile switcher. It facilitates the switching between git profiles, importing configuration settings such as name, email and user signatures.
 .SH OPTIONS
 .IP "\fINONE\fR"
 Opens the interactive mode. It is possible to access to all the operations with this mode, that offers you inline help.
@@ -19,11 +19,13 @@ Set into the existing repository of the current working directory the selected p
 .IP "\fB\-g\fR \fIprofname\fR"
 Set globally the selected gitcher profile.
 .IP "\fB\-a\fR \fIprofname\fR \fIname\fR \fIemail\fR \fIsignkey\fR|\fINone\fR \fITrue\fR|\fIFalse\fR
-Add a new profile. Inputs profname, git user name, git user email, GPG sign key or None (depending if you want to use one), and True or False depending if you want to use your GPG key to autosign every commit.
+Add a new profile. Inputs are profile name, git user name, git user email, GPG sign key or None (depending if you want to use one), and True or False (depending if you want to use your GPG key to autosign every commit).
 .IP "\fB\-d\fR \fIprofname\fR"
 Delete the selected profile.
+.SH GPG KEYS
+\fBgitcher\fR only needs your key ID (the last eight digits of your validation fingerprint) to work. This is the information that you have to provide to \fBgitcher\fR while the creation of your profile.
 .SH SAVED DATA
-\fBgitcher\fR works with a dotfile saved on user $HOME directory. It is \fI~/.cherfile\fR. It is not recommended to edit it manually.
+\fBgitcher\fR works with a dotfile saved on user $HOME directory. It is named \fI~/.cherfile\fR and it is not recommended to edit it manually.
 .SH EXIT STATUS
 Exits 0 on success and 1 on error.
 .SH SEE ALSO
