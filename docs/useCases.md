@@ -19,8 +19,7 @@ A git switcher. It facilitates the switching between git profiles,importing conf
 ## Interactive mode
 
 Use `gitcher` command to open the interactive console. Once this is done, 
-Gitcher automatically assert cherfile is reachable. If not, offers you to 
-create it [C]. Then automatically list your preset profiles [[L], [O]]. Next 
+Gitcher automatically assert cherfile is reachable. If not, create it [C]. Then automatically list your preset profiles [[L], [O]]. Next 
 ask you for orders:
 
 - `s` to set a profile to current directory repository [S].

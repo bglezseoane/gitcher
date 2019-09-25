@@ -46,6 +46,23 @@ MSG_OK = "[" + COLOR_GREEN + "OK" + COLOR_RST + "]"
 MSG_ERROR = "[" + COLOR_RED + "ERROR" + COLOR_RST + "]"
 MSG_WARNING = "[" + COLOR_YELLOW + "WARNING" + COLOR_RST + "]"
 
+
+# ===============================================
+# =             Initial validations             =
+# ===============================================
+# First, check if git is installed
+if not model_layer.check_git_installed():
+    print(
+        MSG_ERROR + " git is not installed in this machine. Impossible to "
+                    "continue.")
+    sys.exit(1)
+
+# Next, check if CHERFILE exists. If not, create it
+if not model_layer.check_cherfile():
+    model_layer.create_cherfile()
+    print(MSG_OK + " Gitcher config dotfile created. Go on...")
+
+
 # Unique global instance for the execution gitcher dictionary
 dictionary = dictionary.Dictionary()
 
@@ -665,30 +682,6 @@ def fast_main(cmd: [str]) -> None:
 
 
 def main():
-    # First, check if git is installed
-    if not model_layer.check_git_installed():
-        print(
-            MSG_ERROR + " git is not installed in this machine. Impossible to "
-                        "continue.")
-        sys.exit(1)
-
-    # Next, check if CHERFILE exists. If not and gitcher is ran as
-    # interactive mode, propose to create it
-    if not model_layer.check_cherfile():
-        print(MSG_ERROR + " CHERFILE not exists and it is necessary.")
-
-        if not len(sys.argv) > 1:  # Interactive mode
-            if yes_or_no("Do you want to create the CHERFILE?"):
-                model_layer.create_cherfile()
-                print(MSG_OK + " Gitcher config dotfile created. Go on...")
-            else:
-                print(MSG_ERROR + " Impossible to go on without gitcher "
-                                  "dotfile.")
-                sys.exit(1)
-        else:
-            sys.exit(1)
-
-    # After firsts checks, run gitcher
     if (len(sys.argv)) == 1:  # Interactive mode, closure execution in a loop
         while True:  # The user inputs the exit order during the session
             interactive_main()
