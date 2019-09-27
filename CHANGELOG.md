@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## v3.0 of 2019-09-27
+
+#### Added
+
+- Contribution guide.
+
+
+#### Changed
+
+- Solve some bugs.
+- Improve data TUI presentation.
+
+
+
 ## v2.2 of 2019-07-01
 
 #### Added
