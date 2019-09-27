@@ -7,6 +7,7 @@ gitcher is a git profile switcher. It facilitates the switching
 between git profiles, importing configuration settings such
 as name, email and user signatures.
 """
+
 import os
 import readline
 import signal
@@ -25,9 +26,9 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '2.2'
+__version__ = '3.0'
 __maintainer__ = 'Borja González Seoane'
-__email__ = 'dev@glezseoane.com'
+__email__ = 'garaje@glezseoane.es'
 __status__ = 'Production'
 
 # Prompt styles
@@ -45,6 +46,23 @@ COLOR_RST = '\033[0m'  # Restore default prompt style
 MSG_OK = "[" + COLOR_GREEN + "OK" + COLOR_RST + "]"
 MSG_ERROR = "[" + COLOR_RED + "ERROR" + COLOR_RST + "]"
 MSG_WARNING = "[" + COLOR_YELLOW + "WARNING" + COLOR_RST + "]"
+
+
+# ===============================================
+# =             Initial validations             =
+# ===============================================
+# First, check if git is installed
+if not model_layer.check_git_installed():
+    print(
+        MSG_ERROR + " git is not installed in this machine. Impossible to "
+                    "continue.")
+    sys.exit(1)
+
+# Next, check if CHERFILE exists. If not, create it
+if not model_layer.check_cherfile():
+    model_layer.create_cherfile()
+    print(MSG_OK + " Gitcher config dotfile created. Go on...")
+
 
 # Unique global instance for the execution gitcher dictionary
 dictionary = dictionary.Dictionary()
@@ -312,7 +330,7 @@ def list_profs() -> None:
     profs = model_layer.recuperate_profs()
     if profs:  # If profs is not empty
         for prof in profs:
-            print("- " + prof.simple_str())
+            print("Profile " + prof.profname + ": " + prof.simple_str())
     else:
         print("No gitcher profiles saved yet. Use 'a' option to add one.")
 
@@ -332,7 +350,7 @@ def show_current_on_prof() -> None:
     profs = model_layer.recuperate_profs()
     for prof in profs:
         if cprof == prof:
-            print(prof.profname + ": " + cprof.simple_str())
+            print("Profile " + prof.profname + ": " + cprof.simple_str())
             return
     # If not found in list...
     print(MSG_OK + " Unsaved profile: " + cprof.simple_str())
@@ -553,8 +571,8 @@ def interactive_main() -> None:
     print(COLOR_BRI_CYAN + "m" + COLOR_RST + "    mirror a profile to create a"
                                              " duplicate.")
     print(COLOR_BRI_CYAN + "d" + COLOR_RST + "    delete a profile.")
-    print("\nUse " + COLOR_BRI_CYAN + "Ctrl.+C" + COLOR_RST +
-          " everywhere to quit.\n")
+    print(COLOR_BRI_CYAN + "q" + COLOR_RST + "    quit. Also can use " + COLOR_BRI_CYAN +
+          "Ctrl.+C" + COLOR_RST + " everywhere.\n")
 
     opt = listen("Option: ", dictionary.get_union_cmds_set())
     while not check_opt(opt, interactive_mode=True):
@@ -563,6 +581,9 @@ def interactive_main() -> None:
               ". Type exit to quit.")
         opt = listen("Enter option: ", dictionary.get_union_cmds_set())
 
+    if opt == 'q':  # Always quite
+        print(COLOR_BLUE + "Bye!" + COLOR_RST)
+        sys.exit(0)
     if not opt == 'a' and not opt == 'u':
         profname = listen("Select the desired profile entering its name: ",
                           dictionary.profs_profnames)
@@ -607,8 +628,8 @@ def fast_main(cmd: [str]) -> None:
     # If syntax is ok, go on and check selected option
     opt = cmd[1].replace('-', '')
     if not check_opt(opt, fast_mode=True):
-        print(MSG_ERROR + " Invalid option! Use -" +
-              '-|'.join(dictionary.cmds_fast_mode))
+        print(MSG_ERROR + " Invalid option! Use -[" +
+              '|'.join(dictionary.cmds_fast_mode) + "]")
         sys.exit(1)
     else:
         if opt == 'o':
@@ -665,30 +686,6 @@ def fast_main(cmd: [str]) -> None:
 
 
 def main():
-    # First, check if git is installed
-    if not model_layer.check_git_installed():
-        print(
-            MSG_ERROR + " git is not installed in this machine. Impossible to "
-                        "continue.")
-        sys.exit(1)
-
-    # Next, check if CHERFILE exists. If not and gitcher is ran as
-    # interactive mode, propose to create it
-    if not model_layer.check_cherfile():
-        print(MSG_ERROR + " CHERFILE not exists and it is necessary.")
-
-        if not len(sys.argv) > 1:  # Interactive mode
-            if yes_or_no("Do you want to create the CHERFILE?"):
-                model_layer.create_cherfile()
-                print(MSG_OK + " Gitcher config dotfile created. Go on...")
-            else:
-                print(MSG_ERROR + " Impossible to go on without gitcher "
-                                  "dotfile.")
-                sys.exit(1)
-        else:
-            sys.exit(1)
-
-    # After firsts checks, run gitcher
     if (len(sys.argv)) == 1:  # Interactive mode, closure execution in a loop
         while True:  # The user inputs the exit order during the session
             interactive_main()

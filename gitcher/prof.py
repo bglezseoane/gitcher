@@ -11,9 +11,9 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '2.2'
+__version__ = '3.0'
 __maintainer__ = 'Borja González Seoane'
-__email__ = 'dev@glezseoane.com'
+__email__ = 'garaje@glezseoane.es'
 __status__ = 'Production'
 
 
@@ -49,12 +49,12 @@ class Prof(object):
         if self.signkey is not None:
             signkey_str = self.signkey
             if self.signpref:
-                signpref_str = "Autosign enabled"
+                signpref_str = "autosign enabled"
             else:
-                signpref_str = "Autosign disabled"
+                signpref_str = "autosign disabled"
         else:
-            signkey_str = "Sign disabled"
-            signpref_str = "Autosign disabled"
+            signkey_str = "sign disabled"
+            signpref_str = "autosign disabled"
 
         return ", ".join([self.name, self.email, signkey_str, signpref_str])
 

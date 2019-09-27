@@ -21,12 +21,13 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '2.2'
+__version__ = '3.0'
 __maintainer__ = 'Borja González Seoane'
-__email__ = 'dev@glezseoane.com'
+__email__ = 'garaje@glezseoane.es'
 __status__ = 'Production'
 
 
+# noinspection DuplicatedCode
 class UnitTestSuite(TestCase):
     """Unit test suite.
 
@@ -34,7 +35,7 @@ class UnitTestSuite(TestCase):
     """
 
     def test_set_prof(self):
-        """Simulate the order tu check the correct operative effect."""
+        """Simulates the set order to check the correct operative effect."""
         warnings.simplefilter("ignore",
                               ResourceWarning)  # Working with tmp files
 
@@ -44,7 +45,7 @@ class UnitTestSuite(TestCase):
         mock.patch('model_layer.CHERFILE', cherfile_path)
         model_layer.create_cherfile()
 
-        # Real commiter data use to create the mock repo
+        # Commiter data to create the mock repo
         commiter1_name = 'jane'
         commiter1_mail = 'janedoe@home'
         commiter1_sign = "1234567A"
@@ -90,7 +91,7 @@ class UnitTestSuite(TestCase):
         remove_tmp_dir(repo_path)
 
     def test_add_prof(self):
-        """Simulate the order tu check the correct operative effect."""
+        """Simulates the add order to check the correct operative effect."""
 
         warnings.simplefilter("ignore",
                               ResourceWarning)  # Working with tmp files
@@ -101,7 +102,7 @@ class UnitTestSuite(TestCase):
         mock.patch('model_layer.CHERFILE', cherfile_path)
         model_layer.create_cherfile()
 
-        # Real commiter data use to create the mock repo
+        # Commiter data to create the mock repo
         commiter1_name = 'jane'
         commiter1_mail = 'janedoe@home'
         commiter1_sign = "1234567A"
@@ -146,7 +147,7 @@ class UnitTestSuite(TestCase):
         remove_tmp_dir(repo_path)
 
     def test_delete_prof(self):
-        """Simulate the order tu check the correct operative effect."""
+        """Simulates the delete order to check the correct operative effect."""
 
         warnings.simplefilter("ignore",
                               ResourceWarning)  # Working with tmp files
@@ -157,7 +158,7 @@ class UnitTestSuite(TestCase):
         mock.patch('model_layer.CHERFILE', cherfile_path)
         model_layer.create_cherfile()
 
-        # Real commiter data use to create the mock repo
+        # Commiter data to create the mock repo
         commiter1_name = 'jane'
         commiter1_mail = 'janedoe@home'
         commiter1_sign = "1234567A"

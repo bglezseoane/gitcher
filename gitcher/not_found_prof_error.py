@@ -12,9 +12,9 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '2.2'
+__version__ = '3.0'
 __maintainer__ = 'Borja González Seoane'
-__email__ = 'dev@glezseoane.com'
+__email__ = 'garaje@glezseoane.es'
 __status__ = 'Production'
 
 
