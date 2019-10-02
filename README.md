@@ -14,7 +14,7 @@ It is possible that you have multiple git configurations. E.g.:
 ```
 Name: Jane Doe
 Email: janedoe@work
-GPG Key: AAAA1234
+PGP Key: AAAA1234
 ```
 
 - Personal profile
@@ -22,7 +22,7 @@ GPG Key: AAAA1234
 ```
 Name: Jane Doe
 Email: janedoe@home
-GPG Key: BBBB5678
+PGP Key: BBBB5678
 ```
 
 It could be a nuisance to switch between profiles while working on different projects. In addition, it is common to forget what profile you are using when you start commit in a new repository, and rewrite your story can be a bigger nuisance.
@@ -36,7 +36,7 @@ A profile is a git configuration data set that includes:
 
 - Name.
 - Email.
-- GPG Key (optional).
+- PGP Key (optional).
 - GPG autosigning preference (activate it do that every commit will be signed).
 
 It is identified by a subject tittle like "work" or "university" that have to be unique.

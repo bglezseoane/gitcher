@@ -137,7 +137,7 @@ def print_prof_list() -> None:
             crashes. Compares the terminal width with the length of the biggest 
             profs list element."""
             profs_table = PrettyTable(['Prof', 'Name', 'Email',
-                                       'GPG key', 'Autosign'])
+                                       'PGP key', 'Autosign'])
             for prof in profs:
                 row = prof.tpl()
                 if prof == cprof:
@@ -410,7 +410,7 @@ def add_prof() -> None:
         print(MSG_ERROR + " Invalid email format. Try again...".format(email))
         email = listen("Enter the git user email: ")
 
-    if yes_or_no("Do you want to use a GPG sign key?"):
+    if yes_or_no("Do you want to use a PGP sign key?"):
         signkey = listen("Enter the git user signkey: ")
         signpref = yes_or_no("Do you want to autosign every commit?")
     else:
@@ -482,8 +482,8 @@ def update_prof() -> None:
             print(MSG_ERROR + " Invalid email format. Try again...".format(
                 email))
             email = listen("Enter the new email: ")
-    if yes_or_no("Do you want to update the GPG sign config?"):
-        if yes_or_no("Do you want to use a GPG sign key?"):
+    if yes_or_no("Do you want to update the PGP sign config?"):
+        if yes_or_no("Do you want to use a PGP sign key?"):
             signkey = listen("Enter the git user signkey: ")
             signpref = yes_or_no("Do you want to autosign every commit?")
         else:
