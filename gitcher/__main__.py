@@ -150,10 +150,10 @@ def print_prof_list() -> None:
         else:  # Not viable table representation
             for prof in profs:
                 if prof == cprof:
-                    print("- " + COLOR_CYAN + prof.simple_str() + COLOR_RST +
-                          " [CURRENT]")
+                    print("- " + COLOR_CYAN + prof.profname + ": " +
+                          prof.simple_str() + COLOR_RST + " [CURRENT]")
                 else:
-                    print("- " + prof.simple_str())
+                    print("- " + prof.profname + ": " + prof.simple_str())
     else:
         print("No gitcher profiles saved yet. Use 'a' option to add one.")
 
@@ -571,8 +571,8 @@ def interactive_main() -> None:
     print(COLOR_BRI_CYAN + "m" + COLOR_RST + "    mirror a profile to create a"
                                              " duplicate.")
     print(COLOR_BRI_CYAN + "d" + COLOR_RST + "    delete a profile.")
-    print(COLOR_BRI_CYAN + "q" + COLOR_RST + "    quit. Also can use " + COLOR_BRI_CYAN +
-          "Ctrl.+C" + COLOR_RST + " everywhere.\n")
+    print(COLOR_BRI_CYAN + "q" + COLOR_RST + "    quit. Also can use " +
+          COLOR_BRI_CYAN + "Ctrl.+C" + COLOR_RST + " everywhere.\n")
 
     opt = listen("Option: ", dictionary.get_union_cmds_set())
     while not check_opt(opt, interactive_mode=True):
