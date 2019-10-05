@@ -128,9 +128,22 @@ def print_prof_list() -> None:
         _, terminal_width = os.popen('stty size', 'r').read().split()
         terminal_width = int(terminal_width)
 
-        big_prof_len = max([sum(len(str(att)) for att in prof) for prof in
-                            [prof.tpl() for prof in profs]])
-        big_prof_len += 10 + 6  # Spaces and bars to separate attributes
+        """Catches the length of the largest compose profile to represent, 
+        taking the length of the largest attribute of each column."""
+        big_atts = ['', '', '', '', '']
+        for prof in profs:
+            if len(prof.profname) > len(big_atts[0]):
+                big_atts[0] = prof.profname
+            if len(prof.name) > len(big_atts[1]):
+                big_atts[1] = prof.name
+            if len(prof.email) > len(big_atts[2]):
+                big_atts[2] = prof.email
+            if len(str(prof.signkey)) > len(big_atts[3]):
+                big_atts[3] = str(prof.signkey)
+            if len(str(prof.signpref)) > len(big_atts[4]):
+                big_atts[4] = str(prof.signpref)
+        big_prof_len = len(''.join(big_atts))
+        big_prof_len += 16  # Spaces and bars to separate attributes
 
         if terminal_width >= big_prof_len:  # Viable table representation
             """Switchs between table and list representations to avoid graphic 
