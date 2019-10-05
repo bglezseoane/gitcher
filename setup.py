@@ -10,7 +10,7 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '3.0'
+__version__ = '3.1'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'garaje@glezseoane.es'
 __status__ = 'Production'
@@ -18,7 +18,7 @@ __status__ = 'Production'
 
 setup(
     name='gitcher',
-    version='3.0',
+    version='3.1',
     packages=['gitcher'],
     entry_points={
         'console_scripts': [
@@ -30,7 +30,7 @@ setup(
     data_files=[('share/man/man1', ['manpages/gitcher.1']),
                 ("", ["LICENSE"])],
     url='https://github.com/glezseoane/gitcher',
-    download_url='https://github.com/GlezSeoane/gitcher/archive/v3.0.tar.gz',
+    download_url='https://github.com/GlezSeoane/gitcher/archive/v3.1.tar.gz',
     license='LICENSE',
     author='Borja González Seoane',
     author_email='garaje@glezseoane.es',
