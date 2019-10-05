@@ -26,7 +26,7 @@ __author__ = 'Borja González Seoane'
 __copyright__ = 'Copyright 2019, Borja González Seoane'
 __credits__ = 'Borja González Seoane'
 __license__ = 'LICENSE'
-__version__ = '3.0'
+__version__ = '3.1'
 __maintainer__ = 'Borja González Seoane'
 __email__ = 'garaje@glezseoane.es'
 __status__ = 'Production'
@@ -128,16 +128,29 @@ def print_prof_list() -> None:
         _, terminal_width = os.popen('stty size', 'r').read().split()
         terminal_width = int(terminal_width)
 
-        big_prof_len = max([sum(len(str(att)) for att in prof) for prof in
-                            [prof.tpl() for prof in profs]])
-        big_prof_len += 10 + 6  # Spaces and bars to separate attributes
+        """Catches the length of the largest compose profile to represent, 
+        taking the length of the largest attribute of each column."""
+        big_atts = ['', '', '', '', '']
+        for prof in profs:
+            if len(prof.profname) > len(big_atts[0]):
+                big_atts[0] = prof.profname
+            if len(prof.name) > len(big_atts[1]):
+                big_atts[1] = prof.name
+            if len(prof.email) > len(big_atts[2]):
+                big_atts[2] = prof.email
+            if len(str(prof.signkey)) > len(big_atts[3]):
+                big_atts[3] = str(prof.signkey)
+            if len(str(prof.signpref)) > len(big_atts[4]):
+                big_atts[4] = str(prof.signpref)
+        big_prof_len = len(''.join(big_atts))
+        big_prof_len += 16  # Spaces and bars to separate attributes
 
         if terminal_width >= big_prof_len:  # Viable table representation
             """Switchs between table and list representations to avoid graphic 
             crashes. Compares the terminal width with the length of the biggest 
             profs list element."""
             profs_table = PrettyTable(['Prof', 'Name', 'Email',
-                                       'GPG key', 'Autosign'])
+                                       'PGP key', 'Autosign'])
             for prof in profs:
                 row = prof.tpl()
                 if prof == cprof:
@@ -150,10 +163,10 @@ def print_prof_list() -> None:
         else:  # Not viable table representation
             for prof in profs:
                 if prof == cprof:
-                    print("- " + COLOR_CYAN + prof.simple_str() + COLOR_RST +
-                          " [CURRENT]")
+                    print("- " + COLOR_CYAN + prof.profname + ": " +
+                          prof.simple_str() + COLOR_RST + " [CURRENT]")
                 else:
-                    print("- " + prof.simple_str())
+                    print("- " + prof.profname + ": " + prof.simple_str())
     else:
         print("No gitcher profiles saved yet. Use 'a' option to add one.")
 
@@ -410,7 +423,7 @@ def add_prof() -> None:
         print(MSG_ERROR + " Invalid email format. Try again...".format(email))
         email = listen("Enter the git user email: ")
 
-    if yes_or_no("Do you want to use a GPG sign key?"):
+    if yes_or_no("Do you want to use a PGP sign key?"):
         signkey = listen("Enter the git user signkey: ")
         signpref = yes_or_no("Do you want to autosign every commit?")
     else:
@@ -482,8 +495,8 @@ def update_prof() -> None:
             print(MSG_ERROR + " Invalid email format. Try again...".format(
                 email))
             email = listen("Enter the new email: ")
-    if yes_or_no("Do you want to update the GPG sign config?"):
-        if yes_or_no("Do you want to use a GPG sign key?"):
+    if yes_or_no("Do you want to update the PGP sign config?"):
+        if yes_or_no("Do you want to use a PGP sign key?"):
             signkey = listen("Enter the git user signkey: ")
             signpref = yes_or_no("Do you want to autosign every commit?")
         else:
@@ -571,8 +584,8 @@ def interactive_main() -> None:
     print(COLOR_BRI_CYAN + "m" + COLOR_RST + "    mirror a profile to create a"
                                              " duplicate.")
     print(COLOR_BRI_CYAN + "d" + COLOR_RST + "    delete a profile.")
-    print(COLOR_BRI_CYAN + "q" + COLOR_RST + "    quit. Also can use " + COLOR_BRI_CYAN +
-          "Ctrl.+C" + COLOR_RST + " everywhere.\n")
+    print(COLOR_BRI_CYAN + "q" + COLOR_RST + "    quit. Also can use " +
+          COLOR_BRI_CYAN + "Ctrl.+C" + COLOR_RST + " everywhere.\n")
 
     opt = listen("Option: ", dictionary.get_union_cmds_set())
     while not check_opt(opt, interactive_mode=True):

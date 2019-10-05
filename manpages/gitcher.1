@@ -1,6 +1,6 @@
 .\" Manpage for gitcher.
 .\" Contact garaje@glezseoane.es to any requirement.
-.TH man 1 "27 Sep 2019" "3.0" "gitcher man page"
+.TH man 1 "5 Oct 2019" "3.1" "gitcher man page"
 .SH NAME
 gitcher \- the git profile switcher
 .SH SYNOPSIS
@@ -19,10 +19,10 @@ Set into the existing repository of the current working directory the selected p
 .IP "\fB\-g\fR \fIprofname\fR"
 Set globally the selected gitcher profile.
 .IP "\fB\-a\fR \fIprofname\fR \fIname\fR \fIemail\fR \fIsignkey\fR|\fINone\fR \fITrue\fR|\fIFalse\fR
-Add a new profile. Inputs are profile name, git user name, git user email, GPG sign key or None (depending if you want to use one), and True or False (depending if you want to use your GPG key to autosign every commit).
+Add a new profile. Inputs are profile name, git user name, git user email, PGP sign key or None (depending if you want to use one), and True or False (depending if you want to use your PGP key to autosign every commit).
 .IP "\fB\-d\fR \fIprofname\fR"
 Delete the selected profile.
-.SH GPG KEYS
+.SH PGP KEYS
 \fBgitcher\fR only needs your key ID (the last eight digits of your validation fingerprint) to work. This is the information that you have to provide to \fBgitcher\fR while the creation of your profile.
 .SH SAVED DATA
 \fBgitcher\fR works with a dotfile saved on user $HOME directory. It is named \fI~/.cherfile\fR and it is not recommended to edit it manually.
