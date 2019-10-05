@@ -81,4 +81,8 @@ Read the man of this tool to known more about its use.
 
 
 ## Acknowledgments
-Santiago Fernández González for an effusive reception of the tool, being the highest tester of Gitcher after its own author.
+
+- [Santiago Fernández González](https://github.com/santiagofdezg), for an effusive reception of the tool, being the highest tester of Gitcher after its own author.
+- [Arda Kosar](https://github.com/abkosar), for his work on issue [#3](https://github.com/glezseoane/gitcher/issues/3).
+- [Mat Kelly](https://github.com/machawk1), for his work with documentation misprints.
+
