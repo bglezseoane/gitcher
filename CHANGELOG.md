@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## v3.1 of 2019-10-05
+
+#### Changed
+
+- Improve data TUI presentation.
+- Correct the PGP acronym use.
+
+
+
 ## v3.0 of 2019-09-27
 
 #### Added
