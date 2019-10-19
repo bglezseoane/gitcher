@@ -1,6 +1,20 @@
 # Contributing guide
 
-The following is a set of guidelines for contributing to this project. Use your best judgment, and feel free to propose changes to this document in a pull request.
+> First off, thank you for considering contributing to Gitcher. ~ Borja González Seoane
+
+Following these guidelines helps to communicate that you respect the time of the developers managing and developing this open source project. In return, they should reciprocate that respect in addressing your issue, assessing changes, and helping you finalize your pull requests.
+
+Please, write to Seoane ([garaje@glezseoane.es](mailto:garaje@glezseoane.es)) for any additional questions or suggestions.
+
+## Suggesting new features
+
+If you find yourself wishing for a feature that doesn't exist in Gitcher, open an issue on our GitHub issues tracker which describes the feature you would like to see, why you need it, and how it should work. Use the `enhancement` label in your issue.
+
+
+## Bug reports
+
+Open an issue on our GitHub issues list which describes the bug thoroughly. Use the `bug` label in your issue.
+
 
 ## Git commit messages
 
@@ -10,7 +24,7 @@ The following is a set of guidelines for contributing to this project. Use your 
 - Consider starting the commit message with an applicable tag attending its normal form:
 	- `docs:`: documentation.
 	- `feat:`: new features.
-	- `fixes`: fixes of present features.
+	- `fix`: fixes of present features.
 	- `style`: code cleanliness.
 - Limit the first line to 50 characters or less. Start with capital letter and do not close with a dot.
 - Add a white line after the subject line.
@@ -25,3 +39,6 @@ This repository follows the [Vincent Driessen's successful Git branching model](
 The `master` branch is reserved to merges of releases and some documentation changes. The releases are identified with a tag.
 
 Other things will be done in `develop` branch, which can contain other feat-specific branches, if necessary. The release-itself stuff will be done in an `rel-<release-index>` specific branch, then merged in `master` and `develop`.
+
+It is recommended to use `git-workflow` to facilitate the processes. This tools was developed by Vincent Driessen, the author of our Git branching model, so they fit perfectly.
+
