@@ -11,12 +11,27 @@ Please, write to Seoane ([garaje@glezseoane.es](mailto:garaje@glezseoane.es)) fo
 If you find yourself wishing for a feature that doesn't exist in Gitcher, open an issue on our GitHub issues tracker which describes the feature you would like to see, why you need it, and how it should work. Use the `enhancement` label in your issue.
 
 
+
 ## Bug reports
 
 Open an issue on our GitHub issues list which describes the bug thoroughly. Use the `bug` label in your issue.
 
 
-## Git commit messages
+
+## Style guides and conventions
+
+### Code style guide
+
+Gitcher is written in Python, so the PEP-8 rules will be followed to the code standardization. It is highly recommended to use an IDE that revise PEP-8 conventions in your code, as, for example JetBrains's PyCharm.
+
+**Pull request or other type of contributions that not respect PEP-8's conventions could be discarded. The code standardization is a very important part of a good managed software project.**
+
+You can take a look of PEP-8 in the article *[PEP-8: Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)*.
+
+If you don't want to read PEP-8, please observe yet implement code and try to emulate the presentation.
+
+
+### Git commit messages
 
 - Use the present tense ("Add feature" not "Added feature").
 - Use the imperative mood ("Move cursor to..." not "Moves cursor to...").
@@ -32,7 +47,7 @@ Open an issue on our GitHub issues list which describes the bug thoroughly. Use 
 - Reference issues and pull requests liberally after the first line.
 
 
-## Git branching
+### Git branching
 
 This repository follows the [Vincent Driessen's successful Git branching model](https://nvie.com/posts/a-successful-git-branching-model/).
 
