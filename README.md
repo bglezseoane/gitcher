@@ -1,4 +1,4 @@
-# gitcher
+# Gitcher ![Status](https://img.shields.io/static/v1?label=status&message=production&color=brightgreen "Status: production")
 
 The git profile switcher. It facilitates the switching between git profiles, importing configuration settings such as name, email and user signatures.
 
@@ -30,7 +30,7 @@ It could be a nuisance to switch between profiles while working on different pro
 This tool aims to facilitate the configuration of the profile to be used in each project, an agile exchange between the different profiles and a way to control the profiles that you are using in your machine.
 
 
-## What is a gitcher profile?
+## What is a Gitcher profile?
 
 A profile is a git configuration data set that includes:
 
@@ -85,4 +85,3 @@ Read the man of this tool to known more about its use.
 - [Santiago Fernández González](https://github.com/santiagofdezg), for an effusive reception of the tool, being the highest tester of Gitcher after its own author.
 - [Arda Kosar](https://github.com/abkosar), for his work on issue [#3](https://github.com/glezseoane/gitcher/issues/3).
 - [Mat Kelly](https://github.com/machawk1), for his work with documentation misprints.
-
