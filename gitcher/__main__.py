@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 
+###########################################################
+# Gitcher 3.1.2
+#
+# The git profile switcher
+#
+# Copyright 2019-2020 Borja González Seoane
+#
+# Contact: garaje@glezseoane.es
+###########################################################
 
-"""gitcher main
-
-gitcher is a git profile switcher. It facilitates the switching
-between git profiles, importing configuration settings such
-as name, email and user signatures.
-"""
+"""Gitcher's main."""
 
 import os
 import readline
@@ -20,16 +24,6 @@ from gitcher import model_layer, dictionary
 from gitcher.completer import TabCompleter
 from gitcher.prof import Prof
 from gitcher.not_found_prof_error import NotFoundProfError
-
-# Authorship
-__author__ = 'Borja González Seoane'
-__copyright__ = 'Copyright 2019, Borja González Seoane'
-__credits__ = 'Borja González Seoane'
-__license__ = 'LICENSE'
-__version__ = '3.1.1'
-__maintainer__ = 'Borja González Seoane'
-__email__ = 'garaje@glezseoane.es'
-__status__ = 'Production'
 
 # Prompt styles
 COLOR_BLUE = '\033[94m'
@@ -171,14 +165,14 @@ def print_prof_list() -> None:
         print("No gitcher profiles saved yet. Use 'a' option to add one.")
 
 
-def listen(text: str, autocompletion_context: [str] = None) -> str:
+def listen(question: str = None, autocompletion_context: [str] = None) -> str:
     """Function that listen an user input, validates it and then canalize 
     message to caller function. This function also provides the support for 
     autocompletion. To use it, its neccesary to pass as second param the 
     context list of keys against match.
 
-    :param text: Name of the gitcher profile to operate with
-    :type text: str
+    :param question: Text of the question to the user
+    :type question: str
     :param autocompletion_context: List of keys against match text to
         autocompletion. None to do not use this service
     :type autocompletion_context: [str]
@@ -192,7 +186,10 @@ def listen(text: str, autocompletion_context: [str] = None) -> str:
         completer = TabCompleter(autocompletion_context)
         readline.set_completer(completer.service)
 
-    reply = input(text).strip()
+    if question:
+        reply = input(question).strip()
+    else:
+        reply = input().strip()
 
     if autocompletion_context:  # Clean autocompletion set
         # noinspection PyUnboundLocalVariable
@@ -202,7 +199,7 @@ def listen(text: str, autocompletion_context: [str] = None) -> str:
     try:
         check_syntax(reply)
     except SyntaxError:
-        listen(text)  # Recursive loop to have a valid value
+        listen(question)  # Recursive loop to have a valid value
 
     return reply
 

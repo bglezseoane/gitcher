@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-# Gitcher 3.1.2
+# Gitcher 3.1.2 (Test suite)
 #
 # The git profile switcher
 #

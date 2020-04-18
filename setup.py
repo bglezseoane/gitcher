@@ -1,24 +1,21 @@
 # -*- coding: utf-8 -*-
 
-
-"""gitcher setup module"""
+###########################################################
+# Gitcher 3.1.2 (Setup file)
+#
+# The git profile switcher
+#
+# Copyright 2019-2020 Borja González Seoane
+#
+# Contact: garaje@glezseoane.es
+###########################################################
 
 from setuptools import setup
-
-# Authorship
-__author__ = 'Borja González Seoane'
-__copyright__ = 'Copyright 2019, Borja González Seoane'
-__credits__ = 'Borja González Seoane'
-__license__ = 'LICENSE'
-__version__ = '3.1.1'
-__maintainer__ = 'Borja González Seoane'
-__email__ = 'garaje@glezseoane.es'
-__status__ = 'Production'
 
 
 setup(
     name='gitcher',
-    version='3.1.1',
+    version='3.1.2',
     packages=['gitcher'],
     entry_points={
         'console_scripts': [
@@ -29,8 +26,8 @@ setup(
     install_requires=['validate_email==1.3', 'prettytable==0.7.2'],
     data_files=[('share/man/man1', ['manpages/gitcher.1']),
                 ("", ["LICENSE"])],
-    url='https://github.com/glezseoane/gitcher',
-    download_url='https://github.com/GlezSeoane/gitcher/archive/v3.1.1.tar.gz',
+    url='https://github.com/bglezseoane/gitcher',
+    download_url='https://github.com/bglezseoane/gitcher/archive/v3.1.2.tar.gz',
     license='LICENSE',
     author='Borja González Seoane',
     author_email='garaje@glezseoane.es',
