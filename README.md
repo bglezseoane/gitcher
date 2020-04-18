@@ -4,8 +4,8 @@
 
 ![Status](https://img.shields.io/static/v1?label=status&message=production&color=brightgreen "Status: production")    
 
-- Webpage: http://www.borja.glezseoane.es/garaje/gitcher.html
-- Mailing list board: http://listas.glezseoane.es/mailman/listinfo/gitcher_listas.glezseoane.es
+- Webpage: http://www.borja.glezseoane.es/garaje/gitcher.html.
+- Mailing list board: http://listas.glezseoane.es/mailman/listinfo/gitcher_listas.glezseoane.es.
 
 Gitcher is the git profile switcher. It facilitates the switching between git profiles, importing configuration settings such as name, email and user signatures.
 
