@@ -171,14 +171,14 @@ def print_prof_list() -> None:
         print("No gitcher profiles saved yet. Use 'a' option to add one.")
 
 
-def listen(text: str, autocompletion_context: [str] = None) -> str:
+def listen(question: str = None, autocompletion_context: [str] = None) -> str:
     """Function that listen an user input, validates it and then canalize 
     message to caller function. This function also provides the support for 
     autocompletion. To use it, its neccesary to pass as second param the 
     context list of keys against match.
 
-    :param text: Name of the gitcher profile to operate with
-    :type text: str
+    :param question: Text of the question to the user
+    :type question: str
     :param autocompletion_context: List of keys against match text to
         autocompletion. None to do not use this service
     :type autocompletion_context: [str]
@@ -192,7 +192,10 @@ def listen(text: str, autocompletion_context: [str] = None) -> str:
         completer = TabCompleter(autocompletion_context)
         readline.set_completer(completer.service)
 
-    reply = input(text).strip()
+    if question:
+        reply = input(question).strip()
+    else:
+        reply = input().strip()
 
     if autocompletion_context:  # Clean autocompletion set
         # noinspection PyUnboundLocalVariable
@@ -202,7 +205,7 @@ def listen(text: str, autocompletion_context: [str] = None) -> str:
     try:
         check_syntax(reply)
     except SyntaxError:
-        listen(text)  # Recursive loop to have a valid value
+        listen(question)  # Recursive loop to have a valid value
 
     return reply
 
