@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ###########################################################
-# Gitcher 3.1.2 (Setup file)
+# Gitcher 3.1.3 (Setup file)
 #
 # The git profile switcher
 #
@@ -15,7 +15,7 @@ from setuptools import setup
 
 setup(
     name='gitcher',
-    version='3.1.2',
+    version='3.1.3',
     packages=['gitcher'],
     entry_points={
         'console_scripts': [
@@ -23,11 +23,12 @@ setup(
         ],
     },
     python_requires='>=3.6',
-    install_requires=['validate_email==1.3', 'prettytable==0.7.2'],
+    install_requires=['validate_email==1.3', 'prettytable==0.7.2',
+                      'setuptools==40.7.1'],
     data_files=[('share/man/man1', ['manpages/gitcher.1']),
                 ("", ["LICENSE"])],
     url='https://github.com/bglezseoane/gitcher',
-    download_url='https://github.com/bglezseoane/gitcher/archive/v3.1.2.tar.gz',
+    download_url='https://github.com/bglezseoane/gitcher/archive/v3.1.3.tar.gz',
     license='LICENSE',
     author='Borja González Seoane',
     author_email='garaje@glezseoane.es',
