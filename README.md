@@ -7,7 +7,7 @@
 - Webpage: http://www.borja.glezseoane.es/garaje/gitcher.html.
 - Mailing list board: http://listas.glezseoane.es/mailman/listinfo/gitcher_listas.glezseoane.es.
 
-Gitcher is the git profile switcher. It facilitates the switching between git profiles, importing configuration settings such as name, email and user signatures.
+Gitcher is the git profile switcher, a TUI (terminal user interface) application which facilitates the switching between git profiles, importing configuration settings such as name, email and user signatures.
 
 ![Screen capture 1](docs/screenshot1.png?raw=true "Screen capture 1")
 
