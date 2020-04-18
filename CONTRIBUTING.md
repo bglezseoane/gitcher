@@ -1,10 +1,16 @@
 # Contributing guide
 
-> First off, thank you for considering contributing to Gitcher. ~ Borja González Seoane
-
 Following these guidelines helps to communicate that you respect the time of the developers managing and developing this open source project. In return, they should reciprocate that respect in addressing your issue, assessing changes, and helping you finalize your pull requests.
 
-Please, write to Seoane ([garaje@glezseoane.es](mailto:garaje@glezseoane.es)) for any additional questions or suggestions.
+Please, write to González Seoane ([garaje@glezseoane.es](mailto:garaje@glezseoane.es)) for any additional questions or suggestions.
+
+## Mailing lists
+
+Suscribe the mailing list to be updated about the news of Gitcher and to discuss about its development.
+
+Mailing list board: http://listas.glezseoane.es/mailman/listinfo/gitcher_listas.glezseoane.es.
+
+
 
 ## Suggesting new features
 
@@ -56,4 +62,3 @@ The `master` branch is reserved to merges of releases and some documentation cha
 Other things will be done in `develop` branch, which can contain other feat-specific branches, if necessary. The release-itself stuff will be done in an `rel-<release-index>` specific branch, then merged in `master` and `develop`.
 
 It is recommended to use `git-workflow` to facilitate the processes. This tools was developed by Vincent Driessen, the author of our Git branching model, so they fit perfectly.
-
