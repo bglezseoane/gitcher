@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v3.2 of 2019-04-18
+
+This version adds document improvements, mailing list and homepage notices and fix some installation issues.
+
+
+
 ## v3.1.1 of 2019-10-19
 
 This version provides the same software, but removes the repository's GitLab mirror.
