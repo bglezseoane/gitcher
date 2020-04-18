@@ -1,0 +1,2 @@
+prettytable==0.7.2
+validate-email==1.3
