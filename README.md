@@ -1,8 +1,17 @@
-# Gitcher ![Status](https://img.shields.io/static/v1?label=status&message=production&color=brightgreen "Status: production")
+# Gitcher  
 
-The git profile switcher. It facilitates the switching between git profiles, importing configuration settings such as name, email and user signatures.
+*The git profile switcher*  
 
-![Screen capture](docs/screen.png?raw=true "Screen capture")
+![Status](https://img.shields.io/static/v1?label=status&message=production&color=brightgreen "Status: production")    
+
+- Webpage: http://www.borja.glezseoane.es/garaje/gitcher.html
+- Mailing list board: http://listas.glezseoane.es/mailman/listinfo/gitcher_listas.glezseoane.es
+
+Gitcher is the git profile switcher. It facilitates the switching between git profiles, importing configuration settings such as name, email and user signatures.
+
+![Screen capture 1](docs/screenshot1.png?raw=true "Screen capture 1")
+
+![Screen capture 2](docs/screenshot2.png?raw=true "Screen capture 2")
 
 
 ## Purpose
@@ -49,35 +58,7 @@ The `~/.cherfile` file contains the saved profiles data.
 
 ## To set up
 
-You can use Homebrew to install this program via my tap repository:
-
-```sh
-brew install bglezseoane/tap/gitcher
-```
-
-You also can use PyPI to install this program:
-
-```sh
-pip install gitcher
-```
-
-Alternative, clone and go to this repository home directory, and then run:
-
-```sh
-python setup.py install
-```
-
-Both methods install last Gitcher stable version on your machine. Now you can run it on your shell using:
-
-```sh
-gitcher
-```
-
-<br>
-
-Read the man of this tool to known more about its use.
-
-> Note about man pages: if you use `pip` method to install this program, assert that man directories of your Python environment are added to your `MANPATH` to can get this program's man pages with the `man` command. Python might install man pages in default machine level directories.
+Please, read the [install guide](./INSTALL.md).
 
 
 ## Acknowledgments
