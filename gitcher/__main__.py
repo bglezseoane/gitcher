@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 
+###########################################################
+# Gitcher 3.1.1
+#
+# The git profile switcher
+#
+# Copyright 2019-2020 Borja González Seoane
+#
+# Contact: garaje@glezseoane.es
+###########################################################
 
-"""gitcher main
-
-gitcher is a git profile switcher. It facilitates the switching
-between git profiles, importing configuration settings such
-as name, email and user signatures.
-"""
+"""Gitcher's main."""
 
 import os
 import readline
@@ -20,16 +24,6 @@ from gitcher import model_layer, dictionary
 from gitcher.completer import TabCompleter
 from gitcher.prof import Prof
 from gitcher.not_found_prof_error import NotFoundProfError
-
-# Authorship
-__author__ = 'Borja González Seoane'
-__copyright__ = 'Copyright 2019, Borja González Seoane'
-__credits__ = 'Borja González Seoane'
-__license__ = 'LICENSE'
-__version__ = '3.1.1'
-__maintainer__ = 'Borja González Seoane'
-__email__ = 'garaje@glezseoane.es'
-__status__ = 'Production'
 
 # Prompt styles
 COLOR_BLUE = '\033[94m'

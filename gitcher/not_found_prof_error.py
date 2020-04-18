@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
 
+###########################################################
+# Gitcher 3.1.1
+#
+# The git profile switcher
+#
+# Copyright 2019-2020 Borja González Seoane
+#
+# Contact: garaje@glezseoane.es
+###########################################################
 
-"""gitcher not_found_prof_error class module
+"""Gitcher's 'not_found_prof_error' class module
 
 This module constains the class taht represents a gitcher not found profile
 exception.
 """
-
-# Authorship
-__author__ = 'Borja González Seoane'
-__copyright__ = 'Copyright 2019, Borja González Seoane'
-__credits__ = 'Borja González Seoane'
-__license__ = 'LICENSE'
-__version__ = '3.1.1'
-__maintainer__ = 'Borja González Seoane'
-__email__ = 'garaje@glezseoane.es'
-__status__ = 'Production'
 
 
 class NotFoundProfError(Exception):
