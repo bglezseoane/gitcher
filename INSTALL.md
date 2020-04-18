@@ -1,8 +1,8 @@
 # Installation guide
 
-This software is available for Unix like systems.
+This software is available for Unix-like systems (Linux and MacOS).
 
-## Homebrew
+## Homebrew (recommended for MacOS)
 
 You can use Homebrew to install this program via my tap repository:
 
@@ -10,9 +10,9 @@ You can use Homebrew to install this program via my tap repository:
 brew install bglezseoane/tap/gitcher
 ```
 
-## Pip
+## Pip (recommended for Linux)
 
-You also can use PyPI to install this program:
+You also can use PYPI to install this program:
 
 ```sh
 pip install gitcher
