@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 This version adds document improvements, mailing list and homepage notices and fix some installation issues.
 
+Note: This version has had a pair of prereleases (v3.1.2 and v3.1.3), but due to errors with the PYPI packaging they have been removed.
+
 
 
 ## v3.1.1 of 2019-10-19
